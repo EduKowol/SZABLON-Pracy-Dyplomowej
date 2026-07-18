@@ -1,0 +1,51 @@
+% !TeX document-id = {cb87665d-439e-4951-8bfd-0fee8646ed87}
+% !TeX TXS-program:compile = txs:///latexmk/{-pdf}
+% !TeX root = main.tex
+% Kompilacja: latexmk main.tex (silnik LuaLaTeX wybiera latexmkrc)
+\input{config/metadata}
+% Tryb digital sklada dokument jednostronnie; print przygotowuje sklad dwustronny.
+\def\thesisprintmodeprint{print}
+\ifx\thesisprintmode\thesisprintmodeprint
+  \documentclass[12pt,a4paper,twoside,openright]{report}
+\else
+  \documentclass[12pt,a4paper,oneside,openany]{report}
+\fi
+\usepackage{config/thesis-style}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\pagenumbering{gobble}
+\makethesistitle
+\ifdefstring{\showdedication}{true}{\input{frontmatter/dedication}}{}
+\cleardoublepage
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\input{frontmatter/declaration}
+\input{frontmatter/abstracts}
+\ifdefstring{\showaideclaration}{true}{\input{frontmatter/ai-declaration}}{}
+\ifdefstring{\showacknowledgements}{true}{\input{frontmatter/acknowledgements}}{}
+\ifdefstring{\showfundingstatement}{true}{\input{frontmatter/funding}}{}
+\cleardoublepage
+\begin{singlespace}
+\hypersetup{linkcolor=black}
+\tableofcontents
+\hypersetup{linkcolor=thesislinkblue}
+\end{singlespace}
+\ifdefstring{\showlistoffigures}{true}{\printthesislistoffigures}{}
+\ifdefstring{\showlistoftables}{true}{\printthesislistoftables}{}
+\ifdefstring{\showlistoflistings}{true}{\printthesislistoflistings}{}
+\ifdefstring{\showabbreviationlist}{true}{\input{frontmatter/abbreviations}}{}
+\ifdefstring{\showsymbollist}{true}{\input{frontmatter/symbols}}{}
+\clearpage
+\pagenumbering{arabic}
+\include{chapters/01-wprowadzenie}
+\include{chapters/02-cel-zakres}
+\include{chapters/03-czesc-teoretyczna}
+\include{chapters/04-czesc-analityczna}
+\include{chapters/05-czesc-praktyczna}
+\include{chapters/06-podsumowanie}
+\ifdefstring{\showavailabilitystatement}{true}{\input{backmatter/availability}}{}
+\printthesisbibliography
+\appendix
+\include{chapters/08-dodatek-a}
+\end{document}

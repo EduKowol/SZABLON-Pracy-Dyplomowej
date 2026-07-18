@@ -1,0 +1,40 @@
+\chapter{\ploren{Część analityczna}{Analysis}}
+
+W rozdziale analitycznym należy zdefiniować problem, wymagania i kryteria oceny, a następnie uzasadnić wybór metod oraz narzędzi. W zależności od kierunku może to być analiza układu elektrycznego, modelu obiektu i algorytmu sterowania albo architektury systemu informatycznego.
+
+\section{\ploren{Model i struktura systemu}{System model and architecture}}
+
+W tej sekcji można przedstawić schemat zastępczy i parametry układu, model dynamiczny obiektu, strukturę regulatora, architekturę sprzętową lub programową oraz zależności między modułami.
+
+\section{\ploren{Metody i zasada działania}{Methods and operating principle}}
+
+W części analitycznej często zachodzi potrzeba wstawiania wzorów matematycznych zarówno w tekście, np. \(E = mc^2\), jak i w postaci wyodrębnionych równań. Przykładem mogą być równania Maxwella w postaci różniczkowej:
+
+\begin{align}
+  \nabla \cdot \mathbf{E} &= \frac{\rho}{\varepsilon_0}, \\
+  \nabla \cdot \mathbf{B} &= 0, \\
+  \nabla \times \mathbf{E} &= -\frac{\partial \mathbf{B}}{\partial t}, \\
+  \nabla \times \mathbf{B} &= \mu_0 \mathbf{J} + \mu_0 \varepsilon_0 \frac{\partial \mathbf{E}}{\partial t}.
+\end{align}
+
+W równaniu \mbox{(4.1)} oraz w kolejnych zależnościach użyto następujących oznaczeń:
+
+\begin{itemize}
+  \item \(\nabla\) -- operator nabla,
+  \item \(\cdot\) -- operator dywergencji,
+  \item \(\times\) -- operator rotacji,
+  \item \(\mathbf{E}\) -- wektor natężenia pola elektrycznego,
+  \item \(\mathbf{B}\) -- wektor indukcji magnetycznej,
+  \item \(\rho\) -- gęstość ładunku elektrycznego,
+  \item \(\varepsilon_0\) -- przenikalność elektryczna próżni,
+  \item \(\mu_0\) -- przenikalność magnetyczna próżni,
+  \item \(\mathbf{J}\) -- wektor gęstości prądu,
+  \item \(\partial\) -- symbol pochodnej cząstkowej,
+  \item \(t\) -- czas.
+\end{itemize}
+
+Powyższy zapis pokazuje, jak czytelnie prezentować większe układy równań w pracy dyplomowej.
+
+\section{\ploren{Założenia, ograniczenia i zastosowania}{Assumptions, limitations and applications}}
+
+Równania Maxwella znajdują zastosowanie m.in. w analizie maszyn i sieci elektrycznych, kompatybilności elektromagnetycznej, projektowaniu anten oraz modelowaniu układów elektronicznych. W pracach z automatyki analogiczną rolę mogą pełnić równania stanu i transmitancje, a w informatyce modele złożoności, modele danych lub formalny opis algorytmu.

@@ -1,0 +1,136 @@
+\documentclass[12pt,a4paper,oneside]{report}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[polish]{babel}
+\usepackage{newtxtext,newtxmath}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{caption}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{circuitikz}
+\usepackage[hidelinks]{hyperref}
+
+
+\usepackage[backend=biber,style=ieee]{biblatex}
+\addbibresource{bibliografia.bib}
+\usepackage{csquotes}
+
+
+\pgfplotsset{compat=1.18}
+
+\geometry{
+  a4paper,
+  top=2.5cm,
+  bottom=2.5cm,
+  left=2.5cm,
+  right=2.5cm,
+  bindingoffset=1cm,
+  headheight=14pt,
+  headsep=0.8cm,
+  footskip=1.0cm
+}
+
+\onehalfspacing
+\setlength{\parindent}{1.25cm}
+\setlength{\parskip}{0pt}
+
+\titleformat{\chapter}[block]{\bfseries\fontsize{16}{19}\selectfont}{\thechapter.}{0.5em}{}
+\titleformat{\section}[block]{\bfseries\fontsize{14}{17}\selectfont}{\thesection.}{0.5em}{}
+\titleformat{\subsection}[block]{\bfseries\fontsize{13}{16}\selectfont}{\thesubsection.}{0.5em}{}
+\titlespacing*{\chapter}{0pt}{0pt}{18pt}
+\titlespacing*{\section}{0pt}{12pt}{6pt}
+\titlespacing*{\subsection}{0pt}{12pt}{6pt}
+
+\captionsetup{
+  font={small},
+  labelfont=bf,
+  labelsep=space,
+  justification=centering
+}
+
+\renewcommand{\chaptername}{}
+
+\lstdefinestyle{dyplom}{
+  basicstyle=\ttfamily\small,
+  frame=single,
+  columns=fullflexible,
+  keepspaces=true,
+  breaklines=true,
+  showstringspaces=false,
+  xleftmargin=1.25cm,
+  framexleftmargin=1.25cm,
+  aboveskip=0.6\baselineskip,
+  belowskip=0.8\baselineskip
+}
+\lstset{style=dyplom}
+
+\newcommand{\tytulpracy}{Temat pracy}
+\newcommand{\autor}{Imię Nazwisko}
+\newcommand{\nralbumu}{000000}
+\newcommand{\kierunek}{Nazwa kierunku}
+\newcommand{\stopienstudiow}{studia stacjonarne/niestacjonarne I/II stopnia}
+\newcommand{\promotor}{dr hab. inż. Jan Nowak, prof. uczelni}
+\newcommand{\rok}{2026}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+
+\begin{titlepage}
+  \thispagestyle{empty}
+
+  \begin{center}
+    \vspace*{0.7cm}
+    \includegraphics[width=12.0cm]{logo_weaii.jpeg}\par
+    \vspace{0.9cm}
+    {\fontsize{16}{19}\selectfont Wydział Elektrotechniki, Automatyki i Informatyki\par}
+    \vspace{1.8cm}
+    {\fontsize{14}{17}\selectfont PRACA DYPLOMOWA INŻYNIERSKA/MAGISTERSKA\par}
+    \vspace{1.8cm}
+    {\bfseries\fontsize{18}{22}\selectfont \tytulpracy\par}
+  \end{center}
+
+  \vfill
+
+  {\fontsize{12}{14}\selectfont
+  \hspace*{6.2cm}\textbf{\autor}\par
+  \hspace*{6.2cm}nr albumu: \nralbumu\par
+  \hspace*{6.2cm}kierunek: \kierunek\par
+  \hspace*{6.2cm}\stopienstudiow\par
+  \vspace{0.7cm}
+  \hspace*{6.2cm}\textbf{promotor:}\par
+  \hspace*{6.2cm}\promotor\par}
+
+  \vfill
+
+  \begin{center}
+    Opole, \rok
+  \end{center}
+\end{titlepage}
+
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\tableofcontents
+\clearpage
+
+\pagenumbering{arabic}
+
+\include{chapters/01-wprowadzenie}
+\include{chapters/02-cel-zakres}
+\include{chapters/03-czesc-teoretyczna}
+\include{chapters/04-czesc-analityczna}
+\include{chapters/05-czesc-praktyczna}
+\include{chapters/06-podsumowanie}
+\include{chapters/07-bibliografia}
+\include{chapters/08-dodatek-a}
+
+
+\end{document}

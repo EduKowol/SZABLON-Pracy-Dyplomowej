@@ -1,0 +1,23 @@
+% Skróty należy uporządkować alfabetycznie według pierwszej kolumny.
+% Przy pierwszym wystąpieniu w tekście rozwiń skrót, np.:
+% programowalny sterownik logiczny (PLC).
+\cleardoublepage
+\chapter*{\ploren{Wykaz skrótów}{List of abbreviations}}
+\phantomsection
+\addcontentsline{toc}{chapter}{\ploren{Wykaz skrótów}{List of abbreviations}}
+
+\begin{longtable}{@{}>{\bfseries}p{0.18\textwidth}p{0.76\textwidth}@{}}
+  \toprule
+  \ploren{Skrót}{Abbreviation} & \ploren{Znaczenie}{Meaning} \\
+  \midrule
+  \endfirsthead
+  \toprule
+  \ploren{Skrót}{Abbreviation} & \ploren{Znaczenie}{Meaning} \\
+  \midrule
+  \endhead
+  AI   & \ploren{sztuczna inteligencja (ang. artificial intelligence)}{artificial intelligence} \\
+  IoT  & \ploren{Internet Rzeczy (ang. Internet of Things)}{Internet of Things} \\
+  PLC  & \ploren{programowalny sterownik logiczny (ang. programmable logic controller)}{programmable logic controller} \\
+  SCADA & \ploren{system nadzoru i akwizycji danych (ang. supervisory control and data acquisition)}{supervisory control and data acquisition} \\
+  \bottomrule
+\end{longtable}

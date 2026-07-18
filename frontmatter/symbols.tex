@@ -1,0 +1,26 @@
+% Wykaz nalezy uporzadkowac: najpierw symbole lacinskie, potem greckie,
+% a na koncu skroty. Jednostke pozostaw pusta, jezeli nie ma zastosowania.
+\cleardoublepage
+\chapter*{\ploren{Wykaz oznaczeń}{List of symbols}}
+\phantomsection
+\addcontentsline{toc}{chapter}{\ploren{Wykaz oznaczeń}{List of symbols}}
+
+\begin{longtable}{@{}>{$}l<{$}p{0.58\textwidth}l@{}}
+  \toprule
+  \text{\ploren{Symbol}{Symbol}} &
+  \textbf{\ploren{Znaczenie}{Description}} &
+  \textbf{\ploren{Jednostka}{Unit}} \\
+  \midrule
+  \endfirsthead
+  \toprule
+  \text{\ploren{Symbol}{Symbol}} &
+  \textbf{\ploren{Znaczenie}{Description}} &
+  \textbf{\ploren{Jednostka}{Unit}} \\
+  \midrule
+  \endhead
+  U & \ploren{napięcie elektryczne}{electric voltage} & V \\
+  I & \ploren{natężenie prądu elektrycznego}{electric current} & A \\
+  f & \ploren{częstotliwość}{frequency} & Hz \\
+  \omega & \ploren{pulsacja}{angular frequency} & rad/s \\
+  \bottomrule
+\end{longtable}

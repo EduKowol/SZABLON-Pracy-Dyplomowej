@@ -1,0 +1,23 @@
+\appendix
+\chapter{Kod programu komputerowego}
+
+\begin{lstlisting}
+unit U_Main;
+interface
+uses
+Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+StdCtrls, Spin, Buttons, ExtCtrls;
+type
+TForm1 = class(TForm)
+Panel1: TPanel;
+Krok: TBitBtn;
+Start: TBitBtn;
+Zamknij: TBitBtn;
+PlikN: TLabel;
+Wyn: TLabel;
+SaveDialog: TSaveDialog;
+OpenDialog: TOpenDialog;
+Spocz: TLabel;
+procedure FormClose(Sender: TObject; var Action: TCloseAction);
+procedure ZamknijClick(Sender: TObject);
+\end{lstlisting}
