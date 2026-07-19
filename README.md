@@ -2,6 +2,10 @@
 
 Szablon obsługuje prace inżynierskie, magisterskie i doktorskie, pisane po polsku lub angielsku. Dane autora, język i typ pracy konfiguruje się wyłącznie w `config/metadata.tex`.
 
+Rozbudowana dokumentacja dla studenta znajduje się w katalogu `docs/`:
+[poradnik](docs/poradnik-studenta.md), [przykłady LaTeX-a](docs/latex-przyklady.md)
+i [lista kontrolna](docs/lista-kontrolna.md).
+
 ## Szybki start
 
 1. Uzupełnij `config/metadata.tex`.
@@ -116,7 +120,7 @@ ogranicza grafikę do szerokości oraz wysokości pola tekstowego:
 ```tex
 \begin{figure}[htbp]
   \centering
-  \thesisgraphic{chapters/05-czesc-praktyczna/figures/schemat.pdf}
+  \thesisgraphic{chapters/05-implementacja-badania/figures/schemat.pdf}
   \caption{Schemat badanego systemu}
   \label{fig:schemat-systemu}
 \end{figure}
@@ -150,7 +154,7 @@ Kod przechowuj w katalogu `code/` danego rozdziału i wczytuj bez kopiowania:
   style=thesis-python,
   caption={Implementacja regulatora},
   label={lst:regulator}
-]{chapters/05-czesc-praktyczna/code/regulator.py}
+]{chapters/05-implementacja-badania/code/regulator.py}
 ```
 
 Dostępne style to `thesis-python`, `thesis-matlab`, `thesis-c`, `thesis-cpp`

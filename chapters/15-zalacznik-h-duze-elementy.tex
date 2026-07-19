@@ -1,0 +1,113 @@
+\chapter{\ploren{Duże elementy i strony poziome}{Large elements and landscape pages}}
+\label{app:duze-elementy}
+
+\begin{quote}\itshape
+  \ploren
+  {Układ poziomy należy stosować wtedy, gdy poprawia czytelność materiału, a nie tylko po to, aby uniknąć jego redakcji. W pierwszej kolejności warto uprościć element, skrócić opisy albo podzielić go na logiczne części.}
+  {Landscape layout should be used when it improves readability, not merely to avoid editing the material. First consider simplifying the element, shortening labels or dividing it into logical parts.}
+\end{quote}
+
+\section{\ploren{Dobór rozwiązania}{Choosing a solution}}
+
+Sposób umieszczenia dużego elementu zależy od jego rodzaju. Zalecana kolejność postępowania jest następująca:
+\begin{enumerate}
+  \item pozostawić element w układzie pionowym, jeżeli jest czytelny w szerokości pola tekstowego;
+  \item podzielić złożony rysunek, tabelę albo diagram na logiczne części;
+  \item wykorzystać całą stronę pionową;
+  \item zastosować stronę poziomą, jeżeli szerokość nadal jest ograniczeniem;
+  \item przenieść bardzo obszerny materiał do załącznika lub repozytorium.
+\end{enumerate}
+
+Nie należy bezwarunkowo używać \verb|\resizebox{\textwidth}{!}{...}|. Polecenie skaluje również tekst, symbole i grubości linii, przez co wynik może być nieczytelny. Przy grafice lepiej ograniczyć jednocześnie szerokość i wysokość, a przy tabeli najpierw poprawić jej konstrukcję. Tabele wielostronicowe powinny korzystać z \texttt{longtable}, a nie ze skalowania.
+
+\section{\ploren{Duża grafika na stronie pionowej}{Large graphic on a portrait page}}
+
+Polecenie \verb|\thesisgraphic| zachowuje proporcje obrazu i nie pozwala mu przekroczyć pola tekstowego. Ograniczenie wysokości jest ważne, ponieważ na stronie muszą się jeszcze zmieścić podpis i odstępy. Listing~\ref{lst:duza-grafika} pokazuje podstawowe użycie.
+
+\begin{lstlisting}[style=thesis,caption={Bezpieczne wstawienie dużej grafiki},label={lst:duza-grafika}]
+\begin{figure}[p]
+  \centering
+  \thesisgraphic{figures/architektura-systemu.pdf}
+  \caption{Architektura badanego systemu}
+  \label{fig:architektura-pionowa}
+\end{figure}
+\end{lstlisting}
+
+Opcjonalny argument polecenia \verb|\thesisgraphic| pozwala zmienić limit wysokości, na przykład przez ustawienie \verb|max height=0.65\textheight|. Nie należy wymuszać obu wymiarów bez zachowania proporcji, ponieważ obraz może zostać zniekształcony. Parametr \texttt{[p]} sugeruje osobną stronę przeznaczoną na elementy pływające; LaTeX nadal sam wybiera poprawne położenie.
+
+\section{\ploren{Szeroki schemat na stronie poziomej}{Wide diagram on a landscape page}}
+
+Schemat z rysunku~\ref{fig:architektura-pozioma} przedstawia przepływ danych w rozproszonym stanowisku pomiarowo-sterującym. Cała strona, razem z obszarem PDF, zostaje obrócona. Dzięki temu w przeglądarce nie trzeba obracać ekranu ręcznie, a po wydruku nagłówek i numer strony zachowują jednoznaczną orientację.
+
+Listing~\ref{lst:strona-pozioma} pokazuje konstrukcję strony. Środowisko \texttt{thesislandscape} rozpoczyna i kończy się poleceniem \verb|\clearpage|, dlatego wcześniejsze rysunki i tabele nie zostaną przypadkowo przeniesione do obróconej części dokumentu.
+
+\begin{lstlisting}[style=thesis,caption={Umieszczenie rysunku na oddzielnej stronie poziomej},label={lst:strona-pozioma}]
+\begin{thesislandscape}
+\begin{figure}[p]
+  \centering
+  \thesisgraphic[max height=0.72\textheight]
+    {figures/szeroki-schemat.pdf}
+  \caption{Szeroki schemat badanego systemu}
+  \label{fig:szeroki-schemat}
+\end{figure}
+\end{thesislandscape}
+\end{lstlisting}
+
+Najpierw otwiera się stronę poziomą, a dopiero wewnątrz umieszcza element pływający. Odwrotne zagnieżdżenie środowisk jest niepoprawne.
+
+\begin{thesislandscape}
+\begin{figure}[p]
+  \centering
+  \begin{adjustbox}{max width=\linewidth}
+  \begin{tikzpicture}[
+    node distance=1.15cm and 1.0cm,
+    block/.style={draw,rounded corners,minimum height=1.4cm,text width=3.0cm,align=center,fill=thesiscodebackground},
+    flow/.style={-{Latex[length=3mm]},thick},
+    note/.style={font=\scriptsize,align=center,fill=white,inner sep=1pt}
+  ]
+    \node[block] (sensors) {Czujniki\\i przetworniki};
+    \node[block,right=of sensors] (daq) {Moduł akwizycji\\danych};
+    \node[block,right=of daq] (edge) {Komputer\\brzegowy};
+    \node[block,right=of edge] (network) {Sieć\\przemysłowa};
+    \node[block,right=of network] (server) {Serwer danych\\i modeli};
+    \node[block,right=of server] (hmi) {Wizualizacja\\HMI/SCADA};
+    \node[block,below=1.5cm of edge] (controller) {Sterownik czasu\\rzeczywistego};
+    \node[block,below=1.5cm of network] (drive) {Układ wykonawczy\\i napęd};
+
+    \draw[flow] (sensors) -- node[above,note]{sygnały} (daq);
+    \draw[flow] (daq) -- node[above,note]{próbki} (edge);
+    \draw[flow] (edge) -- node[above,note]{dane} (network);
+    \draw[flow] (network) -- (server);
+    \draw[flow] (server) -- node[above,note]{wyniki} (hmi);
+    \draw[flow] (edge) -- (controller);
+    \draw[flow] (controller) -- (drive);
+    \draw[flow] (drive.south) -- ++(0,-0.75cm)
+      -| node[pos=0.60,below,note]{sprzężenie zwrotne} (sensors.south);
+    \draw[flow,dashed] (hmi.south) -- ++(0,-0.45cm)
+      -| node[pos=0.10,right,note]{nastawy operatora} (controller.east);
+  \end{tikzpicture}
+  \end{adjustbox}
+  \caption{Przykład szerokiego schematu umieszczonego na stronie poziomej}
+  \label{fig:architektura-pozioma}
+\end{figure}
+\end{thesislandscape}
+
+Do elementu trzeba odwołać się w tekście przed jego wystąpieniem lub bezpośrednio po nim.
+
+\section{\ploren{Szerokie i długie tabele}{Wide and long tables}}
+
+Szeroka tabela nie jest tym samym co długa tabela. Tabelę mieszczącą się na jednej stronie można umieścić w \texttt{thesislandscape}; kompletny przykład zawiera tabela~\ref{tab:szeroka} w dodatku~\ref{app:tabele}. Środowisko \texttt{thesiswidetable} może pomóc przy niewielkim przekroczeniu szerokości, ale nie powinno służyć do radykalnego pomniejszania tekstu.
+
+Tabela zajmująca kilka stron powinna korzystać z \texttt{longtable}. Potrafi ona automatycznie dzielić wiersze między stronami oraz powtarzać nagłówek. Nie należy umieszczać jej wewnątrz \texttt{table}, ponieważ \texttt{longtable} nie jest elementem pływającym. Jeżeli jest jednocześnie szeroka i długa, można otoczyć ją środowiskiem \texttt{thesislandscape}, ale trzeba sprawdzić każdą stronę wyniku, szczególnie w trybie druku dwustronnego.
+
+\section{\ploren{Równania i inne szerokie elementy}{Equations and other wide elements}}
+
+Długiego równania nie należy zmniejszać jak obrazu. Najpierw należy je złamać w logicznym miejscu za pomocą środowiska \texttt{multline}, \texttt{split} albo \texttt{aligned}. Zasady i przykłady przedstawiono w dodatku~\ref{app:rownania}. Stronę poziomą warto zarezerwować dla macierzy, zestawień lub wyprowadzeń, których podział utrudniłby interpretację.
+
+W przypadku diagramów tworzonych w TikZ należy zmniejszyć liczbę szczegółów albo rozdzielić widok ogólny od szczegółowego. Dla grafiki przygotowanej w zewnętrznym programie zalecany jest format wektorowy PDF; tekst po wstawieniu powinien mieć rozmiar zbliżony do tekstu podpisów w pracy.
+
+\section{\ploren{Kontrola układu i najczęstsze błędy}{Layout checks and common mistakes}}
+
+Po kompilacji trzeba sprawdzić nie tylko stronę z elementem, lecz także stronę poprzednią i następną. W wersji cyfrowej należy zweryfikować automatyczny obrót strony w przeglądarce PDF, działanie odsyłacza oraz kompletność zakładek. W wersji drukowanej trzeba sprawdzić margines wewnętrzny i zewnętrzny, orientację numeru strony oraz to, czy element nie znalazł się zbyt blisko oprawy.
+
+Do najczęstszych błędów należą: zbyt mały tekst po skalowaniu, obracanie samej zawartości zamiast całej strony, brak \verb|\clearpage| wokół zmiany orientacji, umieszczanie \texttt{longtable} w środowisku \texttt{table}, zniekształcanie obrazu przez wymuszenie obu wymiarów, brak odwołania w tekście oraz pozostawienie niemal pustej strony przed dużym elementem bez sprawdzenia, czy wynika to z uzasadnionego podziału składu.

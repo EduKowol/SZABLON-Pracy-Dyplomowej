@@ -1,0 +1,248 @@
+\chapter{\ploren{Diagramy, UML i algorytmy}{Diagrams, UML and algorithms}}
+\label{app:diagramy}
+
+\begin{quote}
+\itshape
+\ploren
+  {Załącznik przedstawia przykładowe sposoby opisywania przebiegu algorytmu, struktury oprogramowania i współpracy jego elementów. Rodzaj diagramu oraz poziom szczegółowości należy dobrać do celu prezentacji. Przykłady nie narzucają jednej metody modelowania całej pracy.}
+  {This appendix presents examples of describing an algorithm flow, software structure and interactions between its components. The diagram type and level of detail should be selected according to the purpose of the presentation. The examples do not impose a single modelling method for the entire thesis.}
+\end{quote}
+
+\section{\ploren{Dobór rodzaju diagramu}{Selecting a diagram type}}
+
+Diagram powinien odpowiadać na konkretne pytanie. Schemat blokowy algorytmu pokazuje
+kolejność operacji i decyzji, diagram klas przedstawia statyczną strukturę programu,
+a diagram sekwencji --- kolejność komunikatów wymienianych podczas realizacji wybranego
+scenariusza. Nie należy łączyć wszystkich informacji na jednym rysunku.
+
+Niezależnie od użytej notacji trzeba zachować spójne nazwy elementów, kierunek czytania,
+rozmiar tekstu i znaczenie stylów linii. Elementy występujące w kodzie, równaniach i na
+diagramach powinny mieć te same nazwy. Diagram zaczerpnięty lub zaadaptowany z materiału
+zewnętrznego wymaga podania źródła.
+
+\section{\ploren{Schemat blokowy algorytmu}{Algorithm flowchart}}
+
+Na rysunku~\ref{fig:diagram-przeplywu} przedstawiono procedurę pobrania próbki,
+sprawdzenia jej poprawności i zapisania wyniku. Elipsy oznaczają początek i koniec,
+prostokąty operacje, a romb warunek decyzyjny. Wyjścia z decyzji zostały opisane,
+dlatego znaczenie obu gałęzi nie zależy od ich położenia.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}[
+    startstop/.style={draw,ellipse,minimum width=2.5cm,minimum height=8mm,align=center},
+    process/.style={draw,rectangle,minimum width=3.3cm,minimum height=9mm,align=center},
+    decision/.style={draw,diamond,aspect=2.1,minimum width=3.1cm,align=center},
+    flow/.style={-{Latex[length=2.5mm]},thick},
+    node distance=8mm
+  ]
+    \node[startstop] (start) {Start};
+    \node[process,below=of start] (init) {Inicjalizacja pomiaru};
+    \node[process,below=of init] (sample) {Pobranie próbki $x_k$};
+    \node[decision,below=of sample] (valid) {Czy próbka\\jest poprawna?};
+    \node[process,below left=10mm and 13mm of valid] (reject) {Odrzucenie próbki};
+    \node[process,below right=10mm and 13mm of valid] (save) {Filtracja i zapis};
+    \node[startstop,below=25mm of valid] (stop) {Koniec};
+    \draw[flow] (start) -- (init);
+    \draw[flow] (init) -- (sample);
+    \draw[flow] (sample) -- (valid);
+    \draw[flow] (valid) -| node[pos=0.25,above]{nie} (reject);
+    \draw[flow] (valid) -| node[pos=0.25,above]{tak} (save);
+    \draw[flow] (reject) |- (stop);
+    \draw[flow] (save) |- (stop);
+  \end{tikzpicture}
+  \caption{Schemat blokowy przetwarzania próbki pomiarowej}
+  \label{fig:diagram-przeplywu}
+\end{figure}
+\FloatBarrier
+
+Kod rysunku znajduje się w listingu~\ref{lst:diagram-przeplywu}. Lokalne style
+\texttt{startstop}, \texttt{process} i \texttt{decision} definiują znaczenie oraz
+wygląd figur. Biblioteka \texttt{shapes.geometric} udostępnia romb, parametr
+\texttt{aspect} ustala jego proporcje, a zapis \verb|below left=... of| rozmieszcza
+węzeł względem elementu decyzyjnego.
+
+\begin{lstlisting}[style=thesis,caption={Kod schematu blokowego algorytmu},label={lst:diagram-przeplywu}]
+\begin{tikzpicture}[
+  startstop/.style={draw,ellipse,minimum width=2.5cm,align=center},
+  process/.style={draw,rectangle,minimum width=3.3cm,align=center},
+  decision/.style={draw,diamond,aspect=2.1,align=center},
+  flow/.style={-{Latex[length=2.5mm]},thick},node distance=8mm]
+  \node[startstop] (start) {Start};
+  \node[process,below=of start] (init) {Inicjalizacja pomiaru};
+  \node[process,below=of init] (sample) {Pobranie próbki $x_k$};
+  \node[decision,below=of sample] (valid) {Czy próbka\\jest poprawna?};
+  \node[process,below left=10mm and 13mm of valid] (reject) {Odrzucenie próbki};
+  \node[process,below right=10mm and 13mm of valid] (save) {Filtracja i zapis};
+  \node[startstop,below=25mm of valid] (stop) {Koniec};
+  \draw[flow] (start) -- (init) -- (sample) -- (valid);
+  \draw[flow] (valid) -| node[pos=0.25,above]{nie} (reject);
+  \draw[flow] (valid) -| node[pos=0.25,above]{tak} (save);
+  \draw[flow] (reject) |- (stop);
+  \draw[flow] (save) |- (stop);
+\end{tikzpicture}
+\end{lstlisting}
+
+\section{\ploren{Diagram klas UML}{UML class diagram}}
+
+Diagram klas służy do pokazania odpowiedzialności klas i zależności między nimi.
+Na rysunku~\ref{fig:uml-klasy} klasa \texttt{MeasurementController} korzysta z
+interfejsu \texttt{ISensor} i przekazuje próbki do \texttt{DataRepository}.
+W pracy wystarczy przedstawiać atrybuty i operacje istotne dla omawianego rozwiązania.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}[
+    uml/.style={draw,rectangle split,rectangle split parts=3,
+      text width=4.2cm,font=\small,align=left},
+    relation/.style={-{Latex[open,length=3mm]},thick},
+    dependency/.style={-{Latex[open,length=3mm]},dashed,thick},
+    node distance=1.3cm and 1.5cm
+  ]
+    \node[uml] (controller) {
+      \textbf{MeasurementController}
+      \nodepart{second}- samplePeriod: Duration
+      \nodepart{third}+ acquire(): Sample\\+ validate(s: Sample): bool};
+    \node[uml,below left=1.4cm and 0.7cm of controller] (sensor) {
+      \textit{\textless\textless interface\textgreater\textgreater}\\\textbf{ISensor}
+      \nodepart{second}
+      \nodepart{third}+ read(): Sample};
+    \node[uml,below right=1.4cm and 0.7cm of controller] (repository) {
+      \textbf{DataRepository}
+      \nodepart{second}- path: String
+      \nodepart{third}+ save(s: Sample): void};
+    \draw[dependency] (controller.south west) -- node[above left]{odczytuje} (sensor.north);
+    \draw[relation] (controller.south east) -- node[above right]{zapisuje} (repository.north);
+  \end{tikzpicture}
+  \caption{Uproszczony diagram klas modułu pomiarowego}
+  \label{fig:uml-klasy}
+\end{figure}
+\FloatBarrier
+
+Kod diagramu zamieszczono w listingu~\ref{lst:uml-klasy}. Styl \texttt{uml} wykorzystuje
+kształt \texttt{rectangle split}, a \verb|\nodepart| rozdziela nazwę klasy, atrybuty
+i operacje. Strzałka przerywana oznacza zależność, natomiast znaczenie pozostałych
+relacji należy przyjąć konsekwentnie i w razie potrzeby objaśnić w legendzie.
+
+\begin{lstlisting}[style=thesis,caption={Kod uproszczonego diagramu klas},label={lst:uml-klasy}]
+\begin{tikzpicture}[
+  uml/.style={draw,rectangle split,rectangle split parts=3,
+    text width=4.2cm,font=\small,align=left},
+  relation/.style={-{Latex[open,length=3mm]},thick},
+  dependency/.style={-{Latex[open,length=3mm]},dashed,thick}]
+  \node[uml] (controller) {\textbf{MeasurementController}
+    \nodepart{second}- samplePeriod: Duration
+    \nodepart{third}+ acquire(): Sample\\+ validate(s: Sample): bool};
+  \node[uml,below left=1.4cm and 0.7cm of controller] (sensor) {
+    \textit{\textless\textless interface\textgreater\textgreater}\\\textbf{ISensor}
+    \nodepart{second}
+    \nodepart{third}+ read(): Sample};
+  \node[uml,below right=1.4cm and 0.7cm of controller] (repository) {\textbf{DataRepository}
+    \nodepart{second}- path: String
+    \nodepart{third}+ save(s: Sample): void};
+  \draw[dependency] (controller.south west) --
+    node[above left]{odczytuje} (sensor.north);
+  \draw[relation] (controller.south east) --
+    node[above right]{zapisuje} (repository.north);
+\end{tikzpicture}
+\end{lstlisting}
+
+\section{\ploren{Diagram sekwencji UML}{UML sequence diagram}}
+
+Diagram sekwencji przedstawia jeden konkretny scenariusz w kolejności od góry do dołu.
+Rysunek~\ref{fig:uml-sekwencja} pokazuje pobranie i zapis poprawnej próbki. Alternatywne
+przebiegi, błędy i ponowienia można umieścić na oddzielnym diagramie lub w ramkach
+oznaczonych zgodnie z przyjętą notacją UML.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}[
+    participant/.style={draw,minimum width=2.5cm,minimum height=8mm,align=center},
+    lifeline/.style={densely dashed},
+    message/.style={-{Latex[length=2.5mm]},thick},
+    return/.style={-{Latex[length=2.5mm]},dashed},font=\small
+  ]
+    \node[participant] (app) at (0,0) {Aplikacja};
+    \node[participant] (ctrl) at (4,0) {Kontroler};
+    \node[participant] (sensor) at (8,0) {Czujnik};
+    \draw[lifeline] (app.south) -- ++(0,-5);
+    \draw[lifeline] (ctrl.south) -- ++(0,-5);
+    \draw[lifeline] (sensor.south) -- ++(0,-5);
+    \draw[message] (0,-1) -- node[above]{startMeasurement()} (4,-1);
+    \draw[message] (4,-2) -- node[above]{read()} (8,-2);
+    \draw[return] (8,-3) -- node[above]{Sample} (4,-3);
+    \draw[message] (4,-4) -- node[above]{measurementReady()} (0,-4);
+  \end{tikzpicture}
+  \caption{Diagram sekwencji pobrania próbki pomiarowej}
+  \label{fig:uml-sekwencja}
+\end{figure}
+\FloatBarrier
+
+Listing~\ref{lst:uml-sekwencja} pokazuje, że proste diagramy sekwencji można zbudować
+z nazwanych uczestników, pionowych linii życia oraz wiadomości rysowanych na kolejnych
+wysokościach. Styl \texttt{return} odróżnia odpowiedź od wywołania, także w wydruku
+monochromatycznym.
+
+\begin{lstlisting}[style=thesis,caption={Kod prostego diagramu sekwencji},label={lst:uml-sekwencja}]
+\begin{tikzpicture}[
+  participant/.style={draw,minimum width=2.5cm,minimum height=8mm},
+  lifeline/.style={densely dashed},
+  message/.style={-{Latex[length=2.5mm]},thick},
+  return/.style={-{Latex[length=2.5mm]},dashed}]
+  \node[participant] (app) at (0,0) {Aplikacja};
+  \node[participant] (ctrl) at (4,0) {Kontroler};
+  \node[participant] (sensor) at (8,0) {Czujnik};
+  \draw[lifeline] (app.south) -- ++(0,-5);
+  \draw[lifeline] (ctrl.south) -- ++(0,-5);
+  \draw[lifeline] (sensor.south) -- ++(0,-5);
+  \draw[message] (0,-1) -- node[above]{startMeasurement()} (4,-1);
+  \draw[message] (4,-2) -- node[above]{read()} (8,-2);
+  \draw[return] (8,-3) -- node[above]{Sample} (4,-3);
+  \draw[message] (4,-4) -- node[above]{measurementReady()} (0,-4);
+\end{tikzpicture}
+\end{lstlisting}
+
+\section{\ploren{Pseudokod algorytmu}{Algorithm pseudocode}}
+
+Pseudokod powinien opisywać logikę rozwiązania niezależnie od składni konkretnego języka
+programowania. Należy jawnie określić dane wejściowe, wynik, zakres indeksów, warunki
+brzegowe i sposób obsługi niepoprawnych danych. Listing~\ref{lst:srednia-ruchoma}
+przedstawia filtr średniej ruchomej z krótszym oknem na początku sygnału.
+
+\begin{lstlisting}[style=thesis-pseudocode,caption={Pseudokod filtru średniej ruchomej},label={lst:srednia-ruchoma},mathescape=true]
+ALGORYTM SredniaRuchoma
+WEJSCIE: probki $x[1\ldots N]$, szerokosc okna $M > 0$
+WYJSCIE: probki przefiltrowane $y[1\ldots N]$
+
+DLA $k$ OD $1$ DO $N$
+    poczatek $\leftarrow \max(1, k-M+1)$
+    suma $\leftarrow 0$
+    DLA $i$ OD poczatek DO $k$
+        suma $\leftarrow suma + x[i]$
+    KONIECDLA
+    y[k] $\leftarrow suma/(k-poczatek+1)$
+KONIECDLA
+ZWROC $y$
+\end{lstlisting}
+
+Algorytm w tej postaci ma złożoność czasową $O(NM)$ i pamięciową $O(N)$. W tekście
+pracy należy wyjaśnić decyzje widoczne w pseudokodzie, na przykład sposób traktowania
+początku sygnału, oraz wskazać różnice między pseudokodem a rzeczywistą implementacją.
+Jeżeli algorytm ma istotne wymagania czasowe, warto podać również jego złożoność i
+ograniczenia numeryczne.
+
+\section{\ploren{Narzędzia zewnętrzne i pliki źródłowe}{External tools and source files}}
+
+Bardziej rozbudowane modele można przygotować między innymi w PlantUML, Mermaid,
+diagrams.net, Visual Paradigm lub Modelio. Do pracy należy wstawić wyeksportowaną wersję
+wektorową PDF, a plik źródłowy diagramu zachować razem z kodem projektu. Diagram
+wygenerowany automatycznie powinien zostać sprawdzony pod kątem rozmieszczenia elementów,
+czytelności tekstu i zgodności z opisem w pracy.
+
+\section{\ploren{Najczęstsze błędy}{Common mistakes}}
+
+Do typowych błędów należą: brak określonego celu diagramu, zbyt duża liczba elementów,
+mieszanie poziomów abstrakcji, niespójność nazw z kodem programu, nieopisane strzałki,
+stosowanie koloru jako jedynego wyróżnika oraz przedstawianie kodu źródłowego jako
+pseudokodu. Każdy diagram i algorytm powinien zostać przywołany oraz zinterpretowany
+w tekście pracy.

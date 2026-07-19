@@ -1,0 +1,75 @@
+\chapter{\ploren{Implementacja i przeprowadzenie badań}{Implementation and experimental procedure}}
+
+% Zastąp poniższe wskazówki treścią właściwą dla pracy. Zachowaj tylko te części,
+% które odpowiadają rzeczywiście wykonanym pracom.
+
+\begin{quote}
+\itshape
+\ploren
+  {Przedstawiony układ jest propozycją. W pracy programistycznej lub konstrukcyjnej należy rozbudować opis implementacji i uruchomienia rozwiązania. W pracy eksperymentalnej ważniejszy będzie opis stanowiska, procedury pomiarowej i przygotowania danych. Jeżeli praca łączy oba podejścia, trzeba pokazać najpierw wykonanie rozwiązania, a następnie sposób przeprowadzenia jego badań. Tekst tej wskazówki należy usunąć z ostatecznej wersji pracy.}
+  {The proposed structure is a recommendation. A software or construction-oriented thesis should provide a more extensive account of implementation and system commissioning. An experimental thesis should focus on the test setup, measurement procedure and data preparation. When both approaches are combined, the implementation of the solution should be presented first, followed by the procedure used to evaluate it. This guidance should be removed from the final version of the thesis.}
+\end{quote}
+
+Rozdział dokumentuje to, co zostało rzeczywiście wykonane: implementację oprogramowania, budowę urządzenia lub stanowiska, konfigurację środowiska oraz przebieg badań. Powinien umożliwić ocenę pracy własnej autora i odtworzenie najważniejszych etapów realizacji. Nie należy powtarzać całego projektu z poprzedniego rozdziału; trzeba natomiast wskazać, w jaki sposób został on przełożony na działające rozwiązanie.
+
+\section{\ploren{Zakres wykonanych prac}{Scope of completed work}}
+
+Na początku należy zwięźle przedstawić wykonane komponenty i ich związek z wcześniej opisaną architekturą. Trzeba jednoznacznie odróżnić elementy opracowane przez autora od gotowych bibliotek, modułów sprzętowych, danych, modeli i fragmentów wcześniejszych projektów. W przypadku pracy zespołowej należy ponownie doprecyzować indywidualny zakres odpowiedzialności autora, tym razem w odniesieniu do konkretnych rezultatów implementacji.
+
+Opis może wskazywać kolejność realizacji, ale nie powinien przyjmować formy dziennika prac. Należy koncentrować się na decyzjach mających wpływ na działanie, jakość i możliwość odtworzenia rozwiązania.
+
+\section{\ploren{Środowisko implementacji i konfiguracja}{Implementation environment and configuration}}
+
+Należy podać wersje istotnych narzędzi, bibliotek, kompilatorów, systemów operacyjnych, sterowników i urządzeń. Wymieniać należy przede wszystkim składniki wpływające na wynik lub wymagane do uruchomienia projektu. Konfigurację warto zapisać w plikach środowiska, zależności lub skryptach instalacyjnych zamiast opisywać wyłącznie ręczne czynności.
+
+W przypadku systemu wbudowanego należy wskazać między innymi mikrokontroler, płytkę, interfejs programatora, wersję zestawu narzędzi i najważniejsze ustawienia kompilacji. Dla obliczeń i uczenia maszynowego istotne mogą być wersje języka i bibliotek, typ procesora lub akceleratora, ziarna generatorów losowych oraz ustawienia wpływające na powtarzalność.
+
+\section{\ploren{Realizacja rozwiązania}{Solution implementation}}
+
+Opis implementacji należy podzielić zgodnie z logicznymi komponentami systemu, a nie według nazw plików źródłowych. Dla każdego istotnego modułu trzeba wyjaśnić jego odpowiedzialność, interfejsy, przepływ danych oraz sposób realizacji najważniejszych algorytmów. Fragmenty kodu powinny ilustrować konkretne rozwiązanie techniczne; nie należy zamieszczać długich listingów bez omówienia.
+
+W projekcie sprzętowym należy opisać wykonanie układu, dobór rzeczywistych podzespołów, montaż, zabezpieczenia oraz uruchomienie. Schematy, modele i dokumentację konstrukcyjną należy przechowywać w formatach źródłowych, a w tekście umieszczać ich czytelne eksporty. Jeśli podczas implementacji zmieniono założenia projektu, trzeba wskazać zmianę i jej uzasadnienie.
+
+\section{\ploren{Integracja i uruchomienie}{Integration and commissioning}}
+
+Należy przedstawić sposób połączenia komponentów oraz kolejność uruchamiania kompletnego rozwiązania. Warto opisać problemy integracyjne tylko wtedy, gdy ich rozwiązanie wnosi wiedzę techniczną, wpłynęło na projekt albo jest istotnym elementem pracy własnej. Lista wszystkich napotkanych błędów nie jest potrzebna.
+
+Przed rozpoczęciem badań należy wykazać, że system osiągnął stan umożliwiający wiarygodne testowanie. Mogą temu służyć testy podstawowych funkcji, kontrola poprawności komunikacji, pomiary kontrolne, kalibracja lub porównanie z prostym przypadkiem o znanym wyniku.
+
+\section{\ploren{Stanowisko badawcze i aparatura}{Experimental setup and instrumentation}}
+
+Stanowisko należy przedstawić za pomocą opisu oraz czytelnego schematu lub fotografii, jeśli ułatwia to odtworzenie połączeń i warunków eksperymentu. Trzeba podać modele istotnych przyrządów, zakresy pomiarowe, dokładności, ustawienia, sposób próbkowania i kalibracji. Dla symulacji odpowiednikiem stanowiska są model, solver, siatka, warunki początkowe i brzegowe oraz parametry obliczeń.
+
+Fotografia stanowiska nie zastępuje schematu funkcjonalnego. Na rysunku należy oznaczyć najważniejsze elementy i zachować zgodność ich nazw z tekstem. Szczegółowe instrukcje obsługi urządzeń można przenieść do dodatku, jeżeli są potrzebne do odtworzenia badań.
+
+\section{\ploren{Przygotowanie danych}{Data preparation}}
+
+Należy opisać pozyskanie, selekcję, oczyszczanie i przekształcanie danych. Każda operacja mogąca wpływać na wynik — na przykład filtracja, normalizacja, interpolacja, usuwanie obserwacji, synchronizacja sygnałów albo augmentacja — wymaga uzasadnienia. Trzeba również określić sposób obsługi braków danych i wartości odstających.
+
+Jeżeli dane dzielone są na zbiory uczący, walidacyjny i testowy, podział powinien zapobiegać przenikaniu informacji między nimi. Zbioru testowego nie należy wykorzystywać do dobierania parametrów rozwiązania. Dane surowe powinny pozostać niezmienione, a kolejne etapy przetwarzania najlepiej realizować za pomocą wersjonowanych skryptów.
+
+\section{\ploren{Procedura badawcza}{Experimental procedure}}
+
+Procedurę należy opisać w kolejności pozwalającej powtórzyć eksperyment. Trzeba podać wartości sterowanych parametrów, zmienne obserwowane, warunki otoczenia, czas trwania prób, liczbę powtórzeń i sposób rejestrowania danych. Jeśli kolejność prób może wpływać na rezultat, należy zastosować randomizację, przeplatanie wariantów lub inną metodę ograniczania tego efektu.
+
+W pracy symulacyjnej trzeba opisać sposób tworzenia wariantów, kryteria zbieżności oraz kontrolę poprawności modelu. W testach oprogramowania należy podać przypadki testowe, dane wejściowe, oczekiwane zachowanie i środowisko wykonania. Procedura powinna realizować plan walidacji przedstawiony w poprzednim rozdziale.
+
+\section{\ploren{Kontrola jakości i niepewność}{Quality control and uncertainty}}
+
+Należy wskazać działania ograniczające błędy implementacji i pomiaru. Mogą to być testy automatyczne, przegląd kodu, walidacja danych wejściowych, pomiary referencyjne, wzorcowanie, analiza czułości lub porównanie z wynikiem analitycznym. W przypadku wielokrotnych pomiarów trzeba opisać sposób wyznaczania wartości reprezentatywnej oraz rozrzutu.
+
+Jeżeli niepewność pomiaru ma znaczenie dla wniosków, należy podać metodę jej oszacowania i uwzględnić ją podczas prezentowania wyników. Nie należy przedstawiać większej liczby cyfr znaczących, niż wynika to z dokładności danych i zastosowanej metody.
+
+\section{\ploren{Rejestrowanie i odtwarzanie eksperymentów}{Experiment logging and reproducibility}}
+
+Wyniki surowe, konfiguracje, wersje kodu i parametry uruchomień powinny być przechowywane w sposób pozwalający powiązać każdy rezultat z warunkami jego uzyskania. Nazwy plików nie powinny być jedynym nośnikiem metadanych; dla większej liczby eksperymentów warto stosować plik konfiguracyjny, tabelę metadanych albo automatyczny dziennik uruchomień.
+
+Wykresy i tabele należy generować ze zgromadzonych danych za pomocą skryptów umieszczonych w katalogu rozdziału. Ręczne modyfikowanie wartości w arkuszu lub programie graficznym utrudnia kontrolę błędów i odtworzenie wyników. Informację o sposobie udostępnienia kodu i danych należy podać w przeznaczonej do tego części pracy.
+
+\section{\ploren{Odstępstwa od planu}{Deviations from the plan}}
+
+Jeżeli realizacja różniła się od metodyki lub projektu przedstawionego wcześniej, należy opisać istotne odstępstwa, ich przyczyny i możliwy wpływ na wyniki. Dotyczy to na przykład zmiany aparatury, ograniczenia liczby prób, modyfikacji algorytmu, utraty części danych lub zastąpienia komponentu. Transparentny opis uzasadnionych zmian jest właściwszy niż pozostawienie niespójności pomiędzy rozdziałami.
+
+\section{\ploren{Podsumowanie realizacji}{Implementation summary}}
+
+Na końcu należy krótko wskazać, jakie elementy zostały wykonane, czy rozwiązanie osiągnęło gotowość do badań oraz jakie dane zgromadzono. Nie należy jeszcze oceniać skuteczności rozwiązania ani formułować wniosków na podstawie rezultatów — ich prezentacja i interpretacja należą do kolejnego rozdziału.

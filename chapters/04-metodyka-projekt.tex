@@ -1,0 +1,65 @@
+\chapter{\ploren{Metodyka i projekt rozwiązania}{Methodology and solution design}}
+
+% Zastąp poniższe wskazówki treścią właściwą dla pracy. Układ rozdziału należy
+% dostosować do charakteru projektu, badań i dyscypliny.
+
+\begin{quote}
+\itshape
+\ploren
+  {Przedstawiony układ jest propozycją. W pracy projektowej rozdział powinien prowadzić od wymagań do architektury i szczegółowego projektu rozwiązania. W pracy badawczej większy nacisk należy położyć na plan eksperymentu, zmienne, metody pomiaru i sposób analizy danych. Oba podejścia można połączyć, jeżeli autor najpierw projektuje rozwiązanie, a następnie poddaje je badaniom. Tekst tej wskazówki należy usunąć z ostatecznej wersji pracy.}
+  {The proposed structure is a recommendation. In a design-oriented thesis, the chapter should proceed from requirements to the architecture and detailed design of the solution. In a research-oriented thesis, greater emphasis should be placed on the experimental plan, variables, measurement methods and data analysis. Both approaches may be combined when the author first designs a solution and subsequently evaluates it experimentally. This guidance should be removed from the final version of the thesis.}
+\end{quote}
+
+Rozdział powinien wyjaśniać, \emph{w jaki sposób} zostanie rozwiązany problem zdefiniowany wcześniej i dlaczego wybrano właśnie takie podejście. Opis musi być na tyle jednoznaczny, aby inna osoba mogła zrozumieć tok postępowania, odtworzyć najważniejsze etapy oraz ocenić poprawność przyjętych decyzji. Nie należy jeszcze szczegółowo przedstawiać wyników, które są przedmiotem kolejnego rozdziału.
+
+\section{\ploren{Charakter i strategia realizacji pracy}{Nature and strategy of the work}}
+
+Na początku należy określić, czy praca ma charakter projektowy, implementacyjny, eksperymentalny, symulacyjny, analityczny czy mieszany. Następnie trzeba przedstawić kolejne etapy postępowania i ich związek z celami szczegółowymi. Pomocny może być schemat procesu obejmujący na przykład analizę wymagań, opracowanie koncepcji, implementację, przygotowanie eksperymentu oraz walidację.
+
+Wybrana strategia powinna wynikać z przeglądu literatury i ograniczeń opisanych w rozdziale dotyczącym celu i zakresu pracy. Jeżeli rozważano kilka metod, należy podać kryteria wyboru oraz krótko uzasadnić odrzucenie najważniejszych alternatyw.
+
+\section{\ploren{Wymagania i kryteria projektowe}{Requirements and design criteria}}
+
+W pracy projektowej należy uporządkować wymagania funkcjonalne i pozafunkcjonalne. Wymagania funkcjonalne opisują działania systemu, natomiast pozafunkcjonalne określają między innymi wydajność, dokładność, niezawodność, bezpieczeństwo, zużycie energii, koszt, możliwość rozbudowy lub zgodność ze standardami. Każde istotne wymaganie powinno być jednoznaczne i możliwe do zweryfikowania.
+
+Warto nadać wymaganiom stabilne identyfikatory, na przykład \texttt{F-01} oraz \texttt{NF-01}. Pozwala to później powiązać je z elementami projektu, przypadkami testowymi i wynikami walidacji. Nie należy jednak tworzyć rozbudowanej tabeli wymagań, jeżeli nie wnosi ona informacji potrzebnych do oceny rozwiązania.
+
+\section{\ploren{Założenia, dane wejściowe i ograniczenia}{Assumptions, input data and constraints}}
+
+Należy opisać założenia modelu, zakres dopuszczalnych danych wejściowych oraz warunki, w których rozwiązanie ma działać. Trzeba wskazać ograniczenia sprzętowe, programowe, pomiarowe, czasowe i organizacyjne, jeśli wpływają na projekt lub interpretację wyników. W przypadku wykorzystania zbiorów danych należy podać ich pochodzenie, strukturę, liczebność, sposób podziału oraz zasady wstępnego przetwarzania.
+
+Założenia powinny być możliwe do sprawdzenia i stosowane konsekwentnie. Jeżeli pominięto określone zjawisko, uproszczono model albo ograniczono zakres wartości parametrów, należy wyjaśnić wpływ tej decyzji na wiarygodność i możliwość uogólnienia wyników.
+
+\section{\ploren{Koncepcja i architektura rozwiązania}{Solution concept and architecture}}
+
+W tej części należy przedstawić rozwiązanie na poziomie ogólnym: jego moduły, przepływ informacji lub energii, interfejsy oraz zależności pomiędzy elementami. W zależności od tematu można zastosować schemat blokowy, diagram architektury oprogramowania, model funkcjonalny, schemat obwodu, strukturę układu sterowania albo opis stanowiska badawczego.
+
+Każdy diagram powinien zostać omówiony w tekście. Opis nie może ograniczać się do powtórzenia podpisu — powinien wyjaśniać odpowiedzialność poszczególnych elementów i uzasadniać najważniejsze decyzje projektowe. Trzeba także oznaczyć granicę systemu oraz wskazać komponenty gotowe i elementy opracowane samodzielnie przez autora.
+
+\section{\ploren{Projekt szczegółowy}{Detailed design}}
+
+Projekt szczegółowy powinien zawierać informacje niezbędne do późniejszej implementacji lub budowy rozwiązania. Mogą to być między innymi modele matematyczne, algorytmy, struktury danych, interfejsy programowe, dobór podzespołów, parametry regulatorów, schematy elektryczne, geometria modelu, warunki brzegowe albo sposób komunikacji między urządzeniami.
+
+Parametry należy podawać wraz z jednostkami i uzasadnieniem ich wyboru. Algorytm można przedstawić za pomocą pseudokodu lub diagramu, jeżeli taka forma jest czytelniejsza od opisu słownego. Kod źródłowy należy umieszczać dopiero wtedy, gdy jego konkretna postać ma znaczenie dla wyjaśnienia rozwiązania; dłuższe fragmenty powinny znaleźć się w dodatku albo repozytorium projektu.
+
+\section{\ploren{Plan badań i walidacji}{Experimental and validation plan}}
+
+Przed przedstawieniem wyników trzeba określić, jak zostanie ocenione rozwiązanie. Należy wskazać badane wielkości, zmienne niezależne i zależne, parametry stałe, warianty porównawcze, liczbę powtórzeń, miary oceny oraz sposób analizy danych. Dla pomiarów należy podać zakresy i dokładności przyrządów, sposób kalibracji oraz — gdy ma to znaczenie — metodę szacowania niepewności.
+
+W pracy informatycznej lub projektowej plan walidacji może obejmować testy jednostkowe, integracyjne, funkcjonalne, wydajnościowe i odpornościowe. Każdy test powinien odnosić się do konkretnego wymagania albo celu pracy oraz mieć określony warunek zaliczenia. Dobór danych testowych nie może prowadzić do wykorzystywania tych samych obserwacji jednocześnie do dostrajania i niezależnej oceny rozwiązania.
+
+\section{\ploren{Narzędzia i środowisko realizacji}{Tools and implementation environment}}
+
+Należy wymienić tylko te narzędzia, biblioteki, urządzenia i wersje oprogramowania, które są istotne dla odtworzenia pracy. Sam wykaz nazw nie zastępuje uzasadnienia wyboru technologii. W przypadku symulacji lub obliczeń warto podać wersję środowiska, kluczowe pakiety, ustawienia solvera, tolerancje i parametry wpływające na rezultat. Dla stanowiska pomiarowego należy opisać aparaturę oraz sposób jej połączenia.
+
+Pliki źródłowe, skrypty, dane i konfiguracje należy przechowywać w uporządkowanej strukturze katalogu rozdziału. Materiały generowane w programach MATLAB, Python lub innych narzędziach powinny umożliwiać ponowne utworzenie wykresów i tabel bez ręcznego przepisywania wyników.
+
+\section{\ploren{Powtarzalność, bezpieczeństwo i aspekty etyczne}{Reproducibility, safety and ethical considerations}}
+
+Jeżeli charakter pracy tego wymaga, należy opisać sposób zapewnienia powtarzalności badań, kontrolę wersji kodu, losowość eksperymentów oraz przechowywanie danych. Trzeba także uwzględnić zagrożenia związane ze stanowiskiem, napięciem, elementami ruchomymi, temperaturą, promieniowaniem lub niewłaściwym działaniem oprogramowania.
+
+W pracach wykorzystujących dane osób, systemy podejmujące decyzje albo modele sztucznej inteligencji należy rozważyć prywatność, podstawę wykorzystania danych, możliwość wystąpienia obciążeń i konsekwencje błędnych wyników. Jeśli dane lub kod nie mogą zostać udostępnione, ograniczenie to należy uzasadnić w informacji o dostępności danych i kodu źródłowego.
+
+\section{\ploren{Podsumowanie metodyki i projektu}{Methodology and design summary}}
+
+Na końcu należy krótko zebrać najważniejsze decyzje metodyczne i projektowe oraz wskazać, w jaki sposób prowadzą one do realizacji celów pracy. Podsumowanie powinno stanowić przejście do opisu implementacji, budowy stanowiska lub przeprowadzenia badań, bez przedstawiania rezultatów i ich interpretacji.

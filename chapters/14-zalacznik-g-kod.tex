@@ -1,0 +1,162 @@
+\chapter{\ploren{Kod i listingi}{Code and listings}}
+\label{app:kod}
+
+\begin{quote}
+\itshape
+\ploren
+  {Załącznik pokazuje sposoby prezentowania kodu źródłowego w pracy. Listing powinien ilustrować omawiany mechanizm, a nie zastępować opisu rozwiązania. Pełny kod projektu należy przechowywać w repozytorium lub dołączyć do materiałów uzupełniających.}
+  {This appendix demonstrates methods for presenting source code in a thesis. A listing should illustrate the mechanism being discussed rather than replace the description of the solution. The complete project source should be stored in a repository or included in the supplementary materials.}
+\end{quote}
+
+\section{\ploren{Kod wewnątrz zdania}{Code within a sentence}}
+
+Nazwy plików, klas, funkcji i krótkie identyfikatory można zapisywać poleceniem
+\verb|\texttt|, na przykład \texttt{moving\_average.py}, \texttt{DataRepository}
+i \texttt{sample\_period}. Znaki mające specjalne znaczenie w LaTeX-u trzeba wtedy
+poprzedzić ukośnikiem odwrotnym.
+
+Dla krótkiego fragmentu kodu wygodniejsze jest \verb|\lstinline|. Przykładowo funkcję
+wywołuje się jako \lstinline[language=Python]|moving_average(data, window=3)|.
+Znak po poleceniu \verb|\lstinline| jest ogranicznikiem i nie może wystąpić wewnątrz
+prezentowanego fragmentu.
+
+\begin{lstlisting}[style=thesis,caption={Kod LaTeX-a wstawiający identyfikator i fragment kodu w zdaniu},label={lst:kod-w-zdaniu}]
+Plik \texttt{moving\_average.py} zawiera funkcję
+\lstinline[language=Python]|moving_average(data, window=3)|.
+\end{lstlisting}
+
+Listing~\ref{lst:kod-w-zdaniu} przedstawia kod dokumentu, a nie kod programu.
+Rozbudowanych instrukcji nie należy umieszczać wewnątrz akapitu, ponieważ utrudniają
+czytanie tekstu i mogą przekroczyć szerokość wiersza.
+
+\section{\ploren{Krótki fragment kodu}{Short code excerpt}}
+
+Środowisko \texttt{lstlisting} jest właściwe dla kilku lub kilkunastu wierszy kodu.
+Listing~\ref{lst:python-krotki} pokazuje walidację parametru i obliczenie długości
+aktualnego okna filtru.
+
+\begin{lstlisting}[style=thesis-python,caption={Walidacja szerokości okna filtru},label={lst:python-krotki}]
+def validate_window(index: int, window: int) -> int:
+    if window <= 0:
+        raise ValueError("window must be positive")
+    return min(index + 1, window)
+\end{lstlisting}
+
+Opcja \texttt{style=thesis-python} wybiera kolorowanie składni Pythona, numerację
+wierszy, łamanie długich linii i podpis umieszczony nad kodem. Listing musi zostać
+przywołany przed jego wystąpieniem oraz omówiony po nim. Nie wystarczy stwierdzić,
+że „kod przedstawiono poniżej” --- należy wskazać, co jest w nim istotne.
+
+\section{\ploren{Kod w zewnętrznym pliku}{Code stored in an external file}}
+
+Kod wykorzystywany w projekcie powinien znajdować się w rzeczywistym pliku źródłowym.
+Polecenie \verb|\lstinputlisting| wczytuje go podczas kompilacji, dzięki czemu listing
+nie rozchodzi się z testowaną implementacją. Pełny przykład z Pythona przedstawia
+listing~\ref{lst:python-plik}.
+
+\lstinputlisting[
+  style=thesis-python,
+  caption={Implementacja filtru średniej ruchomej w języku Python},
+  label={lst:python-plik}
+]{chapters/14-zalacznik-g-kod/code/moving_average.py}
+
+Kod definiuje filtr przyczynowy. Zmienna \lstinline[language=Python]|running_sum|
+pozwala uniknąć ponownego sumowania całego okna w każdej iteracji, dlatego złożoność
+czasowa wynosi $O(N)$. Instrukcja \lstinline[language=Python]|if __name__ == "__main__"|
+tworzy minimalny przykład uruchomienia pliku.
+
+Kod LaTeX-a odpowiedzialny za wczytanie pliku przedstawiono w
+listingu~\ref{lst:inputlisting-python}.
+
+\begin{lstlisting}[style=thesis,caption={Wczytanie kodu z zewnętrznego pliku},label={lst:inputlisting-python}]
+\lstinputlisting[
+  style=thesis-python,
+  caption={Implementacja filtru średniej ruchomej w języku Python},
+  label={lst:python-plik}
+]{chapters/14-zalacznik-g-kod/code/moving_average.py}
+\end{lstlisting}
+
+\section{\ploren{Wybór fragmentu pliku}{Selecting a portion of a file}}
+
+W tekście pracy często potrzebny jest tylko fragment implementacji. Opcje
+\texttt{firstline} i \texttt{lastline} ograniczają zakres wczytywanych wierszy.
+Listing~\ref{lst:python-fragment} przedstawia wyłącznie główną pętlę algorytmu;
+numery po lewej odpowiadają numerom w pliku źródłowym dzięki ustawieniu
+\texttt{firstnumber=13}, zgodnemu z pierwszym wczytywanym wierszem.
+
+\lstinputlisting[
+  style=thesis-python,
+  firstline=13,
+  lastline=22,
+  firstnumber=13,
+  caption={Główna pętla filtru średniej ruchomej},
+  label={lst:python-fragment}
+]{chapters/14-zalacznik-g-kod/code/moving_average.py}
+
+\begin{lstlisting}[style=thesis,caption={Wybór zakresu wierszy z pliku źródłowego},label={lst:inputlisting-zakres}]
+\lstinputlisting[
+  style=thesis-python,
+  firstline=13,
+  lastline=22,
+  firstnumber=13,
+  caption={Główna pętla filtru średniej ruchomej},
+  label={lst:python-fragment}
+]{chapters/14-zalacznik-g-kod/code/moving_average.py}
+\end{lstlisting}
+
+Numery wierszy zmieniają się po edycji pliku, dlatego w opisie merytorycznym lepiej
+odwoływać się do nazw funkcji i etapów algorytmu niż utrwalać numery w zwykłym tekście.
+
+\section{\ploren{Przykład w języku MATLAB}{MATLAB example}}
+
+Listing~\ref{lst:matlab-plik} przedstawia tę samą metodę w języku MATLAB. Deklaracja
+\texttt{arguments} kontroluje typ i poprawność parametrów, a wcześniejsza alokacja
+tablicy \texttt{filtered} ogranicza koszt wielokrotnego powiększania wyniku.
+
+\lstinputlisting[
+  style=thesis-matlab,
+  caption={Implementacja filtru średniej ruchomej w języku MATLAB},
+  label={lst:matlab-plik}
+]{chapters/14-zalacznik-g-kod/code/moving_average.m}
+
+\section{\ploren{Przykład w języku C++}{C++ example}}
+
+W listingu~\ref{lst:cpp-fragment} pokazano implementację wykorzystującą typ
+\texttt{std::vector<double>}. Parametr wejściowy jest przekazywany jako stała referencja,
+a pamięć wyniku jest rezerwowana przed rozpoczęciem pętli.
+
+\lstinputlisting[
+  style=thesis-cpp,
+  caption={Implementacja filtru średniej ruchomej w języku C++},
+  label={lst:cpp-fragment}
+]{chapters/14-zalacznik-g-kod/code/moving_average.cpp}
+
+\section{\ploren{Długi kod, wyniki działania i repozytorium}{Long code, program output and repository}}
+
+Listing w pracy powinien być na tyle krótki, aby można go było omówić. Pełnych klas,
+plików konfiguracyjnych i wygenerowanego kodu nie należy wklejać wyłącznie w celu
+zwiększenia objętości dokumentu. Większy projekt warto udostępnić w repozytorium lub
+archiwum wskazanym w informacji o dostępności kodu.
+
+Należy podać wersję języka i najważniejszych bibliotek, sposób instalacji zależności,
+polecenie uruchamiające analizę oraz wersję kodu odpowiadającą wynikom w pracy. Dla
+Pythona może to być plik \texttt{requirements.txt} lub \texttt{pyproject.toml}, a dla
+innych technologii właściwy im plik konfiguracji środowiska budowania.
+
+Wynik działania programu, log lub komunikat terminala nie jest kodem źródłowym. Można
+go przedstawić osobnym listingiem bez kolorowania słów kluczowych, wyraźnie opisując,
+czy jest to wynik rzeczywistego uruchomienia, czy skrócony przykład.
+
+\begin{lstlisting}[style=thesis,caption={Przykładowy wynik uruchomienia programu},label={lst:wynik-programu},numbers=none,xleftmargin=0.25cm,framexleftmargin=0cm]
+$ python moving_average.py
+[1.0, 1.2, 1.5, 2.1, 2.6333333333333333]
+\end{lstlisting}
+
+\section{\ploren{Najczęstsze błędy}{Common mistakes}}
+
+Do typowych błędów należą: brak odwołania do listingu, podpis pod kodem, wklejanie
+nieużywanej implementacji, ręczne kopiowanie kodu zamiast wczytania pliku, brak numerów
+wersji i zależności, zbyt długie wiersze, używanie zrzutów ekranu edytora oraz brak
+objaśnienia najważniejszych instrukcji. W kodzie przeznaczonym do publikacji nie mogą
+znajdować się hasła, tokeny dostępu, prywatne adresy, dane osobowe ani inne informacje
+wrażliwe.

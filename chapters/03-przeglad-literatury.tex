@@ -1,0 +1,57 @@
+\chapter{\ploren{Przegląd literatury i podstawy teoretyczne}{Literature review and theoretical background}}
+
+% Zastąp poniższe wskazówki i przykłady treścią właściwą dla pracy. W rozdziale
+% należy cytować przede wszystkim źródła bezpośrednio związane z jej tematyką.
+
+\begin{quote}
+\itshape
+\ploren
+  {Przedstawiony układ jest propozycją i należy go dostosować do charakteru pracy. Podstawy teoretyczne i przegląd literatury można rozdzielić na dwa rozdziały, jeżeli oba zagadnienia są rozbudowane. Nie należy natomiast tworzyć katalogu kolejno streszczanych publikacji. Zadaniem autora jest porównanie źródeł, uporządkowanie wiedzy i wyprowadzenie wniosków uzasadniających podjęte rozwiązanie. Tekst tej wskazówki oraz przykłady należy usunąć z ostatecznej wersji pracy.}
+  {The proposed structure should be adapted to the nature of the thesis. Theoretical background and literature review may be separated into two chapters when both subjects are extensive. The chapter should not, however, become a catalogue of consecutively summarised publications. The author's task is to compare sources, organise existing knowledge and derive conclusions that justify the adopted solution. This guidance and the examples should be removed from the final version of the thesis.}
+\end{quote}
+
+Rozdział powinien wprowadzać wiedzę niezbędną do zrozumienia dalszych części pracy oraz przedstawiać aktualny stan rozwiązań związanych z rozpatrywanym problemem. Dobór treści musi wynikać z celu i zakresu pracy: nie należy opisywać zagadnień, które nie zostaną później wykorzystane w projekcie, badaniach lub interpretacji wyników.
+
+\section{\ploren{Sposób przeprowadzenia przeglądu}{Review method}}
+
+Należy krótko wyjaśnić, w jaki sposób wyszukiwano i wybierano literaturę. W zależności od tematu można wskazać wykorzystane bazy publikacji, słowa kluczowe, zakres lat, języki oraz kryteria włączenia i odrzucenia źródeł. Szczegółowy protokół jest wymagany przede wszystkim w przeglądzie systematycznym; w typowej pracy projektowej wystarczy zwięzły i możliwy do odtworzenia opis.
+
+Pierwszeństwo powinny mieć recenzowane artykuły, monografie naukowe, normy, dokumentacja producentów oraz oficjalna dokumentacja oprogramowania. Materiały internetowe mogą być potrzebne do opisania aktualnych narzędzi lub urządzeń, ale nie powinny bez uzasadnienia zastępować źródeł naukowych. Przykładowo informacje o rodzinie mikrokontrolerów należy oprzeć na dokumentacji producenta \cite{STM32Mic80:online}, natomiast opis metody badawczej na publikacjach naukowych, takich jak przegląd metody elementów skończonych \cite{jagota2013finite}.
+
+\section{\ploren{Podstawy teoretyczne}{Theoretical background}}
+
+W tej części należy zdefiniować najważniejsze pojęcia, modele, zależności matematyczne i zasady działania potrzebne w dalszej pracy. Każde zagadnienie powinno mieć wyraźny związek z analizowanym problemem. Definicje i twierdzenia zaczerpnięte ze źródeł wymagają cytowania, natomiast symbole i założenia modelu powinny być stosowane konsekwentnie w całym dokumencie.
+
+Zakres podstaw teoretycznych zależy od dyscypliny. W pracy dotyczącej przetwarzania sygnałów punktem odniesienia może być monografia \textcite{zielinski2007cyfrowe}; w pracy poświęconej maszynom elektrycznym należy odwołać się do literatury dziedzinowej, na przykład \cite{ronkowski2009maszyny}. Sama obecność źródła nie wystarcza: autor powinien wyjaśnić, które pojęcia lub modele wykorzysta w swojej metodzie i jakie ograniczenia z tego wynikają.
+
+\section{\ploren{Stan wiedzy i istniejące rozwiązania}{State of the art and existing solutions}}
+
+Literaturę najlepiej porządkować według problemów, klas metod albo kryteriów porównania, a nie według kolejności publikacji. Jeden akapit powinien łączyć kilka powiązanych źródeł i kończyć się wnioskiem autora. Cytowanie może dotyczyć całego zdania lub grupy zdań, ale zawsze musi być jasne, które informacje pochodzą ze źródła, a które są interpretacją autora.
+
+Przykładowo w analizie metod numerycznych można najpierw przedstawić ich wspólne założenia na podstawie opracowania przeglądowego \cite{jagota2013finite}, a następnie omówić zastosowanie konkretnego wariantu do obliczeń pola magnetycznego \cite{5424046}. Taki układ pokazuje przejście od metody ogólnej do rozwiązania wyspecjalizowanego i umożliwia ocenę jego przydatności dla rozpatrywanego problemu.
+
+\section{\ploren{Porównanie podejść}{Comparison of approaches}}
+
+Porównanie powinno wykorzystywać kryteria związane z celem pracy, takie jak dokładność, złożoność obliczeniowa, wymagania sprzętowe, koszt, niezawodność, możliwość implementacji czasu rzeczywistego albo zgodność z normami. Jeżeli dane pochodzą z różnych publikacji, trzeba uwzględnić różnice warunków badań; wartości uzyskane dla innych zbiorów danych, parametrów modelu lub stanowisk pomiarowych mogą nie być bezpośrednio porównywalne.
+
+Wnioski nie powinny ograniczać się do stwierdzenia, że jedna metoda jest „lepsza”. Należy określić, pod jakim względem i w jakich warunkach uzyskuje przewagę. Przykładowo nowa konstrukcja silnika może przynosić określone korzyści wynikające z asymetrycznego uzwojenia \cite{7396957}, ale jej wybór wymaga także oceny złożoności sterowania, możliwości wykonania i zgodności z wymaganiami sformułowanymi w poprzednim rozdziale.
+
+\section{\ploren{Luka i uzasadnienie przyjętego kierunku}{Research gap and rationale}}
+
+Na podstawie przeglądu należy wskazać problem, którego istniejące rozwiązania nie rozwiązują w wystarczającym stopniu, albo ograniczenie, które uzasadnia wykonanie projektu, implementacji lub badań. Luka nie musi oznaczać braku jakichkolwiek publikacji. Może dotyczyć między innymi niedostatecznej dokładności, wysokiego kosztu, braku walidacji w określonych warunkach, ograniczonej dostępności danych lub trudności wdrożeniowych.
+
+Następnie należy wyjaśnić, dlaczego podejście przyjęte w pracy jest właściwe dla zdefiniowanego problemu. Uzasadnienie powinno wynikać z porównania literatury, a nie wyłącznie z dostępności znanego autorowi narzędzia. Trzeba przy tym wyraźnie oddzielić rozwiązania opisane w źródłach od własnej koncepcji autora.
+
+\section{\ploren{Podsumowanie przeglądu}{Review summary}}
+
+Rozdział należy zakończyć syntezą najważniejszych wniosków. Podsumowanie powinno wskazać, które modele, metody, technologie lub kryteria zostaną wykorzystane w dalszej części pracy oraz jakie nierozwiązane zagadnienie będzie przedmiotem projektu lub badań. Nie należy w nim ponownie streszczać wszystkich podrozdziałów.
+
+Źródła trzeba cytować w miejscu wykorzystania informacji. Polecenie \verb|\cite{klucz}| tworzy standardowe odwołanie, a \verb|\textcite{klucz}| włącza autora publikacji do zdania. Jeżeli jedno stwierdzenie jest poparte kilkoma publikacjami, ich klucze należy umieścić w jednym poleceniu i rozdzielić przecinkami, na przykład:
+
+\begin{center}
+\verb|\cite{jagota2013finite,5424046,7396957}|
+\end{center}
+
+Powstanie wówczas jedno zbiorcze odwołanie \cite{jagota2013finite,5424046,7396957}, które styl bibliograficzny odpowiednio uporządkuje i — gdy jest to możliwe — skróci zakres kolejnych numerów.
+
+Kolejność i postać kluczy w pliku \texttt{bibliografia.bib} nie wyznaczają numerów publikacji. Klucze są wyłącznie wewnętrznymi, niepowtarzalnymi identyfikatorami używanymi podczas pisania, dlatego nie trzeba ich numerować ani ręcznie porządkować według kolejności cytowania. Numery odwołań i kolejność pozycji w bibliografii są ustalane automatycznie podczas kompilacji. Umieszczenie rekordu w pliku \texttt{bibliografia.bib} nie powoduje natomiast automatycznie jego pojawienia się w wykazie — publikacja musi zostać zacytowana w tekście. Bezpośrednie cytaty powinny być używane oszczędnie i zawierać numer strony, natomiast parafraza również wymaga wskazania źródła.

@@ -1,0 +1,130 @@
+\chapter{\ploren{Cytowania i bibliografia}{Citations and bibliography}}
+\label{app:cytowania}
+
+\begin{quote}\itshape
+  \ploren
+  {Odwołanie bibliograficzne powinno wskazywać źródło konkretnej informacji, metody, danych lub zapożyczonego elementu. Sama obecność pozycji w bibliografii nie zastępuje cytowania jej we właściwym miejscu tekstu.}
+  {A bibliographic reference should identify the source of a specific statement, method, dataset or reused element. Merely listing an item in the bibliography does not replace citing it at the relevant point in the text.}
+\end{quote}
+
+\section{\ploren{Kiedy należy podać źródło}{When a source is required}}
+
+Źródło należy wskazać przy parafrazie cudzej myśli, definicji, danych liczbowych, metodzie, modelu, wymaganiu normatywnym, fragmencie kodu oraz materiale graficznym pochodzącym od innego autora. Cytowanie jest potrzebne również wtedy, gdy treść została przetłumaczona albo przedstawiona własnymi słowami. Nie cytuje się wiedzy powszechnej, jednak w przypadku wątpliwości bezpieczniej wskazać wiarygodne źródło.
+
+Odsyłacz powinien znajdować się możliwie blisko informacji, którą dokumentuje. Jedno cytowanie na końcu długiego akapitu może być niejednoznaczne, jeżeli akapit zawiera kilka tez pochodzących z różnych publikacji. Cytowania nie należy dodawać wyłącznie do tytułu rozdziału ani pozostawiać bez wyjaśnienia, jaki fragment źródła wykorzystano.
+
+Pierwszeństwo powinny mieć źródła pierwotne: artykuł opisujący metodę, norma ustanawiająca wymaganie, dokumentacja producenta danego urządzenia albo oficjalna dokumentacja oprogramowania. Opracowanie przeglądowe jest przydatne do przedstawienia stanu wiedzy i odnalezienia publikacji źródłowych, lecz nie zawsze powinno być jedyną podstawą opisu.
+
+\section{\ploren{Podstawowe polecenia cytowania}{Basic citation commands}}
+
+Standardowe odwołanie numeryczne tworzy polecenie \verb|\cite|. Przykładowo opis metody elementów skończonych można poprzeć publikacją przeglądową~\cite{jagota2013finite}. Polecenie \verb|\textcite| włącza nazwisko autora do zdania; przykładowo \textcite{zielinski2007cyfrowe} omawia podstawy cyfrowego przetwarzania sygnałów.
+
+\begin{lstlisting}[style=thesis,caption={Pojedyncze cytowanie i cytowanie włączone do zdania},label={lst:cytowanie-podstawowe}]
+Opis metody przedstawiono w literaturze \cite{jagota2013finite}.
+
+\textcite{zielinski2007cyfrowe} omawia podstawy cyfrowego
+przetwarzania sygnalow.
+\end{lstlisting}
+
+Przy wskazywaniu konkretnego fragmentu książki albo obszernego raportu warto podać numer strony, rozdziału lub sekcji. Opcjonalny argument polecenia jest automatycznie umieszczany przed numerem źródła.
+
+\begin{lstlisting}[style=thesis,caption={Cytowanie ze wskazaniem strony lub rozdziału},label={lst:cytowanie-strona}]
+Opis algorytmu przedstawiono w monografii
+\cite[s.~125--128]{zielinski2007cyfrowe}.
+
+Szczegoly implementacji omowiono w
+\cite[rozdz.~4]{ramalho2015zaawansowany}.
+\end{lstlisting}
+
+W pracy anglojęzycznej skróty lokalizatora powinny być zapisane po angielsku, na przykład \verb|p.|, \verb|pp.| albo \verb|chap.|. Lokalizator musi odpowiadać miejscu wykorzystanemu przez autora; nie powinien być kopiowany z cytowania wtórnego bez sprawdzenia oryginału.
+
+\section{\ploren{Kilka źródeł w jednym odwołaniu}{Multiple sources in one citation}}
+
+Jeżeli kilka publikacji wspólnie potwierdza jedno stwierdzenie, ich klucze umieszcza się w jednym poleceniu, rozdzielając je przecinkami. Nie trzeba ręcznie porządkować kluczy według numerów bibliografii. Konfiguracja \texttt{sortcites=true} porządkuje odsyłacze, a styl \texttt{numeric-comp} łączy kolejne numery w zakres. Zapis z listingu~\ref{lst:cytowanie-wielokrotne} daje jedno zbiorcze odwołanie~\cite{knuth1984,lamport1994,mittelbach2004}; ponieważ pozycje mają kolejne numery, są wyświetlane jako zakres.
+
+\begin{lstlisting}[style=thesis,caption={Kilka pozycji w jednym odwołaniu bibliograficznym},label={lst:cytowanie-wielokrotne}]
+Zasady skladu dokumentu opisano w kilku zrodlach
+\cite{knuth1984,lamport1994,mittelbach2004}.
+\end{lstlisting}
+
+Kilka źródeł należy łączyć tylko wtedy, gdy odnoszą się do tej samej tezy. Umieszczenie długiej listy publikacji po całym akapicie nie wyjaśnia, które źródło wspiera poszczególne stwierdzenia. Nie należy również tworzyć osobnych sąsiadujących odwołań \verb|\cite{...}\cite{...}|, jeżeli mogą zostać zapisane jako jedno cytowanie.
+
+\section{\ploren{Kolejność bibliografii}{Bibliography ordering}}
+
+Szablon stosuje styl numeryczny IEEE i ustawienie \texttt{sorting=none}. Pozycje są numerowane według kolejności pierwszego cytowania w pracy, a nie alfabetycznie. Jest to naturalny wybór dla prac technicznych: czytelnik otrzymuje małe numery w kolejności pojawiania się źródeł. Kolejne cytowanie tej samej pozycji zachowuje wcześniej nadany numer.
+
+Nie należy ręcznie wpisywać numerów, na przykład \verb|[7]|, ani uzależniać treści zdania od bieżącej numeracji. Dodanie nowego źródła wcześniej w dokumencie może zmienić wszystkie kolejne numery, natomiast klucze w poleceniach \verb|\cite| pozostają bez zmian.
+
+Bibliografia zawiera domyślnie tylko pozycje cytowane. Polecenie \verb|\nocite{*}| dodaje wszystkie rekordy z pliku \texttt{.bib}, lecz w pracy dyplomowej zwykle nie powinno być używane: bibliografia nie jest wykazem wszystkiego, co autor przeczytał, ale wykazem źródeł rzeczywiście przywołanych w dokumencie.
+
+\section{\ploren{Budowa pliku bibliograficznego}{Structure of the bibliography file}}
+
+Każdy rekord w pliku \texttt{bibliografia.bib} składa się z typu, unikatowego klucza i pól opisujących dokument. Klucz powinien być krótki, stabilny i czytelny, na przykład \texttt{nazwisko2024metoda}. Zmiana klucza wymaga poprawienia wszystkich odwołań w plikach \texttt{.tex}.
+
+\begin{lstlisting}[style=thesis,caption={Przykładowy rekord artykułu naukowego z numerem DOI},label={lst:bib-artykul}]
+@article{kowalski2024diagnostics,
+  author       = {Jan Kowalski and Anna Nowak},
+  title        = {Diagnostics of an Electric Drive},
+  journaltitle = {Journal of Electrical Engineering},
+  year         = {2024},
+  volume       = {75},
+  number       = {2},
+  pages        = {101--112},
+  doi          = {10.1234/example.2024.15}
+}
+\end{lstlisting}
+
+W tytule należy zachować wielkie litery istotne dla nazw własnych i skrótów, obejmując je dodatkową parą nawiasów klamrowych, na przykład \verb|{MATLAB}|, \verb|{PLC}| lub \verb|{IEEE}|. Zakres stron zapisuje się dwoma łącznikami, na przykład \verb|101--112|. W polu \texttt{doi} podaje się sam identyfikator, bez prefiksu \texttt{https://doi.org/}.
+
+\subsection{\ploren{Książki i rozdziały}{Books and chapters}}
+
+Dla książki podstawowe pola to \texttt{author}, \texttt{title}, \texttt{year} i \texttt{publisher}. Rozdział w pracy zbiorowej opisuje się typem \texttt{@incollection}, podając również tytuł książki, redaktorów i strony. Nie należy zastępować autora nazwą sklepu, serwisu katalogowego ani witryny, z której pobrano opis.
+
+\subsection{\ploren{Materiały konferencyjne i prace dyplomowe}{Conference papers and theses}}
+
+Artykuł konferencyjny zapisuje się zwykle jako \texttt{@inproceedings}, a pracę doktorską lub magisterską jako \texttt{@thesis}. Warto podać pełną nazwę konferencji lub uczelni, rok, strony, DOI oraz miejsce publikacji, jeżeli dane te są dostępne.
+
+\subsection{\ploren{Źródła internetowe}{Online sources}}
+
+Oficjalną dokumentację dostępną wyłącznie w sieci najlepiej zapisać jako \texttt{@online}. Pole \texttt{urldate} określa dzień dostępu w formacie ISO. Jeżeli dokument ma autora instytucjonalnego, nazwę organizacji obejmuje się dodatkową parą nawiasów klamrowych, aby BibLaTeX nie potraktował jej jak imienia i nazwiska.
+
+\begin{lstlisting}[style=thesis,caption={Przykładowy opis oficjalnej dokumentacji internetowej},label={lst:bib-online}]
+@online{stmicroelectronics2026stm32,
+  author  = {{STMicroelectronics}},
+  title   = {{STM32} Microcontrollers},
+  url     = {https://www.st.com/en/microcontrollers.html},
+  urldate = {2026-07-19}
+}
+\end{lstlisting}
+
+Blog, forum lub materiał promocyjny może pomóc w rozwiązaniu problemu technicznego, ale nie powinien bez uzasadnienia zastępować dokumentacji, normy albo recenzowanej publikacji. Datę dostępu podaje się szczególnie dla treści, które mogą się zmieniać.
+
+\subsection{\ploren{Normy, oprogramowanie i dane}{Standards, software and data}}
+
+Normy można opisywać jako \texttt{@standard}, jeżeli używana wersja BibLaTeX obsługuje ten typ, albo jako \texttt{@report}. Trzeba podać oznaczenie, pełny tytuł, organizację wydającą i rok konkretnego wydania. Samo powołanie się na „normę IEC” bez numeru i wydania jest niewystarczające.
+
+Oprogramowanie oraz zbiory danych powinny mieć autora lub organizację, nazwę, wersję, rok, adres i trwały identyfikator, jeżeli został nadany. Preferowany jest DOI archiwalnego wydania z repozytorium, a nie odsyłacz do zmieniającej się strony głównej projektu. W informacji o dostępności kodu i danych można podać adres repozytorium, ale narzędzie lub zbiór wykorzystany jako źródło nadal powinien zostać opisany w bibliografii.
+
+\section{\ploren{DOI, adresy URL i metadane}{DOI, URLs and metadata}}
+
+Styl używany przez szablon wyświetla numer DOI, jeżeli rekord zawiera poprawne pole \texttt{doi}; przykładem jest artykuł dotyczący obliczeń pola magnetycznego~\cite{5424046}. DOI jest trwalszy od adresu strony wydawcy, dlatego nie należy wpisywać obu identyfikatorów, jeśli URL prowadzi wyłącznie do tej samej publikacji. Adres URL jest natomiast właściwy dla dokumentacji internetowej, repozytorium lub materiału bez DOI.
+
+Rekord pobrany z bazy bibliograficznej trzeba sprawdzić. Typowe problemy eksportu to: nieprawidłowa wielkość liter w tytule, brak DOI, zdublowany prefiks DOI, autor zapisany w polu tytułu, niepełny zakres stron, skrócona nazwa instytucji oraz pola zawierające kod HTML. Automatyczny import oszczędza czas, ale nie zwalnia z kontroli metadanych.
+
+\section{\ploren{Źródła rysunków, tabel i kodu}{Sources of figures, tables and code}}
+
+Jeżeli rysunek lub tabela zostały przejęte bez zmian, cytowanie powinno znajdować się w podpisie albo w bezpośrednio poprzedzającym opisie. Przy adaptacji należy jasno zaznaczyć, że element opracowano na podstawie wskazanego źródła. Samo umieszczenie pozycji w bibliografii nie informuje, z którego materiału pochodzi element.
+
+Kod zaczerpnięty z dokumentacji, biblioteki lub repozytorium wymaga podania źródła i sprawdzenia licencji. Krótkie, powszechne konstrukcje języka nie wymagają cytowania, lecz charakterystyczny algorytm lub większy fragment implementacji nie może być przedstawiony jako własny. Informacja o licencji może być potrzebna niezależnie od odwołania bibliograficznego.
+
+\section{\ploren{Narzędzia do zarządzania literaturą}{Reference management tools}}
+
+Przy większej liczbie źródeł warto korzystać z menedżera bibliografii, na przykład Zotero, JabRef lub innego narzędzia eksportującego BibLaTeX. Jeden współdzielony plik \texttt{bibliografia.bib} ogranicza ręczne przepisywanie danych. Rekordy można grupować słowami kluczowymi w menedżerze, ale w samym szablonie nie ma potrzeby dzielenia bibliografii na osobne pliki dla każdego rozdziału.
+
+Klucze cytowań powinny być generowane według jednej reguły i nie powinny zmieniać się po każdej synchronizacji. Przed oddaniem pracy należy wyszukać brakujące pola, zduplikowane rekordy oraz pozycje, które różnią się tylko sposobem zapisu DOI lub nazwiska autora.
+
+\section{\ploren{Najczęstsze błędy}{Common mistakes}}
+
+Do najczęstszych błędów należą: ręczne wpisywanie numerów źródeł, cytowanie tylko na końcu całego rozdziału, brak stron przy dokładnym przytoczeniu, powoływanie się na źródło wtórne mimo dostępności oryginału, umieszczanie niecytowanych pozycji przez \verb|\nocite{*}|, niekompletne dane internetowe, cytowanie wyniku wyszukiwarki zamiast dokumentu, niespójne klucze oraz brak kontroli rekordów zaimportowanych automatycznie.
+
+Przed złożeniem pracy należy również sprawdzić, czy każdy odsyłacz prowadzi do właściwej pozycji, wszystkie cytowane rekordy są widoczne w bibliografii, DOI i URL są aktywne, nazwiska i tytuły nie zawierają błędów oraz czy kolejność numerów odpowiada pierwszemu wystąpieniu źródeł w tekście.

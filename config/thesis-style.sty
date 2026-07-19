@@ -1,5 +1,6 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{config/thesis-style}[2026/07/18 Bilingual thesis template]
+\PassOptionsToPackage{table}{xcolor}
 \RequirePackage{iftex}
 \ifPDFTeX
   \RequirePackage[T1]{fontenc}\RequirePackage[utf8]{inputenc}
@@ -12,6 +13,11 @@
   \RequirePackage{unicode-math}
 \fi
 \RequirePackage[main=\thesislanguage,polish,english]{babel}
+% W polskiej wersji materialy uzupelniajace nazywamy zalacznikami.
+% Babel uzywa formy pojedynczej przed litera konkretnego zalacznika.
+\addto\captionspolish{\renewcommand{\appendixname}{Załącznik}}
+\addto\captionsenglish{\renewcommand{\appendixname}{Appendix}}
+\newcommand{\thesisappendicesname}{\ploren{Załączniki}{Appendices}}
 \RequirePackage{csquotes,microtype,geometry,setspace,needspace,graphicx}
 \RequirePackage[export]{adjustbox}
 \RequirePackage{pdflscape,placeins}
@@ -25,9 +31,12 @@
 \RequirePackage{booktabs,array,tabularx,longtable,siunitx}
 \RequirePackage{enumitem,titlesec,tocloft,caption,subcaption,listings,xcolor}
 \RequirePackage{tikz,pgfplots,circuitikz,fancyhdr,etoolbox}
+\usetikzlibrary{arrows.meta,positioning,calc,shapes.geometric,shapes.multipart,fit}
 % Dyskretne, czytelne odnosniki w PDF: spis tresci, rysunki, tabele,
 % rownania, cytowania bibliograficzne i adresy internetowe.
 \definecolor{thesislinkblue}{RGB}{0,70,125}
+% Jasne tlo wyróżnionego wiersza pozostaje czytelne w druku monochromatycznym.
+\definecolor{thesisrowhighlight}{RGB}{226,236,244}
 \RequirePackage[
   colorlinks=true,
   linkcolor=thesislinkblue,
@@ -38,9 +47,22 @@
 ]{hyperref}
 \RequirePackage{bookmark}
 \RequirePackage[nameinlink,noabbrev]{cleveref}
-\RequirePackage[backend=biber,style=ieee,sorting=none,giveninits=true]{biblatex}
+\RequirePackage[
+  backend=biber,
+  style=ieee,
+  citestyle=numeric-comp,
+  sorting=none,
+  sortcites=true,
+  giveninits=true
+]{biblatex}
 \addbibresource{bibliografia.bib}
+% W wykazie bibliografii wyróżniamy wyłącznie autorów. Ustawienie jest lokalne
+% dla bibliografii, dlatego nie pogrubia nazwisk w cytowaniach w tekście.
+\AtBeginBibliography{%
+  \DeclareNameWrapperFormat{author}{\mkbibbold{#1}}%
+}
 \pgfplotsset{compat=1.18}
+\usepgfplotslibrary{statistics}
 
 % W PDF marginesy boczne sa rowne. W druku margines wewnetrzny jest
 % nieco szerszy i automatycznie zamienia strony na kartkach parzystych.
@@ -62,6 +84,15 @@
 \titleformat{\chapter}[hang]{\bfseries\fontsize{16}{19}\selectfont}{\thechapter.}{0.6em}{}
 \titleformat{\section}[hang]{\bfseries\fontsize{14}{17}\selectfont}{\thesection}{0.6em}{}
 \titleformat{\subsection}[hang]{\bfseries\fontsize{13}{16}\selectfont}{\thesubsection}{0.6em}{}
+% Rozpoczęcie załączników zmienia numerację rozdziałów na literową oraz
+% rozwija oznaczenie w nagłówku do „Załącznik A” / „Appendix A”.
+\newcommand{\startthesisappendices}{%
+  \appendix
+  \titleformat{\chapter}[hang]
+    {\bfseries\fontsize{16}{19}\selectfont}
+    {\appendixname~\thechapter:}
+    {0.6em}{}
+}
 \ifdefstring{\indentfirstparagraph}{true}{%
   \titlespacing{\chapter}{0pt}{0pt}{18pt}
   \titlespacing{\section}{0pt}{12pt}{6pt}
@@ -103,7 +134,7 @@
   numbersep=9pt,
   stepnumber=1,
   tabsize=4,
-  captionpos=b,
+  captionpos=t,
   keywordstyle=\bfseries\color{thesiscodekeyword},
   commentstyle=\itshape\color{thesiscodecomment},
   stringstyle=\color{thesiscodestring},
@@ -117,7 +148,22 @@
 \lstdefinestyle{thesis-c}{style=thesis,language=C}
 \lstdefinestyle{thesis-cpp}{style=thesis,language=[11]C++}
 \lstdefinestyle{thesis-shell}{style=thesis,language=bash}
+\lstdefinestyle{thesis-pseudocode}{
+  style=thesis,
+  morekeywords={ALGORYTM,WEJSCIE,WYJSCIE,DLA,OD,DO,JEZELI,WTEDY,
+    WPRZECIWNYMRAZIE,KONIECJEZELI,KONIECDLA,ZWROC}
+}
 \lstset{style=thesis}
+% Klasyczny pakiet listings przetwarza znaki UTF-8 bajtowo. Poniższe mapowanie
+% jest bezpieczne dla pdfLaTeX-a; w LuaLaTeX-u kod źródłowy w listingach powinien
+% pozostać ASCII albo zostać wczytany narzędziem obsługującym natywnie Unicode.
+\ifPDFTeX
+  \lstset{literate=
+    {ą}{{\k{a}}}1 {ć}{{\'c}}1 {ę}{{\k{e}}}1 {ł}{{\l{}}}1
+    {ń}{{\'n}}1 {ó}{{\'o}}1 {ś}{{\'s}}1 {ż}{{\.z}}1 {ź}{{\'z}}1
+    {Ą}{{\k{A}}}1 {Ć}{{\'C}}1 {Ę}{{\k{E}}}1 {Ł}{{\L{}}}1
+    {Ń}{{\'N}}1 {Ó}{{\'O}}1 {Ś}{{\'S}}1 {Ż}{{\.Z}}1 {Ź}{{\'Z}}1}
+\fi
 \AtBeginDocument{\counterwithin{lstlisting}{chapter}}
 \renewcommand{\lstlistingname}{\ploren{Listing}{Listing}}
 \renewcommand{\lstlistlistingname}{\ploren{Spis listingów}{List of listings}}
@@ -264,6 +310,11 @@
   \Crefname{equation}{Równanie}{Równania}
   \crefname{lstlisting}{listing}{listingi}
   \Crefname{lstlisting}{Listing}{Listingi}
+  \AtBeginDocument{%
+    \def\crefpairconjunction{ i~}%
+    \def\crefmiddleconjunction{,~}%
+    \def\creflastconjunction{ i~}%
+  }
 \fi
 % Komendy językowe występują także w tytułach rozdziałów. Dla zakładek PDF
 % przekazujemy hyperrefowi ich prostą, tekstową postać.

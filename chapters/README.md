@@ -3,8 +3,8 @@
 Każdy główny plik rozdziału ma katalog o tej samej nazwie. Przykład:
 
 ```text
-05-czesc-praktyczna.tex
-05-czesc-praktyczna/
+05-implementacja-badania.tex
+05-implementacja-badania/
 ├── figures/        # gotowe pliki do wstawienia: PDF, PNG, JPEG
 │   └── source/     # pliki edytowalne: SVG, drawio, FIG, projekty CAD itp.
 ├── data/           # CSV, dane pomiarowe i wejścia do wykresów
@@ -35,12 +35,12 @@ Stosuj małe litery, cyfry i łączniki, bez spacji oraz polskich znaków, np.
 
 ```tex
 \includegraphics[width=0.8\textwidth]
-  {chapters/05-czesc-praktyczna/figures/stanowisko-pomiarowe.pdf}
+  {chapters/05-implementacja-badania/figures/stanowisko-pomiarowe.pdf}
 
 \lstinputlisting[language=Python,caption={Implementacja regulatora}]
-  {chapters/05-czesc-praktyczna/code/regulator.py}
+  {chapters/05-implementacja-badania/code/regulator.py}
 
-\input{chapters/05-czesc-praktyczna/tables/wyniki-pomiarow}
+\input{chapters/05-implementacja-badania/tables/wyniki-pomiarow}
 ```
 
 Ścieżki w LaTeX-u są zawsze liczone względem katalogu zawierającego

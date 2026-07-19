@@ -1,0 +1,262 @@
+\chapter{\ploren{Równania, liczby i jednostki}{Equations, numbers and units}}
+\label{app:rownania}
+
+\begin{quote}
+\itshape
+\ploren
+  {Załącznik przedstawia przykłady zapisu zależności matematycznych, wartości liczbowych i jednostek. Symbole należy dobierać konsekwentnie, a każde równanie istotne dla toku pracy objaśnić w tekście.}
+  {This appendix presents examples of typesetting mathematical relationships, numerical values and units. Symbols should be used consistently, and every equation relevant to the thesis argument should be explained in the text.}
+\end{quote}
+
+\section{\ploren{Zasady zapisu matematycznego}{Principles of mathematical notation}}
+
+Zmienne zapisuje się kursywą, natomiast nazwy funkcji, jednostki, skróty i operatory
+tekstowe pismem prostym. Wektory i macierze należy wyróżniać w jeden konsekwentny sposób,
+na przykład pogrubieniem. Symbol użyty w równaniu powinien mieć to samo znaczenie w
+tekście, na wykresie, w tabeli i w wykazie oznaczeń.
+
+Krótką zależność można umieścić w tekście, na przykład $P=UI$. Równanie wydzielone
+stosuje się, gdy jest przywoływane, przekształcane albo szczególnie ważne. Zdanie nie
+kończy się przed równaniem: po wyrażeniu matematycznym należy umieścić przecinek lub
+kropkę wynikającą z gramatyki całego zdania.
+
+\subsection{\ploren{Matematyka i symbole wewnątrz zdania}{Mathematics and symbols within a sentence}}
+
+Krótki symbol lub zależność umieszcza się w trybie matematycznym ograniczonym przez
+\verb|\(| oraz \verb|\)|. Przykładowo: napięcie wejściowe \(U_{\mathrm{we}}\) ma
+wartość \SI{24}{\volt}, pulsacja wynosi \(\omega=2\pi f\), a zmiana temperatury jest
+równa \(\Delta T=T_2-T_1\). Matematyka pozostaje wtedy częścią akapitu i nie otrzymuje
+osobnego numeru.
+
+Listing~\ref{lst:matematyka-w-zdaniu} przedstawia najczęściej potrzebne konstrukcje.
+Znak podkreślenia tworzy indeks dolny, daszek --- indeks górny, a polecenia
+\verb|\frac| i \verb|\sqrt| odpowiednio ułamek oraz pierwiastek. Litery greckie
+zapisuje się poleceniami takimi jak \verb|\alpha|, \verb|\Delta| i \verb|\omega|.
+
+\begin{lstlisting}[style=thesis,caption={Wstawianie matematyki i symboli wewnątrz zdania},label={lst:matematyka-w-zdaniu}]
+The input voltage \(U_{\mathrm{in}}\) is \SI{24}{\volt},
+and the RMS current is \(I_{\mathrm{rms}}\).
+
+The angular frequency is \(\omega=2\pi f\), while the
+temperature change is \(\Delta T=T_2-T_1\).
+
+Subscript: \(x_i\), power: \(v^2\),
+fraction: \(\frac{a}{b}\), square root: \(\sqrt{x}\).
+
+The vector is
+\(\boldsymbol{x}=[x_1,x_2,\ldots,x_n]^{\mathsf{T}}\).
+\end{lstlisting}
+
+Można spotkać również skrócony zapis \verb|$...$|, jednak w szablonie zaleca się
+stosowanie \verb|\(...\)|, ponieważ wyraźnie odróżnia on początek i koniec matematyki
+wewnątrz zdania. Znaków ograniczających nie należy rozdzielać między akapity. Przecinek
+lub kropkę kończącą zdanie umieszcza się poza zamykającym \verb|\)|.
+
+\section{\ploren{Pojedyncze równanie i odwołanie}{Single equation and reference}}
+
+Zależność między napięciem, prądem i rezystancją ma postać
+\begin{equation}
+  U = RI,
+  \label{eq:prawo-ohma}
+\end{equation}
+gdzie $U$ oznacza napięcie, $R$ rezystancję, a $I$ natężenie prądu.
+Do równania można odwołać się ręcznie, pisząc równanie~\eqref{eq:prawo-ohma}, albo
+automatycznie za pomocą \verb|\cref|: \cref{eq:prawo-ohma}. Pierwszy sposób daje
+pełną kontrolę nad brzmieniem zdania, a drugi automatycznie dobiera nazwę i numer.
+
+Listing~\ref{lst:rownanie-podstawowe} pokazuje, że etykietę należy umieścić wewnątrz
+środowiska \texttt{equation}. Etykieta powinna opisywać znaczenie równania, a nie jego
+aktualny numer.
+
+\begin{lstlisting}[style=thesis,caption={Kod pojedynczego równania i odwołań},label={lst:rownanie-podstawowe}]
+\begin{equation}
+  U = RI,
+  \label{eq:prawo-ohma}
+\end{equation}
+Manual reference: equation~\eqref{eq:prawo-ohma}.
+Automatic reference: \cref{eq:prawo-ohma}.
+\end{lstlisting}
+
+\section{\ploren{Równania wielowierszowe}{Multi-line equations}}
+
+Środowisko \texttt{align} wyrównuje kolejne wiersze w miejscach oznaczonych znakiem
+\verb|&|. Przykładowy model silnika prądu stałego można zapisać jako
+\begin{align}
+  u(t) &= R i(t) + L\frac{\mathrm{d}i(t)}{\mathrm{d}t} + k_e\omega(t),
+    \label{eq:silnik-elektryczne}\\
+  J\frac{\mathrm{d}\omega(t)}{\mathrm{d}t}
+    &= k_t i(t) - b\omega(t) - T_L(t).
+    \label{eq:silnik-mechaniczne}
+\end{align}
+Równania~\ref{eq:silnik-elektryczne} i~\ref{eq:silnik-mechaniczne} opisują odpowiednio
+część elektryczną i mechaniczną modelu. Oba można przywołać jednym poleceniem:
+\cref{eq:silnik-elektryczne,eq:silnik-mechaniczne}.
+
+Jeżeli kilka wierszy stanowi jedno równanie, środowisko \texttt{split} nadaje im wspólny
+numer. Przykładowo wskaźnik jakości można zdefiniować jako
+\begin{equation}
+  \begin{split}
+    J(\boldsymbol{\theta})
+      &= \sum_{k=1}^{N}\left[y_k-\hat{y}_k(\boldsymbol{\theta})\right]^2 \\
+      &\quad + \lambda\lVert\boldsymbol{\theta}\rVert_2^2,
+  \end{split}
+  \label{eq:wskaznik-jakosci}
+\end{equation}
+gdzie pierwszy składnik opisuje błąd dopasowania, a drugi jest składnikiem
+regularyzacyjnym.
+
+\begin{lstlisting}[style=thesis,caption={Kod równań wielowierszowych},label={lst:rownania-wielowierszowe}]
+\begin{align}
+  u(t) &= R i(t) + L\frac{\mathrm{d}i(t)}{\mathrm{d}t}
+    + k_e\omega(t), \label{eq:silnik-elektryczne}\\
+  J\frac{\mathrm{d}\omega(t)}{\mathrm{d}t}
+    &= k_t i(t) - b\omega(t) - T_L(t).
+    \label{eq:silnik-mechaniczne}
+\end{align}
+
+\begin{equation}
+  \begin{split}
+    J(\boldsymbol{\theta})
+      &= \sum_{k=1}^{N}[y_k-\hat{y}_k(\boldsymbol{\theta})]^2 \\
+      &\quad + \lambda\lVert\boldsymbol{\theta}\rVert_2^2.
+  \end{split}
+\end{equation}
+\end{lstlisting}
+
+\section{\ploren{Układy równań, definicje przedziałowe i macierze}{Systems of equations, piecewise definitions and matrices}}
+
+Środowisko \texttt{cases} jest odpowiednie dla funkcji definiowanych przedziałami.
+Charakterystykę ogranicznika można przedstawić następująco:
+\begin{equation}
+  u_{\mathrm{sat}}(t)=
+  \begin{cases}
+    u_{\max}, & u(t)>u_{\max},\\
+    u(t), & u_{\min}\le u(t)\le u_{\max},\\
+    u_{\min}, & u(t)<u_{\min}.
+  \end{cases}
+  \label{eq:ogranicznik}
+\end{equation}
+Warunek umieszcza się po znaku \verb|&|, aby wszystkie opisy były wyrównane.
+
+Model w przestrzeni stanu zapisuje się zwarto za pomocą wektorów i macierzy:
+\begin{equation}
+  \dot{\boldsymbol{x}}(t)
+    = \boldsymbol{A}\boldsymbol{x}(t)+\boldsymbol{B}\boldsymbol{u}(t),
+  \qquad
+  \boldsymbol{y}(t)
+    = \boldsymbol{C}\boldsymbol{x}(t)+\boldsymbol{D}\boldsymbol{u}(t),
+  \label{eq:model-stanu}
+\end{equation}
+gdzie przykładowa macierz stanu ma postać
+\begin{equation}
+  \boldsymbol{A}=
+  \begin{bmatrix}
+    0 & 1\\
+    -\omega_0^2 & -2\zeta\omega_0
+  \end{bmatrix}.
+  \label{eq:macierz-stanu}
+\end{equation}
+
+\begin{lstlisting}[style=thesis,caption={Kod definicji przedziałowej i macierzy},label={lst:rownania-cases-matrix}]
+\begin{equation}
+  u_{\mathrm{sat}}(t)=
+  \begin{cases}
+    u_{\max}, & u(t)>u_{\max},\\
+    u(t), & u_{\min}\le u(t)\le u_{\max},\\
+    u_{\min}, & u(t)<u_{\min}.
+  \end{cases}
+\end{equation}
+
+\boldsymbol{A}=\begin{bmatrix}
+  0 & 1\\
+  -\omega_0^2 & -2\zeta\omega_0
+\end{bmatrix}
+\end{lstlisting}
+
+\section{\ploren{Funkcje, indeksy i symbole}{Functions, indices and symbols}}
+
+Nazwy standardowych funkcji należy zapisywać poleceniami takimi jak \verb|\sin|,
+\verb|\log| i \verb|\exp|, dzięki czemu pozostają proste i mają prawidłowe odstępy:
+\begin{equation}
+  x(t)=A\exp(-\alpha t)\sin(2\pi f t+\varphi).
+  \label{eq:sygnal-tlumiony}
+\end{equation}
+Indeks będący zmienną zapisuje się kursywą, jak w $x_i$, natomiast indeks opisowy
+pismem prostym, na przykład $U_{\mathrm{we}}$, $I_{\mathrm{rms}}$ i $T_{\max}$.
+Symbol różniczki można zapisać jako prostą literę: $\mathrm{d}t$. Iloczyn skalarny
+warto oznaczać jednoznacznie, np. $\boldsymbol{a}\cdot\boldsymbol{b}$, zamiast
+pozostawiać przypadkowy odstęp.
+
+Wieloliterowe nazwy własnych operatorów można tworzyć poleceniem
+\verb|\operatorname|, np.
+\begin{equation}
+  \operatorname{RMSE}
+    = \sqrt{\frac{1}{N}\sum_{k=1}^{N}(y_k-\hat{y}_k)^2}.
+  \label{eq:rmse}
+\end{equation}
+Jeżeli operator występuje wielokrotnie, warto zdefiniować go w pliku stylu poleceniem
+\verb|\DeclareMathOperator|.
+
+\section{\ploren{Liczby i zapis naukowy}{Numbers and scientific notation}}
+
+Pakiet \texttt{siunitx} formatuje liczby zgodnie z językiem dokumentu. Kod źródłowy
+może zawsze zawierać kropkę dziesiętną, natomiast wynik będzie miał przecinek w wersji
+polskiej i kropkę w angielskiej:
+\begin{itemize}
+  \item liczba dziesiętna: \num{12345.6789};
+  \item zapis naukowy: \num{1.25e-6};
+  \item zakres wartości: \numrange{10}{25};
+  \item wartość z niepewnością: \num{12.04(3)}.
+\end{itemize}
+
+Nie należy wpisywać ręcznie spacji rozdzielających grupy cyfr ani zamieniać separatora
+dziesiętnego w przecinek w danych źródłowych. Liczba miejsc znaczących powinna wynikać
+z dokładności metody, a nie z domyślnych ustawień programu obliczeniowego.
+
+\begin{lstlisting}[style=thesis,caption={Formatowanie liczb za pomocą siunitx},label={lst:liczby-siunitx}]
+\num{12345.6789}
+\num{1.25e-6}
+\numrange{10}{25}
+\num{12.04(3)}
+\end{lstlisting}
+
+\section{\ploren{Jednostki SI}{SI units}}
+
+Wartość i jednostkę należy łączyć poleceniem \verb|\SI|. Pakiet automatycznie wstawia
+niełamliwy odstęp, zapisuje symbol jednostki pismem prostym i poprawnie składa przedrostki:
+\begin{itemize}
+  \item napięcie: \SI{24}{\volt};
+  \item rezystancja: \SI{4.7}{\kilo\ohm};
+  \item częstotliwość: \SI{20}{\kilo\hertz};
+  \item przyspieszenie: \SI{9.81}{\metre\per\second\squared};
+  \item moment obrotowy: \SI{12.5}{\newton\metre};
+  \item temperatura: \SI{23.5}{\degreeCelsius};
+  \item udział procentowy: \SI{98.2}{\percent};
+  \item zakres napięcia: \SIrange{0}{10}{\volt};
+  \item napięcie z niepewnością: \SI{12.04(3)}{\volt}.
+\end{itemize}
+
+Między symbolami jednostek występuje mnożenie, natomiast \verb|\per| tworzy jednostkę
+w mianowniku. Nie należy dodawać kropki po symbolu jednostki, chyba że kończy ona zdanie.
+Symbole jednostek nie otrzymują liczby mnogiej. Wartości bezwymiarowe również można
+formatować poleceniem \verb|\num|.
+
+\begin{lstlisting}[style=thesis,caption={Przykłady zapisu jednostek SI},label={lst:jednostki-si}]
+\SI{24}{\volt}
+\SI{4.7}{\kilo\ohm}
+\SI{9.81}{\metre\per\second\squared}
+\SI{12.5}{\newton\metre}
+\SI{23.5}{\degreeCelsius}
+\SI{98.2}{\percent}
+\SIrange{0}{10}{\volt}
+\SI{12.04(3)}{\volt}
+\end{lstlisting}
+
+\section{\ploren{Najczęstsze błędy}{Common mistakes}}
+
+Do typowych błędów należą: brak objaśnienia symboli, zmiana oznaczeń między rozdziałami,
+ręczne wpisywanie numerów równań, brak interpunkcji po równaniu, kursywa w symbolach
+jednostek i nazwach funkcji, jednostka bez odstępu od liczby, mieszanie zapisu
+dziesiętnego, podawanie nadmiernej liczby cyfr oraz używanie tego samego symbolu dla
+różnych wielkości. Należy również unikać równań będących jedynie obrazami lub zrzutami
+ekranu --- wzory powinny pozostać tekstem matematycznym LaTeX-a.

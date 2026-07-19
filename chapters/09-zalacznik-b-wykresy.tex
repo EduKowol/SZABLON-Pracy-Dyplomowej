@@ -1,0 +1,615 @@
+\chapter{\ploren{Wykresy i prezentacja danych}{Plots and data presentation}}
+\label{app:wykresy}
+
+\begin{quote}
+\itshape
+\ploren
+  {Ten załącznik zawiera przykłady instruktażowe przeznaczone do usunięcia lub zastąpienia wynikami autora. Dane są demonstracyjne i nie stanowią rezultatów rzeczywistych badań.}
+  {This appendix contains instructional examples that should be removed or replaced with the author's own results. The data are illustrative and do not constitute results of an actual study.}
+\end{quote}
+
+Wykres powinien odpowiadać na określone pytanie i umożliwiać poprawne odczytanie danych. Nie należy traktować go wyłącznie jako elementu dekoracyjnego. Każdy wykres wymaga omówienia w tekście, podpisu, etykiety oraz jednoznacznych nazw osi i jednostek. Zasady dotyczące formatów, czytelności, źródeł i plików edytowalnych przedstawiono w Załączniku~\ref{app:rysunki}; obowiązują one również w tej części.
+
+\section{\ploren{Formaty przechowywania danych}{Data storage formats}}
+
+CSV jest najczęściej stosowanym formatem wymiany niewielkich i średnich tabel danych. Jest tekstowy, łatwy do kontroli wersji i obsługiwany przez MATLAB, Python, arkusze kalkulacyjne oraz \texttt{pgfplots}. Należy jednak jawnie ustalić separator kolumn, znak dziesiętny, kodowanie i obecność nagłówka. W pliku przeznaczonym do automatycznego przetwarzania bezpiecznym wyborem są przecinek jako separator kolumn oraz kropka jako znak dziesiętny.
+
+W praktyce spotyka się również:
+
+\begin{itemize}
+  \item TSV — tekstowe kolumny rozdzielone tabulatorem; separator tabulatora wskazuje się podczas wczytywania danych,
+  \item DAT lub TXT — dane rozdzielone spacjami albo zapisane w formacie właściwym dla danego programu; dla białych znaków można użyć \verb|col sep=space|,
+  \item XLSX lub ODS — wygodne do ręcznego przeglądania, ale mniej odpowiednie do kontroli wersji; dane do wykresu warto wyeksportować do CSV,
+  \item MAT, NPZ, HDF5 lub Parquet — przydatne dla dużych tablic, wielu kanałów i metadanych; przed użyciem w LaTeX zwykle przygotowuje się skrypt tworzący CSV albo gotowy wykres,
+  \item JSON — właściwy dla danych hierarchicznych i wyników aplikacji, lecz przed narysowaniem wykresu zazwyczaj wymaga przekształcenia do tabeli.
+\end{itemize}
+
+Nie należy ręcznie kopiować długich kolumn do kodu LaTeX. Plik źródłowy powinien zachować dane z możliwie pełną dokładnością, natomiast sposób zaokrąglania wartości należy określić dopiero podczas tworzenia tabeli lub wykresu. Komentarze i metadane muszą być zapisane tak, aby nie zostały omyłkowo odczytane jako obserwacje.
+
+Przykładowy plik tekstowy może zostać wczytany następująco:
+
+\begin{lstlisting}[numbers=none]
+\addplot table[
+  x=frequency_Hz,
+  y=gain_dB,
+  col sep=space,
+  comment chars={\#}
+]{data/charakterystyka.dat};
+\end{lstlisting}
+
+\section{\ploren{Wykres tworzony bezpośrednio w LaTeX}{Plot generated directly in LaTeX}}
+
+Pakiet \texttt{pgfplots} umożliwia obliczenie i narysowanie funkcji bez używania zewnętrznego programu. Rysunek~\ref{fig:wykres-funkcji} przedstawia prosty przebieg sinusoidalny. Taki sposób jest przydatny dla zależności analitycznych i niewielkich przykładów, ponieważ tekst oraz symbole zachowują styl dokumentu.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      width=0.86\textwidth,
+      height=0.46\textwidth,
+      xlabel={Czas $t$ (\si{\second})},
+      ylabel={Amplituda (y)},
+      xmin=0,xmax=6.283,
+      ymin=-1.15,ymax=1.15,
+      grid=both,
+      minor tick num=1,
+      domain=0:6.283,
+      samples=160
+    ]
+      \addplot[thesislinkblue,very thick] {sin(deg(x))};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{\ploren{Przykładowy przebieg funkcji sinusoidalnej}{Example sinusoidal waveform}}
+  \label{fig:wykres-funkcji}
+\end{figure}
+
+\begin{lstlisting}[caption={\ploren{Wykres funkcji w pakiecie pgfplots}{Function plot using pgfplots}}]
+\begin{tikzpicture}
+  \begin{axis}[
+    xlabel={Czas \(t\) (\si{\second})},
+    ylabel={Amplituda \(y\)},
+    grid=both,
+    domain=0:6.283,
+    samples=160
+  ]
+    \addplot[thesislinkblue,very thick]
+      {sin(deg(x))};
+  \end{axis}
+\end{tikzpicture}
+\end{lstlisting}
+
+Parametr \texttt{domain} wyznacza zakres argumentu, natomiast \texttt{samples} liczbę punktów użytych do narysowania krzywej. Zbyt mała liczba próbek może powodować widoczne załamania, a nadmierna niepotrzebnie wydłuża kompilację.
+
+\section{\ploren{Wykres z danych zapisanych w CSV}{Plot from CSV data}}
+
+Dane pomiarowe lub wyniki obliczeń najlepiej przechowywać poza plikiem \texttt{.tex}. Rysunek~\ref{fig:wykres-csv} jest generowany z pliku \texttt{data/odpowiedz.csv}. Zmiana danych nie wymaga wtedy ręcznego poprawiania współrzędnych w kodzie wykresu.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      width=0.88\textwidth,
+      height=0.50\textwidth,
+      xlabel={Czas $t$ (\si{\second})},
+      ylabel={Wartość znormalizowana},
+      xmin=0,xmax=2,
+      ymin=0,ymax=1.08,
+      grid=major,
+      legend pos=south east,
+      legend cell align=left
+    ]
+      \addplot[thesislinkblue,very thick,mark=*]
+        table[x=time,y=reference,col sep=comma]
+        {chapters/09-zalacznik-b-wykresy/data/odpowiedz.csv};
+      \addlegendentry{Wartość zadana}
+      \addplot[thesiscodestring,very thick,dashed,mark=square*]
+        table[x=time,y=measured,col sep=comma]
+        {chapters/09-zalacznik-b-wykresy/data/odpowiedz.csv};
+      \addlegendentry{Wartość zmierzona}
+    \end{axis}
+  \end{tikzpicture}
+  \caption{\ploren{Porównanie wartości zadanej i zmierzonej na podstawie danych CSV}{Comparison of reference and measured values from CSV data}}
+  \label{fig:wykres-csv}
+\end{figure}
+
+\begin{lstlisting}[caption={\ploren{Wczytywanie dwóch serii z pliku CSV}{Loading two series from a CSV file}}]
+\addplot[blue,thick,mark=*]
+  table[x=time,y=reference,col sep=comma]
+  {data/odpowiedz.csv};
+\addlegendentry{Wartość zadana}
+
+\addplot[red,thick,dashed,mark=square*]
+  table[x=time,y=measured,col sep=comma]
+  {data/odpowiedz.csv};
+\addlegendentry{Wartość zmierzona}
+\end{lstlisting}
+
+Serie rozróżniono jednocześnie kolorem, rodzajem linii i znacznikiem. Dzięki temu wykres pozostaje czytelny po wydruku w skali szarości. Plik CSV powinien zawierać nagłówki opisujące kolumny, a separator określa się opcją \texttt{col sep}.
+
+\section{\ploren{Aproksymacja i interpolacja danych}{Data approximation and interpolation}}
+
+\subsection{\ploren{Różnica między aproksymacją i interpolacją}{Difference between approximation and interpolation}}
+
+Aproksymacja wyznacza model, który opisuje ogólną zależność w danych, ale nie musi przechodzić przez każdy punkt pomiarowy. Stosuje się ją między innymi do estymacji parametrów, ograniczenia wpływu szumu i opisu trendu. Interpolacja wyznacza wartości pomiędzy znanymi punktami i w typowym przypadku przechodzi przez wszystkie dane wejściowe. Nie powinna być mylona z ekstrapolacją poza zakres pomiarów.
+
+Na rysunku~\ref{fig:aproksymacja-interpolacja} przedstawiono oba przypadki obok siebie. Punkty oznaczają dane pomiarowe. Na rysunku~\ref{fig:aproksymacja} linia ciągła przedstawia liniowy model aproksymacyjny (y=\num{2.049}x+\num{0.895}), którego współczynniki wyznaczono wcześniej w skrypcie obliczeniowym. Na rysunku~\ref{fig:interpolacja} linia przerywana łączy wartości uzyskane przez interpolację liniową wewnątrz zakresu danych.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        width=\linewidth,
+        height=0.78\linewidth,
+        xlabel={Wielkość wejściowa (x)},
+        ylabel={Wielkość wyjściowa (y)},
+        xmin=-0.2,xmax=5.2,
+        ymin=0,ymax=12,
+        grid=major,
+        legend style={font=\footnotesize},
+        legend pos=north west
+      ]
+        \addplot[only marks,mark=*,black,mark size=2.2pt]
+          table[x=x,y=measurement,col sep=comma]
+          {chapters/09-zalacznik-b-wykresy/data/aproksymacja.csv};
+        \addlegendentry{Pomiary}
+        \addplot[thesislinkblue,line width=1.2pt]
+          table[x=x,y=fit,col sep=comma]
+          {chapters/09-zalacznik-b-wykresy/data/aproksymacja.csv};
+        \addlegendentry{Aproksymacja}
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Aproksymacja liniowa}
+    \label{fig:aproksymacja}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        width=\linewidth,
+        height=0.78\linewidth,
+        xlabel={Wielkość wejściowa (x)},
+        ylabel={Wielkość wyjściowa (y)},
+        xmin=-0.2,xmax=5.2,
+        ymin=0,ymax=12,
+        grid=major,
+        legend style={font=\footnotesize},
+        legend pos=north west
+      ]
+        \addplot[thesiscodestring,dashed,line width=1.2pt]
+          table[x=x,y=interpolated,col sep=comma]
+          {chapters/09-zalacznik-b-wykresy/data/interpolacja.csv};
+        \addlegendentry{Interpolacja}
+        \addplot[only marks,mark=square*,black,mark size=2.2pt]
+          table[x=x,y=measurement,col sep=comma]
+          {chapters/09-zalacznik-b-wykresy/data/aproksymacja.csv};
+        \addlegendentry{Pomiary}
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Interpolacja liniowa}
+    \label{fig:interpolacja}
+  \end{subfigure}
+  \caption{Porównanie aproksymacji i interpolacji demonstracyjnych danych pomiarowych}
+  \label{fig:aproksymacja-interpolacja}
+\end{figure}
+
+\begin{lstlisting}[caption={\ploren{Aproksymacja i interpolacja z danych CSV}{Approximation and interpolation from CSV data}}]
+% Punkty pomiarowe
+\addplot[only marks,mark=*,black]
+  table[x=x,y=measurement,col sep=comma]
+  {data/aproksymacja.csv};
+
+% Wartości modelu aproksymacyjnego
+\addplot[blue,line width=1.2pt]
+  table[x=x,y=fit,col sep=comma]
+  {data/aproksymacja.csv};
+
+% Wartości obliczone przez interpolację
+\addplot[red,dashed,line width=1.2pt]
+  table[x=x,y=interpolated,col sep=comma]
+  {data/interpolacja.csv};
+\end{lstlisting}
+
+Metodę wyznaczenia współczynników aproksymacji i wartości interpolowanych należy opisać w tekście oraz zachować w skrypcie MATLAB-a, Pythona lub innego środowiska. Współczynniki modelu, stopień wielomianu, rodzaj funkcji bazowej i sposób ważenia punktów nie mogą wynikać wyłącznie z ręcznego dopasowania wyglądu krzywej. Należy również sprawdzić, czy wybrany model ma uzasadnienie techniczne i czy nie powoduje nadmiernego dopasowania.
+
+\subsection{\ploren{Ocena jakości aproksymacji}{Evaluation of approximation quality}}
+
+Ocena modelu nie powinna opierać się wyłącznie na wyglądzie dopasowanej linii. Dla przedstawionych danych błąd średniokwadratowy wynosi $\mathrm{RMSE}=\num{0.155}$, a współczynnik determinacji $R^2=\num{0.998}$. Wartości te trzeba interpretować łącznie z jednostkami, zakresem danych, liczbą pomiarów i założeniami modelu.
+
+Na rysunku~\ref{fig:reszty-aproksymacji} pokazano reszty, czyli różnice pomiędzy pomiarem i wartością modelu. Ich analiza pozwala zauważyć systematyczną zależność, zmienną wariancję albo obserwacje odstające, których sama wartość \(R^2\) może nie ujawnić.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      width=0.82\textwidth,
+      height=0.42\textwidth,
+      xlabel={Wielkość wejściowa (x)},
+      ylabel={Reszta $e=y-\hat{y}$},
+      xmin=-0.2,xmax=5.2,
+      ymin=-0.30,ymax=0.30,
+      grid=major
+    ]
+      \addplot[black,thin] coordinates {(0,0) (5,0)};
+      \addplot[only marks,mark=*,thesislinkblue,mark size=2.5pt]
+        table[x=x,y=residual,col sep=comma]
+        {chapters/09-zalacznik-b-wykresy/data/aproksymacja.csv};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Reszty liniowego modelu aproksymacyjnego}
+  \label{fig:reszty-aproksymacji}
+\end{figure}
+
+\begin{lstlisting}[caption={\ploren{Wykres reszt modelu}{Residual plot}}]
+\addplot[black,thin]
+  coordinates {(0,0) (5,0)};
+\addplot[only marks,mark=*,blue]
+  table[x=x,y=residual,col sep=comma]
+  {data/aproksymacja.csv};
+\end{lstlisting}
+
+Wartość \(R^2\) bliska jedności nie dowodzi automatycznie poprawności modelu ani związku przyczynowego. Dla modeli nieliniowych i danych walidacyjnych mogą być potrzebne inne miary. Zwiększanie stopnia wielomianu tylko w celu poprawienia wskaźnika może prowadzić do nadmiernego dopasowania i niestabilnej ekstrapolacji.
+
+\section{\ploren{Kilka wykresów w jednym układzie}{Multiple plots in one layout}}
+
+Przykład z rysunku~\ref{fig:aproksymacja-interpolacja} wykorzystuje dwa środowiska \texttt{subfigure}, z których każde zajmuje \SI{48}{\percent} szerokości tekstu. Dzięki temu wykresy znajdują się obok siebie i mają wspólny podpis. Taki układ jest właściwy tylko wtedy, gdy opisy osi i legendy pozostają czytelne.
+
+\begin{lstlisting}[caption={\ploren{Dwa wykresy obok siebie}{Two plots side by side}}]
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[width=\linewidth]
+        % pierwszy wykres
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Pierwszy wykres}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[width=\linewidth]
+        % drugi wykres
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Drugi wykres}
+  \end{subfigure}
+  \caption{Wspólny podpis}
+\end{figure}
+\end{lstlisting}
+
+Jeżeli wykresy są zbyt małe, należy umieścić je jeden pod drugim. Każdy element może wtedy wykorzystać całą szerokość tekstu:
+
+\begin{lstlisting}[caption={\ploren{Dwa wykresy jeden pod drugim}{Two plots stacked vertically}}]
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}{\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[width=0.85\textwidth]
+        % pierwszy wykres
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Pierwszy wykres}
+  \end{subfigure}
+
+  \medskip
+
+  \begin{subfigure}{\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[width=0.85\textwidth]
+        % drugi wykres
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Drugi wykres}
+  \end{subfigure}
+  \caption{Wspólny podpis}
+\end{figure}
+\end{lstlisting}
+
+Można także zastosować kilka środowisk \texttt{axis} bez \texttt{subfigure}, pakietowe układy grupowe albo osobne rysunki. Pokazane rozwiązania nie są jedynymi możliwościami; wybór powinien zależeć od liczby wykresów, potrzeby wspólnego podpisu i czytelności w docelowym rozmiarze.
+
+\section{\ploren{Grubość linii, znaczniki i style}{Line width, markers and styles}}
+
+Styl serii określa się w opcjach polecenia \verb|\addplot|. Dostępne są między innymi predefiniowane grubości \texttt{thin}, \texttt{semithick}, \texttt{thick} i \texttt{very thick}. Dokładną wartość można podać przez \verb|line width=1.2pt|. Rodzaj linii określają opcje \texttt{solid}, \texttt{dashed}, \texttt{dotted} i \texttt{dashdotted}.
+
+\begin{lstlisting}[caption={\ploren{Przykłady zmiany stylu serii danych}{Examples of changing a data-series style}}]
+\addplot[thin,solid,blue] ...;
+\addplot[very thick,dashed,red] ...;
+\addplot[line width=1.2pt,dashdotted,black] ...;
+\addplot[
+  semithick,
+  mark=square*,
+  mark size=2.5pt,
+  mark options={fill=white},
+  color=blue
+] ...;
+\end{lstlisting}
+
+Można również ustawić \texttt{opacity}, własny wzór kreskowania, kolor znacznika, rozmiar symboli i częstotliwość ich wyświetlania za pomocą \texttt{mark repeat}. Styl powinien być spójny w całej pracy. Warto zdefiniować powtarzające się zestawy opcji za pomocą \verb|\pgfplotsset|, zamiast kopiować je do każdego wykresu:
+
+\begin{lstlisting}[caption={\ploren{Definicja własnych stylów wykresu}{Definition of custom plot styles}}]
+\pgfplotsset{
+  pomiar/.style={
+    only marks,
+    mark=*,
+    mark size=2.2pt,
+    color=black
+  },
+  model/.style={
+    line width=1.2pt,
+    color=blue
+  }
+}
+
+\addplot[pomiar] ...;
+\addplot[model] ...;
+\end{lstlisting}
+
+Kolory można definiować poleceniem \verb|\definecolor|, ale nie należy opierać rozróżnienia serii wyłącznie na barwie. Grubsza linia nie powinna służyć do sugerowania większej ważności wyniku, jeśli taka hierarchia nie została wyjaśniona.
+
+\section{\ploren{Niepewność i rozrzut danych}{Uncertainty and data variability}}
+
+Pojedyncza linia nie informuje o niepewności ani zmienności wyniku. Jeżeli są one istotne dla wniosków, należy zastosować słupki błędów, pasmo ufności, wykres pudełkowy albo przedstawić pojedyncze obserwacje. Na rysunku~\ref{fig:wykres-niepewnosc} słupki pokazują demonstracyjną niepewność wartości zmierzonej.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      width=0.86\textwidth,
+      height=0.48\textwidth,
+      xlabel={Czas $t$ (\si{\second})},
+      ylabel={Wartość zmierzona},
+      xmin=0,xmax=2,
+      ymin=0,ymax=1.08,
+      grid=major
+    ]
+      \addplot[only marks,mark=*,thesislinkblue,
+        error bars/.cd,y dir=both,y explicit]
+        table[x=time,y=measured,y error=uncertainty,col sep=comma]
+        {chapters/09-zalacznik-b-wykresy/data/odpowiedz.csv};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{\ploren{Przykład przedstawienia wartości wraz z niepewnością}{Example presentation of values with uncertainty}}
+  \label{fig:wykres-niepewnosc}
+\end{figure}
+
+\begin{lstlisting}[caption={\ploren{Słupki błędów z wartości zapisanych w CSV}{Error bars from values stored in CSV}}]
+\addplot[
+  only marks,
+  mark=*,
+  error bars/.cd,
+  y dir=both,
+  y explicit
+]
+table[
+  x=time,
+  y=measured,
+  y error=uncertainty,
+  col sep=comma
+]{data/odpowiedz.csv};
+\end{lstlisting}
+
+W podpisie lub tekście trzeba wyjaśnić, co oznaczają słupki błędów: odchylenie standardowe, błąd standardowy, przedział ufności czy niepewność pomiaru. Samo narysowanie słupków bez tej informacji jest niewystarczające.
+
+\section{\ploren{Wykres słupkowy}{Bar chart}}
+
+Wykres słupkowy jest odpowiedni do porównania odrębnych kategorii, ale nie powinien zastępować wykresu przebiegu ciągłego. Rysunek~\ref{fig:wykres-slupkowy} przedstawia przykład porównania czasu obliczeń trzech wariantów. Wartości umieszczono nad słupkami, dzięki czemu wykres pozostaje jednoznaczny bez odczytywania ich wyłącznie z wysokości.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      ybar,
+      width=0.72\textwidth,
+      height=0.48\textwidth,
+      ylabel={Czas obliczeń (\si{\milli\second})},
+      symbolic x coords={A,B,C},
+      xtick=data,
+      ymin=0,ymax=50,
+      nodes near coords,
+      bar width=22pt,
+      grid=major
+    ]
+      \addplot[fill=thesislinkblue!55,draw=black]
+        coordinates {(A,42) (B,31) (C,24)};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{\ploren{Przykładowe porównanie czasu obliczeń trzech wariantów}{Example comparison of computation time for three variants}}
+  \label{fig:wykres-slupkowy}
+\end{figure}
+
+Oś wykresu słupkowego powinna zwykle rozpoczynać się od zera, ponieważ długość słupka reprezentuje wartość. Skrócenie osi może wizualnie wyolbrzymić niewielkie różnice.
+
+\section{\ploren{Skala logarytmiczna i charakterystyka częstotliwościowa}{Logarithmic scale and frequency response}}
+
+Skalę logarytmiczną stosuje się, gdy wartości obejmują wiele rzędów wielkości albo gdy wynika to z przyjętej metody analizy. Jest ona typowa dla charakterystyk częstotliwościowych, wykresów Bodego, widm oraz zależności potęgowych. Rysunek~\ref{fig:skala-logarytmiczna} przedstawia demonstracyjną charakterystykę amplitudową układu dolnoprzepustowego o częstotliwości granicznej \(f_c=\SI{100}{\hertz}\).
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}
+    \begin{semilogxaxis}[
+      width=0.86\textwidth,
+      height=0.48\textwidth,
+      xlabel={Częstotliwość $f$ (\si{\hertz})},
+      ylabel={Wzmocnienie $K$ (\si{\decibel})},
+      xmin=10,xmax=10000,
+      ymin=-42,ymax=2,
+      grid=both,
+      domain=10:10000,
+      samples=180
+    ]
+      \addplot[thesislinkblue,line width=1.2pt]
+        {-10*ln(1+(x/100)^2)/ln(10)};
+      \addplot[black,dashed,thin]
+        coordinates {(100,-42) (100,2)};
+    \end{semilogxaxis}
+  \end{tikzpicture}
+  \caption{Przykład charakterystyki amplitudowej ze skalą logarytmiczną częstotliwości}
+  \label{fig:skala-logarytmiczna}
+\end{figure}
+
+\begin{lstlisting}[caption={\ploren{Wykres z logarytmiczną osią częstotliwości}{Plot with a logarithmic frequency axis}}]
+\begin{semilogxaxis}[
+  xlabel={Częstotliwość \(f\) (\si{\hertz})},
+  ylabel={Wzmocnienie \(K\) (\si{\decibel})},
+  xmin=10,
+  xmax=10000,
+  grid=both
+]
+  \addplot[blue,line width=1.2pt]
+    {-10*ln(1+(x/100)^2)/ln(10)};
+\end{semilogxaxis}
+\end{lstlisting}
+
+Pakiet udostępnia również środowiska \texttt{semilogyaxis} i \texttt{loglogaxis}. Nie wolno stosować skali logarytmicznej dla zera ani wartości ujemnych. Rodzaj skali musi być widoczny na osi i uwzględniony podczas interpretacji nachylenia oraz odległości pomiędzy punktami.
+
+\section{\ploren{MATLAB, Python i inne narzędzia}{MATLAB, Python and other tools}}
+
+Wykresy przygotowane w MATLAB-ie, Pythonie lub innym środowisku można wykorzystać na dwa profesjonalne sposoby. Pierwszy polega na zapisaniu danych do CSV i utworzeniu wykresu w \texttt{pgfplots}. Zapewnia to spójne czcionki i styl, ale może wydłużyć kompilację przy bardzo dużych zbiorach danych.
+
+Drugi sposób polega na przygotowaniu kompletnego wykresu w programie źródłowym i eksporcie do PDF. Jest zalecany dla złożonych wykresów, dużej liczby punktów oraz typów grafiki, których \texttt{pgfplots} nie obsługuje wygodnie. PNG należy pozostawić głównie dla wyników rastrowych, takich jak mapy cieplne, obrazy, spektrogramy lub wizualizacje macierzy. Nie należy wykonywać zrzutu ekranu, jeśli program umożliwia prawidłowy eksport.
+
+Skrypt generujący wykres, dane i informacje o użytych wersjach bibliotek powinny pozostać w katalogu zasobów rozdziału. Wykres musi dać się odtworzyć bez ręcznej zmiany wartości, kolorów lub podpisów w programie graficznym.
+
+Poniższe skrypty wczytują ten sam plik CSV, wyznaczają liniowy model aproksymacyjny, obliczają RMSE i \(R^2\), a następnie eksportują wykres wektorowy PDF. Są to kompletne pliki znajdujące się w katalogu \texttt{scripts}.
+
+Skrypt Pythona wymaga bibliotek \texttt{numpy} i \texttt{matplotlib}, wymienionych w pliku \texttt{scripts/requirements.txt}. Można je zainstalować w używanym środowisku wirtualnym poleceniem \verb|python -m pip install -r scripts/requirements.txt|. Zależności projektu powinny być instalowane w środowisku przeznaczonym dla danej pracy, a nie dopisywane ręcznie na komputerze osoby kompilującej dokument.
+
+\lstinputlisting[
+  style=thesis-python,
+  caption={\ploren{Aproksymacja i eksport wykresu w Pythonie}{Approximation and plot export in Python}}
+]{chapters/09-zalacznik-b-wykresy/scripts/wykres.py}
+
+\lstinputlisting[
+  style=thesis-matlab,
+  caption={\ploren{Aproksymacja i eksport wykresu w MATLAB-ie}{Approximation and plot export in MATLAB}}
+]{chapters/09-zalacznik-b-wykresy/scripts/wykres.m}
+
+Wersje języka i bibliotek należy zapisać w dokumentacji projektu albo pliku środowiska. Sam plik PDF nie wystarcza do odtworzenia wyniku, jeżeli nie zachowano danych, kodu i konfiguracji.
+
+\section{\ploren{Zaawansowane sposoby prezentacji danych}{Advanced data presentation}}
+
+\subsection{\ploren{Histogram}{Histogram}}
+
+Histogram przedstawia przybliżony rozkład obserwacji przez zliczenie wartości w przedziałach. Liczba i szerokość przedziałów wpływają na wygląd, dlatego nie należy dobierać ich wyłącznie w celu uzyskania oczekiwanego obrazu. Rysunek~\ref{fig:histogram} wykorzystuje pojedynczą kolumnę pliku CSV.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      ybar interval,
+      width=0.78\textwidth,
+      height=0.46\textwidth,
+      xlabel={Wartość zmierzona},
+      ylabel={Liczba obserwacji},
+      grid=major
+    ]
+      \addplot[hist={bins=8},fill=thesislinkblue!55,draw=black]
+        table[y=value,col sep=comma]
+        {chapters/09-zalacznik-b-wykresy/data/proby.csv};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Histogram demonstracyjnych wyników pomiarów}
+  \label{fig:histogram}
+\end{figure}
+
+\begin{lstlisting}[caption={\ploren{Histogram danych z pliku CSV}{Histogram of data from a CSV file}}]
+\addplot[
+  hist={bins=8},
+  fill=blue!55,
+  draw=black
+]
+table[y=value,col sep=comma]
+{data/proby.csv};
+\end{lstlisting}
+
+\subsection{\ploren{Mapa cieplna}{Heat map}}
+
+Mapa cieplna przedstawia wartość za pomocą koloru w dwóch wymiarach przestrzennych lub parametrycznych. Musi zawierać skalę barwną z nazwą wielkości i jednostką. Rysunek~\ref{fig:mapa-cieplna} pokazuje demonstracyjny rozkład temperatury.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      width=0.72\textwidth,
+      height=0.58\textwidth,
+      xlabel={Położenie $x$ (\si{\centi\metre})},
+      ylabel={Położenie $y$ (\si{\centi\metre})},
+      view={0}{90},
+      colorbar,
+      colorbar style={ylabel={Temperatura (\si{\degreeCelsius})}},
+      colormap/hot2
+    ]
+      \addplot[matrix plot*,point meta=explicit]
+        table[x=x,y=y,meta=value,col sep=comma]
+        {chapters/09-zalacznik-b-wykresy/data/mapa-cieplna.csv};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Przykładowa mapa cieplna rozkładu temperatury}
+  \label{fig:mapa-cieplna}
+\end{figure}
+
+\begin{lstlisting}[caption={\ploren{Mapa cieplna z wartościami jawnymi}{Heat map with explicit values}}]
+\begin{axis}[
+  view={0}{90},
+  colorbar,
+  colormap/hot2
+]
+  \addplot[matrix plot*,point meta=explicit]
+    table[x=x,y=y,meta=value,col sep=comma]
+    {data/mapa-cieplna.csv};
+\end{axis}
+\end{lstlisting}
+
+Paleta barw powinna być czytelna dla osób z zaburzeniami rozpoznawania kolorów i po wydruku w skali szarości. Palet tęczowych należy unikać, ponieważ mogą tworzyć sztuczne granice i utrudniać ocenę zmian wartości.
+
+\subsection{\ploren{Spektrogram}{Spectrogram}}
+
+Spektrogram jest mapą wartości w dziedzinie czasu i częstotliwości. Oprócz osi i skali barw trzeba podać sposób wyznaczenia widma: długość okna, rodzaj okna, nakładanie segmentów, częstotliwość próbkowania i sposób skalowania amplitudy. Rysunek~\ref{fig:spektrogram} jest niewielkim przykładem demonstracyjnym.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      width=0.78\textwidth,
+      height=0.52\textwidth,
+      xlabel={Czas $t$ (\si{\second})},
+      ylabel={Częstotliwość $f$ (\si{\hertz})},
+      view={0}{90},
+      colorbar,
+      colorbar style={ylabel={Moc znormalizowana}},
+      colormap/hot2
+    ]
+      \addplot[matrix plot*,point meta=explicit]
+        table[x=time,y=frequency,meta=power,col sep=comma]
+        {chapters/09-zalacznik-b-wykresy/data/spektrogram.csv};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Demonstracyjny spektrogram sygnału}
+  \label{fig:spektrogram}
+\end{figure}
+
+\begin{lstlisting}[caption={\ploren{Spektrogram zapisany jako tabela wartości}{Spectrogram stored as a table of values}}]
+\addplot[matrix plot*,point meta=explicit]
+  table[
+    x=time,
+    y=frequency,
+    meta=power,
+    col sep=comma
+  ]
+  {data/spektrogram.csv};
+\end{lstlisting}
+
+Dla dużych macierzy spektrogram lub mapę cieplną zwykle lepiej wygenerować w MATLAB-ie albo Pythonie i wyeksportować do PNG lub PDF. W pracy należy zachować dane oraz parametry użyte do utworzenia obrazu.
+
+\section{\ploren{Dobór rodzaju wykresu i typowe błędy}{Choosing a plot type and common mistakes}}
+
+Wykres liniowy służy do prezentowania przebiegu lub uporządkowanej zależności, punktowy do pokazania obserwacji i korelacji, słupkowy do porównania kategorii, a histogram do przedstawienia rozkładu. Skala logarytmiczna jest właściwa przy danych obejmujących wiele rzędów wielkości, ale musi zostać jasno oznaczona.
+
+Należy unikać wykresów trójwymiarowych dla danych, które można czytelniej przedstawić w dwóch wymiarach, podwójnych osi pionowych bez mocnego uzasadnienia, nadmiernie wygładzonych przebiegów, niewyjaśnionych skrótów, zbyt małej czcionki i ręcznie dobranych granic osi sugerujących nieistniejące różnice. Wykres powinien prezentować dane uczciwie i umożliwiać ich ocenę, a nie jedynie wspierać oczekiwaną tezę.

@@ -1,0 +1,322 @@
+\chapter{\ploren{Schematy elektryczne i układy automatyki}{Electrical schematics and automation systems}}
+\label{app:schematy}
+
+\begin{quote}
+\itshape
+\ploren
+  {
+Niniejszy załącznik przedstawia wybrane sposoby przygotowania schematów elektrycznych,
+blokowych i funkcjonalnych. Przykłady należy dostosować do rodzaju pracy, przyjętych
+norm branżowych oraz zasad obowiązujących w danej dziedzinie. Nie są to jedyne możliwe
+metody tworzenia takich ilustracji.
+  }
+  {This appendix presents selected methods for preparing electrical, block and functional diagrams. The examples should be adapted to the type of thesis, applicable industry standards and conventions adopted in the relevant discipline. These are not the only possible methods for creating such illustrations.}
+\end{quote}
+
+\section{\ploren{Zasady przygotowania schematów}{Principles for preparing diagrams}}
+
+Schemat powinien przede wszystkim jednoznacznie przedstawiać strukturę lub zasadę
+działania analizowanego układu. Podczas jego przygotowywania warto przestrzegać
+następujących zasad:
+
+\begin{itemize}
+  \item stosować spójny zestaw symboli i oznaczeń zgodny z konwencją przyjętą w pracy;
+  \item opisywać najważniejsze elementy, sygnały, zaciski oraz wartości wielkości wraz
+        z jednostkami układu SI;
+  \item wyraźnie rozróżniać skrzyżowanie przewodów od ich elektrycznego połączenia;
+  \item zachowywać czytelny kierunek przepływu energii, sygnałów lub informacji;
+  \item rozróżniać rodzaje połączeń nie tylko kolorem, lecz także stylem i grubością linii;
+  \item dobrać rozmiar tekstu tak, aby opisy pozostały czytelne po umieszczeniu schematu
+        w dokumencie i po wydruku w skali szarości;
+  \item wskazać źródło schematu pochodzącego z publikacji lub innego materiału zewnętrznego;
+  \item zachować edytowalny plik źródłowy w katalogu
+        \texttt{figures/source} oraz przeznaczoną do składu wersję wektorową PDF.
+\end{itemize}
+
+Znaczenie symboli niestandardowych oraz skrótów powinno zostać objaśnione w tekście,
+legendzie albo wykazie skrótów i oznaczeń.
+
+\section{\ploren{Schemat obwodu elektrycznego}{Electrical circuit diagram}}
+
+Pakiet \texttt{circuitikz} pozwala tworzyć skalowalne schematy bezpośrednio w~LaTeX-u.
+Na rysunku~\ref{fig:obwod-rc} pokazano prosty szeregowy obwód RC z oznaczeniami
+napięcia i prądu.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{circuitikz}[european resistors,european voltages]
+    \draw
+      (0,0) node[ground]{}
+      to[V,l_={$U_s$}] (0,3)
+      to[R,l={$R=\SI{10}{\kilo\ohm}$},i>^={$i(t)$}] (4,3)
+      to[C,l={$C=\SI{10}{\micro\farad}$}] (4,0)
+      -- (0,0);
+  \end{circuitikz}
+  \caption{Szeregowy obwód RC}
+  \label{fig:obwod-rc}
+\end{figure}
+\FloatBarrier
+
+Kod wykorzystany do utworzenia rysunku~\ref{fig:obwod-rc} przedstawiono w
+listingu~\ref{lst:obwod-rc}. Środowisko \texttt{circuitikz} ustala europejski sposób
+rysowania rezystorów i oznaczania napięć. Polecenie \verb|\draw| rozpoczyna ścieżkę
+obwodu, natomiast kolejne operatory \verb|to[V]|, \verb|to[R]| i \verb|to[C]|
+wstawiają źródło napięcia, rezystor i kondensator. Parametr \verb|l| tworzy opis
+elementu, a \verb|i>| określa kierunek strzałki prądu.
+
+\begin{lstlisting}[style=thesis,caption={Kod przykładowego obwodu RC},label={lst:obwod-rc}]
+\begin{circuitikz}[european resistors,european voltages]
+  \draw
+    (0,0) node[ground]{}
+    to[V,l_={$U_s$}] (0,3)
+    to[R,l={$R=\SI{10}{\kilo\ohm}$},i>^={$i(t)$}] (4,3)
+    to[C,l={$C=\SI{10}{\micro\farad}$}] (4,0)
+    -- (0,0);
+\end{circuitikz}
+\end{lstlisting}
+
+\subsection{\ploren{Węzły i skrzyżowania przewodów}{Nodes and wire crossings}}
+
+Kropka oznaczająca węzeł powinna być dodana świadomie. W przykładzie dzielnika
+napięcia na rysunku~\ref{fig:dzielnik-napiecia} polecenie \verb|node[circ]{}|
+jednoznacznie wskazuje punkt elektrycznego połączenia i pomiaru napięcia wyjściowego.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{circuitikz}[european resistors]
+    \draw
+      (0,0) node[ground]{}
+      to[V,l_={$U_{we}$}] (0,4)
+      to[R,l={$R_1$}] (4,4)
+      -- (4,2) node[circ]{}
+      -- (4,0)
+      to[R,l_={$R_2$}] (0,0);
+    \draw (4,2) -- (5.3,2) node[right]{$U_{wy}$};
+  \end{circuitikz}
+  \caption{Dzielnik napięcia z oznaczonym węzłem wyjściowym}
+  \label{fig:dzielnik-napiecia}
+\end{figure}
+\FloatBarrier
+
+Pełny kod dzielnika znajduje się w listingu~\ref{lst:dzielnik-napiecia}.
+Współrzędne kolejnych punktów określają przebieg przewodów. Konstrukcja
+\verb|node[circ]{}| dodaje wypełnioną kropkę w węźle wyjściowym, natomiast oddzielne
+polecenie \verb|\draw| wyprowadza krótki odcinek zakończony opisem $U_{wy}$.
+Zapis \verb|l_| umieszcza oznaczenie $R_2$ po przeciwnej stronie elementu niż
+domyślne \verb|l|.
+
+\begin{lstlisting}[style=thesis,caption={Kod dzielnika napięcia z oznaczonym węzłem},label={lst:dzielnik-napiecia}]
+\begin{circuitikz}[european resistors]
+  \draw
+    (0,0) node[ground]{}
+    to[V,l_={$U_{we}$}] (0,4)
+    to[R,l={$R_1$}] (4,4)
+    -- (4,2) node[circ]{}
+    -- (4,0)
+    to[R,l_={$R_2$}] (0,0);
+  \draw (4,2) -- (5.3,2) node[right]{$U_{wy}$};
+\end{circuitikz}
+\end{lstlisting}
+
+\section{\ploren{Schemat blokowy układu regulacji}{Control-loop block diagram}}
+
+Schemat blokowy powinien eksponować przepływ sygnałów i zależności funkcjonalne,
+a nie szczegóły wykonania instalacji. Na rysunku~\ref{fig:petla-regulacji} przedstawiono
+typową zamkniętą pętlę regulacji.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}[
+    block/.style={draw,minimum width=2.25cm,minimum height=1cm,align=center},
+    sum/.style={draw,circle,minimum size=7mm,inner sep=0pt},
+    signal/.style={-{Latex[length=2.5mm]},thick},
+    node distance=1.15cm and 1.25cm
+  ]
+    \node (ref) {$r(t)$};
+    \node[sum,right=of ref] (sum) {$\Sigma$};
+    \node[block,right=of sum] (controller) {Regulator\\$G_R(s)$};
+    \node[block,right=of controller] (actuator) {Element\\wykonawczy};
+    \node[block,right=of actuator] (plant) {Obiekt\\$G_O(s)$};
+    \node[right=of plant] (out) {$y(t)$};
+    \node[block,below=1.25cm of actuator] (sensor) {Tor pomiarowy\\$H(s)$};
+
+    \draw[signal] (ref) -- (sum);
+    \draw[signal] (sum) -- node[above]{$e(t)$} (controller);
+    \draw[signal] (controller) -- (actuator);
+    \draw[signal] (actuator) -- node[above]{$u(t)$} (plant);
+    \draw[signal] (plant) -- (out);
+    \draw[signal] (out) |- (sensor);
+    \draw[signal] (sensor) -| node[pos=0.93,left]{$-$} (sum);
+    \node at ($(sum.west)+(-0.12,0.22)$) {$+$};
+  \end{tikzpicture}
+  \caption{Zamknięta pętla układu regulacji}
+  \label{fig:petla-regulacji}
+\end{figure}
+\FloatBarrier
+
+Poza nazwami bloków warto opisać najważniejsze sygnały. Jeżeli model jest dalej
+analizowany matematycznie, symbole użyte na schemacie muszą być zgodne z symbolami
+w równaniach i na wykresach. Listing~\ref{lst:tikz-bloki} zawiera kod całej pętli.
+Style \texttt{block}, \texttt{sum} i \texttt{signal} zapewniają jednakowy wygląd
+powtarzających się elementów. Biblioteka \texttt{positioning} pozwala rozmieszczać
+węzły względem siebie za pomocą zapisów takich jak \verb|right=of| i \verb|below=|.
+Operator \verb+|-+ tworzy połączenie łamane, wykorzystywane w torze sprzężenia
+zwrotnego.
+
+\begin{lstlisting}[style=thesis,caption={Kod zamkniętej pętli układu regulacji},label={lst:tikz-bloki}]
+\begin{tikzpicture}[
+  block/.style={draw,minimum width=2.25cm,
+    minimum height=1cm,align=center},
+  sum/.style={draw,circle,minimum size=7mm,inner sep=0pt},
+  signal/.style={-{Latex[length=2.5mm]},thick},
+  node distance=1.15cm and 1.25cm
+]
+  \node (ref) {$r(t)$};
+  \node[sum,right=of ref] (sum) {$\Sigma$};
+  \node[block,right=of sum] (controller) {Regulator\\$G_R(s)$};
+  \node[block,right=of controller] (actuator) {Element\\wykonawczy};
+  \node[block,right=of actuator] (plant) {Obiekt\\$G_O(s)$};
+  \node[right=of plant] (out) {$y(t)$};
+  \node[block,below=1.25cm of actuator] (sensor)
+    {Tor pomiarowy\\$H(s)$};
+  \draw[signal] (ref) -- (sum);
+  \draw[signal] (sum) -- node[above]{$e(t)$} (controller);
+  \draw[signal] (controller) -- (actuator);
+  \draw[signal] (actuator) -- node[above]{$u(t)$} (plant);
+  \draw[signal] (plant) -- (out);
+  \draw[signal] (out) |- (sensor);
+  \draw[signal] (sensor) -| node[pos=0.93,left]{$-$} (sum);
+  \node at ($(sum.west)+(-0.12,0.22)$) {$+$};
+\end{tikzpicture}
+\end{lstlisting}
+
+\section{\ploren{Architektura układu automatyki}{Automation-system architecture}}
+
+W schematach architektury należy rozdzielić przepływ danych od toru energetycznego.
+Na rysunku~\ref{fig:architektura-automatyki} linia ciągła przedstawia sygnały obiektowe,
+linia przerywana komunikację, a linia pogrubiona tor zasilania napędu.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}[
+    device/.style={draw,rounded corners,minimum width=2.35cm,minimum height=1cm,align=center},
+    data/.style={-{Latex[length=2.4mm]},thick},
+    comm/.style={<->,>=Latex,dashed,thick},
+    power/.style={-{Latex[length=2.8mm]},very thick},
+    node distance=1.35cm and 1.15cm
+  ]
+    \node[device] (sensor) {Czujniki i\\przetworniki};
+    \node[device,right=of sensor] (plc) {Sterownik PLC};
+    \node[device,right=of plc] (drive) {Przemiennik\\częstotliwości};
+    \node[device,right=of drive] (motor) {Silnik i obiekt\\technologiczny};
+    \node[device,above=1.25cm of plc] (hmi) {Panel HMI / SCADA};
+    \node[device,below=1.25cm of plc] (safety) {Układ\\bezpieczeństwa};
+
+    \draw[data] (sensor) -- (plc);
+    \draw[data] (plc) -- (drive);
+    \draw[power] (drive) -- (motor);
+    \draw[data] (motor.south) -- ++(0,-2.8) -| (sensor.south);
+    \draw[comm] (hmi) -- node[right]{sieć} (plc);
+    \draw[data] (safety) -- (plc);
+    \draw[data] (safety.east) -| (drive.south);
+  \end{tikzpicture}
+  \caption{Przykładowa architektura układu automatyki}
+  \label{fig:architektura-automatyki}
+\end{figure}
+\FloatBarrier
+
+Legenda stylów linii może zostać umieszczona bezpośrednio na bardziej rozbudowanym
+schemacie. W prostym przykładzie wystarczy jednoznaczne objaśnienie w tekście i podpisie.
+Kod rysunku przedstawiono w listingu~\ref{lst:architektura-automatyki}. Styl
+\texttt{device} definiuje wspólny wygląd urządzeń, a style \texttt{data},
+\texttt{comm} i \texttt{power} rozróżniają sygnały, komunikację i tor energetyczny.
+Polecenie \verb|++(0,-2.8)| tworzy punkt względny poniżej silnika; dzięki temu linia
+sprzężenia do czujników omija pozostałe bloki.
+
+\begin{lstlisting}[style=thesis,caption={Kod przykładowej architektury układu automatyki},label={lst:architektura-automatyki}]
+\begin{tikzpicture}[
+  device/.style={draw,rounded corners,minimum width=2.35cm,
+    minimum height=1cm,align=center},
+  data/.style={-{Latex[length=2.4mm]},thick},
+  comm/.style={<->,>=Latex,dashed,thick},
+  power/.style={-{Latex[length=2.8mm]},very thick},
+  node distance=1.35cm and 1.15cm
+]
+  \node[device] (sensor) {Czujniki i\\przetworniki};
+  \node[device,right=of sensor] (plc) {Sterownik PLC};
+  \node[device,right=of plc] (drive) {Przemiennik\\częstotliwości};
+  \node[device,right=of drive] (motor) {Silnik i obiekt\\technologiczny};
+  \node[device,above=1.25cm of plc] (hmi) {Panel HMI / SCADA};
+  \node[device,below=1.25cm of plc] (safety) {Układ\\bezpieczeństwa};
+  \draw[data] (sensor) -- (plc);
+  \draw[data] (plc) -- (drive);
+  \draw[power] (drive) -- (motor);
+  \draw[data] (motor.south) -- ++(0,-2.8) -| (sensor.south);
+  \draw[comm] (hmi) -- node[right]{sieć} (plc);
+  \draw[data] (safety) -- (plc);
+  \draw[data] (safety.east) -| (drive.south);
+\end{tikzpicture}
+\end{lstlisting}
+
+\section{\ploren{Schematy przygotowane w innych programach}{Diagrams prepared with external tools}}
+
+Schematów nie trzeba tworzyć wyłącznie w LaTeX-u. W zależności od zastosowania można
+wykorzystać między innymi KiCad, EPLAN, AutoCAD Electrical, LTspice, MATLAB/Simulink,
+Inkscape lub narzędzia do tworzenia diagramów. Profesjonalny obieg pracy obejmuje:
+
+\begin{enumerate}
+  \item zachowanie natywnego, edytowalnego pliku projektu;
+  \item wyeksportowanie schematu jako PDF, ewentualnie SVG z późniejszą konwersją do PDF;
+  \item sprawdzenie osadzonych czcionek, grubości linii i czytelności opisów;
+  \item umieszczenie pliku wynikowego w katalogu \texttt{figures}, a pliku źródłowego
+        w katalogu \texttt{figures/source};
+  \item wstawienie grafiki poleceniem \verb|\includegraphics| oraz podanie źródła.
+\end{enumerate}
+
+Zrzut ekranu powinien być stosowany tylko wtedy, gdy przedmiotem opisu jest interfejs
+programu. Nie należy zastępować nim schematu, który można wyeksportować w formacie
+wektorowym.
+
+\section{\ploren{Gdzie szukać dokumentacji}{Where to find documentation}}
+
+W pierwszej kolejności warto korzystać z dokumentacji pakietów zainstalowanych lokalnie.
+Jest ona zgodna z wersją używaną podczas kompilacji dokumentu. Podręczniki można otworzyć
+z terminala poleceniami:
+
+\begin{lstlisting}[style=thesis-shell,caption={Otwieranie lokalnej dokumentacji pakietów},label={lst:dokumentacja-tikz}]
+texdoc circuitikz
+texdoc pgf
+\end{lstlisting}
+
+Polecenie \verb|texdoc circuitikz| otwiera instrukcję zawierającą katalog symboli,
+opis elementów, napięć, prądów, etykiet i dostępnych konwencji. Dokumentacja PGF/TikZ
+obejmuje między innymi ścieżki, węzły, kotwice, względne rozmieszczanie elementów,
+groty strzałek i biblioteki dodatkowe. Jeżeli polecenie \texttt{texdoc} nie odnajduje
+instrukcji, należy sprawdzić instalację pakietu i bazy nazw plików w używanej dystrybucji
+TeX.
+
+Aktualne materiały internetowe są dostępne w następujących miejscach:
+
+\begin{itemize}
+  \item \url{https://ctan.org/pkg/circuitikz} --- strona pakietu CircuiTikZ,
+        instrukcja, kod źródłowy i odnośnik do systemu zgłaszania błędów;
+  \item \url{https://tikz.dev/} --- przeszukiwalna wersja podręcznika PGF/TikZ;
+  \item \url{https://ctan.org/pkg/pgf} --- oficjalna strona pakietu PGF/TikZ w CTAN;
+  \item \url{https://tex.stackexchange.com/} --- rozwiązania konkretnych problemów
+        społeczności TeX i LaTeX.
+\end{itemize}
+
+Podczas wyszukiwania najlepiej podać nazwę pakietu, używane polecenie oraz dokładny
+fragment komunikatu błędu, na przykład \texttt{circuitikz voltage label position} albo
+\texttt{TikZ node right=of unknown key}. Jeżeli istniejące rozwiązanie nie pasuje,
+należy przygotować minimalny przykład zawierający klasę dokumentu, niezbędne pakiety
+i jeden problematyczny schemat. Trzeba również sprawdzić datę odpowiedzi i wersję
+pakietu, ponieważ starsze przykłady mogą używać wycofanej składni.
+
+\section{\ploren{Najczęstsze błędy}{Common mistakes}}
+
+Do częstych problemów należą: zbyt małe opisy, niejednoznaczne skrzyżowania przewodów,
+brak jednostek i nazw sygnałów, mieszanie symboli pochodzących z różnych konwencji,
+rozróżnianie połączeń wyłącznie kolorem, brak źródła oraz wstawianie niskiej jakości
+zrzutów ekranu. Każdy schemat wykorzystany w pracy powinien zostać przywołany i
+omówiony w tekście.

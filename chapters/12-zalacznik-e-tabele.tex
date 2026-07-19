@@ -1,0 +1,349 @@
+\chapter{\ploren{Tabele}{Tables}}
+\label{app:tabele}
+
+\begin{quote}
+\itshape
+\ploren
+  {Załącznik przedstawia przykładowe sposoby przygotowania tabel. Podpis tabeli umieszcza się nad tabelą, natomiast dodatkowe objaśnienia i źródło --- bezpośrednio pod nią. Zakres danych i dokładność zapisu należy dostosować do celu prezentacji.}
+  {This appendix presents examples of preparing tables. A table caption is placed above the table, while additional explanations and the source are placed directly below it. The data range and numerical precision should be adapted to the purpose of the presentation.}
+\end{quote}
+
+\section{\ploren{Podstawowe zasady}{Basic principles}}
+
+Tabela powinna umożliwiać szybkie porównanie wartości, a nie powtarzać całego opisu
+z tekstu. Każda tabela wymaga wcześniejszego przywołania i omówienia. Należy stosować
+jednoznaczne nagłówki, podawać jednostki w nagłówkach kolumn, zachować jednakową liczbę
+miejsc dziesiętnych dla porównywalnych wyników oraz objaśnić skróty i symbole.
+
+W profesjonalnym składzie zwykle wystarczają poziome linie z pakietu \texttt{booktabs}:
+\verb|\toprule|, \verb|\midrule| i \verb|\bottomrule|. Pionowe linie utrudniają
+śledzenie wierszy i najczęściej nie są potrzebne. W komórkach nie należy ręcznie
+wstawiać serii spacji ani wyrównywać liczb znakami tekstowymi.
+
+\section{\ploren{Tabela z danymi liczbowymi}{Table with numerical data}}
+
+Tabela~\ref{tab:pomiary-elektryczne} przedstawia wyniki pomiarów wraz z niepewnościami.
+Kolumny typu \texttt{S} z pakietu \texttt{siunitx} wyrównują liczby względem separatora
+dziesiętnego. Jednostka występuje tylko w nagłówku, dzięki czemu komórki pozostają
+czytelne.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Wyniki pomiarów parametrów obwodu}
+  \label{tab:pomiary-elektryczne}
+  \begin{tabular}{@{}l
+    S[table-format=2.2(1)]
+    S[table-format=1.3(1)]
+    S[table-format=3.1]@{}}
+    \toprule
+    {Punkt} & {$U\ (\si{\volt})$} & {$I\ (\si{\ampere})$} & {$P\ (\si{\watt})$} \\
+    \midrule
+    A & 12.04(3) & 0.815(6) & 9.8 \\
+    B & 18.27(4) & 1.206(8) & 22.0 \\
+    C & 24.11(5) & 1.594(9) & 38.4 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+\FloatBarrier
+
+Kod tabeli pokazano w listingu~\ref{lst:tabela-liczbowa}. Opcja
+\verb|table-format=2.2(1)| rezerwuje miejsce na dwie cyfry części całkowitej, dwie
+cyfry po separatorze i jedną cyfrę niepewności. Zapis \verb|12.04(3)| oznacza w tym
+przykładzie $12{,}04\pm0{,}03$. Nawiasy \verb|{...}| wokół nagłówka wyłączają jego
+interpretację jako liczby.
+
+\begin{lstlisting}[style=thesis,caption={Kod tabeli z danymi liczbowymi},label={lst:tabela-liczbowa}]
+\begin{table}[htbp]
+  \centering
+  \caption{Wyniki pomiarów parametrów obwodu}
+  \label{tab:pomiary-elektryczne}
+  \begin{tabular}{@{}l S[table-format=2.2(1)]
+    S[table-format=1.3(1)] S[table-format=3.1]@{}}
+    \toprule
+    {Punkt} & {$U\ (\si{\volt})$} & {$I\ (\si{\ampere})$}
+      & {$P\ (\si{\watt})$} \\
+    \midrule
+    A & 12.04(3) & 0.815(6) & 9.8 \\
+    B & 18.27(4) & 1.206(8) & 22.0 \\
+    C & 24.11(5) & 1.594(9) & 38.4 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+\end{lstlisting}
+
+\section{\ploren{Tabela zawierająca dłuższy tekst}{Table containing longer text}}
+
+Do kolumn z opisami lepiej użyć środowiska \texttt{tabularx} niż ręcznie dobierać ich
+szerokość. W tabeli~\ref{tab:porownanie-metod} kolumna \texttt{X} automatycznie zajmuje
+pozostałą szerokość wiersza i poprawnie zawija tekst.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Porównanie metod detekcji stanu urządzenia}
+  \label{tab:porownanie-metod}
+  \begin{tabularx}{\linewidth}{@{}lXl@{}}
+    \toprule
+    Metoda & Charakterystyka & Zastosowanie \\
+    \midrule
+    Progowa & Prosta interpretacja i niewielkie wymagania obliczeniowe;
+      wymaga ręcznego doboru wartości granicznej. & Sterownik PLC \\
+    Statystyczna & Uwzględnia zmienność sygnału i pozwala ocenić niepewność decyzji. & Analiza offline \\
+    Uczenie maszynowe & Może odwzorować zależności nieliniowe, ale wymaga reprezentatywnego zbioru danych. & System diagnostyczny \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+\FloatBarrier
+
+Kod z listingu~\ref{lst:tabela-tabularx} wykorzystuje \verb|\linewidth|, dlatego tabela
+dopasowuje się również wewnątrz węższego środowiska. Dla kilku kolumn tekstowych można
+zdefiniować własne odmiany kolumny \texttt{X} z różnym wyrównaniem.
+
+\begin{lstlisting}[style=thesis,caption={Kod tabeli z automatycznie zawijanym tekstem},label={lst:tabela-tabularx}]
+\begin{table}[htbp]
+  \centering
+  \caption{Porównanie metod detekcji stanu urządzenia}
+  \label{tab:porownanie-metod}
+  \begin{tabularx}{\linewidth}{@{}lXl@{}}
+    \toprule
+    Metoda & Charakterystyka & Zastosowanie \\
+    \midrule
+    Progowa & Prosta interpretacja i niewielkie wymagania
+      obliczeniowe. & Sterownik PLC \\
+    Statystyczna & Uwzględnia zmienność sygnału. & Analiza offline \\
+    Uczenie maszynowe & Odwzorowuje zależności nieliniowe,
+      ale wymaga danych uczących. & Diagnostyka \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+\end{lstlisting}
+
+\section{\ploren{Nagłówki wielopoziomowe}{Multi-level headers}}
+
+Grupowanie kolumn jest przydatne, gdy kilka wyników dotyczy tych samych warunków.
+Tabela~\ref{tab:naglowki-wielopoziomowe} wykorzystuje \verb|\multicolumn| oraz
+częściowe linie \verb|\cmidrule|. Jednostek nie należy powtarzać w każdym wierszu.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Parametry odpowiedzi układu dla dwóch nastaw regulatora}
+  \label{tab:naglowki-wielopoziomowe}
+  \begin{tabular}{@{}lSSSS@{}}
+    \toprule
+    & \multicolumn{2}{c}{Nastawa A} & \multicolumn{2}{c}{Nastawa B} \\
+    \cmidrule(lr){2-3}\cmidrule(l){4-5}
+    {Sygnał} & {$t_r\ (\si{\second})$} & {$M_p\ (\si{\percent})$}
+      & {$t_r\ (\si{\second})$} & {$M_p\ (\si{\percent})$} \\
+    \midrule
+    $y_1$ & 1.42 & 8.3 & 1.18 & 12.6 \\
+    $y_2$ & 1.67 & 6.9 & 1.31 & 10.4 \\
+    $y_3$ & 1.55 & 7.4 & 1.24 & 11.2 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+\FloatBarrier
+
+Listing~\ref{lst:tabela-naglowki} pokazuje konstrukcję nagłówka. Zakres
+\verb|{2-3}| oznacza kolumny objęte linią, natomiast warianty \verb|(l)| i
+\verb|(r)| skracają odpowiedni koniec linii, oddzielając wizualnie grupy.
+
+\begin{lstlisting}[style=thesis,caption={Kod nagłówka wielopoziomowego},label={lst:tabela-naglowki}]
+\begin{tabular}{@{}lSSSS@{}}
+  \toprule
+  & \multicolumn{2}{c}{Nastawa A}
+  & \multicolumn{2}{c}{Nastawa B} \\
+  \cmidrule(lr){2-3}\cmidrule(l){4-5}
+  {Sygnał} & {$t_r\ (\si{\second})$} & {$M_p\ (\si{\percent})$}
+    & {$t_r\ (\si{\second})$} & {$M_p\ (\si{\percent})$} \\
+  \midrule
+  $y_1$ & 1.42 & 8.3 & 1.18 & 12.6 \\
+  $y_2$ & 1.67 & 6.9 & 1.31 & 10.4 \\
+  \bottomrule
+\end{tabular}
+\end{lstlisting}
+
+\section{\ploren{Wyróżnienie wybranego wiersza}{Highlighting a selected row}}
+
+Kolor tła może pomóc wskazać wariant wybrany do dalszych badań, wynik referencyjny albo
+wartość wymagającą uwagi. Nie powinien jednak zastępować opisu ani być jedynym sposobem
+przekazania znaczenia. W tabeli~\ref{tab:wyrozniony-wiersz} wariant B wyróżniono zarówno
+jasnym tłem, jak i pogrubioną nazwą. Dzięki temu informacja pozostaje zrozumiała po
+wydruku monochromatycznym oraz dla osób nierozróżniających części barw.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Porównanie wariantów nastaw regulatora}
+  \label{tab:wyrozniony-wiersz}
+  \begin{tabular}{@{}lSSSl@{}}
+    \toprule
+    {Wariant} & {$K_p$} & {$T_i\ (\si{\second})$}
+      & {$J$} & {Ocena} \\
+    \midrule
+    A & 1.20 & 0.80 & 4.37 & poprawny \\
+    \rowcolor{thesisrowhighlight}
+    \textbf{B} & \bfseries 1.45 & \bfseries 0.65 & \bfseries 3.82
+      & \textbf{wybrany} \\
+    C & 1.70 & 0.55 & 4.16 & większe przeregulowanie \\
+    \bottomrule
+  \end{tabular}
+
+  \smallskip
+  \parbox{0.82\linewidth}{\footnotesize Wyróżnienie wskazuje wariant przyjęty do dalszych badań na podstawie najmniejszej wartości wskaźnika jakości $J$.}
+\end{table}
+\FloatBarrier
+
+Dodatkową informację umieszczono bezpośrednio pod tabelą, lecz poza środowiskiem
+\texttt{tabular}. Polecenie \verb|\rowcolor{thesisrowhighlight}| działa od miejsca
+wywołania do końca bieżącego wiersza. Kolor \texttt{thesisrowhighlight} zdefiniowano
+centralnie w pliku stylu, dzięki czemu można go zmienić jednocześnie we wszystkich
+tabelach. Kod przykładu przedstawia listing~\ref{lst:tabela-wyroznienie}.
+
+\begin{lstlisting}[style=thesis,caption={Kod tabeli z wyróżnionym wierszem},label={lst:tabela-wyroznienie}]
+\begin{table}[htbp]
+  \centering
+  \caption{Porównanie wariantów nastaw regulatora}
+  \label{tab:wyrozniony-wiersz}
+  \begin{tabular}{@{}lSSSl@{}}
+    \toprule
+    {Wariant} & {$K_p$} & {$T_i\ (\si{\second})$}
+      & {$J$} & {Ocena} \\
+    \midrule
+    A & 1.20 & 0.80 & 4.37 & poprawny \\
+    \rowcolor{thesisrowhighlight}
+    \textbf{B} & \bfseries 1.45 & \bfseries 0.65
+      & \bfseries 3.82 & \textbf{wybrany} \\
+    C & 1.70 & 0.55 & 4.16 & większe przeregulowanie \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+\end{lstlisting}
+
+\section{\ploren{Tabela wielostronicowa}{Multi-page table}}
+
+Środowisko \texttt{longtable} automatycznie dzieli tabelę między stronami i powtarza
+nagłówek. Nie należy umieszczać go wewnątrz środowiska \texttt{table}. Podpis tabeli
+pozostaje u góry, a na kolejnych stronach można wyświetlić jego skróconą kontynuację.
+
+\begin{longtable}{@{}clp{0.58\linewidth}@{}}
+  \caption{Rejestr etapów weryfikacji systemu pomiarowego}
+  \label{tab:rejestr-weryfikacji}\\
+  \toprule
+  Lp. & Etap & Zakres kontroli \\
+  \midrule
+  \endfirsthead
+  \caption[]{Rejestr etapów weryfikacji systemu pomiarowego --- ciąg dalszy}\\
+  \toprule
+  Lp. & Etap & Zakres kontroli \\
+  \midrule
+  \endhead
+  \midrule
+  \multicolumn{3}{r}{Ciąg dalszy na następnej stronie}\\
+  \endfoot
+  \bottomrule
+  \endlastfoot
+  1 & Zasilanie & Kontrola wartości napięć, polaryzacji oraz ograniczenia prądowego. \\
+  2 & Okablowanie & Sprawdzenie ciągłości połączeń i zgodności numeracji zacisków. \\
+  3 & Czujniki & Weryfikacja zakresu, offsetu i odpowiedzi na wartość odniesienia. \\
+  4 & Akwizycja & Kontrola częstotliwości próbkowania i kompletności ramek danych. \\
+  5 & Synchronizacja & Ocena przesunięcia czasowego między kanałami pomiarowymi. \\
+  6 & Filtracja & Porównanie odpowiedzi filtru z wynikiem obliczeń referencyjnych. \\
+  7 & Archiwizacja & Sprawdzenie nazw, formatów i znaczników czasu plików wynikowych. \\
+  8 & Komunikacja & Test utraty pakietów, opóźnienia i ponownego zestawienia połączenia. \\
+  9 & Interfejs & Kontrola prezentacji wartości granicznych i komunikatów alarmowych. \\
+  10 & Diagnostyka & Wymuszenie usterek i porównanie reakcji z wymaganiami systemu. \\
+  11 & Uprawnienia & Sprawdzenie dostępu do konfiguracji i danych archiwalnych. \\
+  12 & Restart & Ocena odtwarzania stanu po zaniku i powrocie zasilania. \\
+  13 & Obciążenie & Praca z maksymalną liczbą kanałów oraz docelową częstotliwością. \\
+  14 & Stabilność & Wielogodzinny test ciągły i rejestracja wykorzystania zasobów. \\
+  15 & Eksport & Porównanie wyeksportowanych danych z rekordami źródłowymi. \\
+  16 & Kopia zapasowa & Odtworzenie konfiguracji i wyników z przygotowanego archiwum. \\
+  17 & Dokumentacja & Kontrola zgodności instrukcji z rzeczywistą wersją systemu. \\
+  18 & Odbiór & Powtórzenie kryteriów akceptacyjnych w środowisku docelowym. \\
+\end{longtable}
+
+Do tabeli~\ref{tab:rejestr-weryfikacji} można dodawać kolejne wiersze bez ręcznego
+wyznaczania miejsca podziału. Listing~\ref{lst:tabela-longtable} pokazuje cztery części
+nagłówka i stopki. Polecenia \verb|\endfirsthead| i \verb|\endhead| rozróżniają
+pierwszą oraz kolejne strony, a \verb|\endfoot| i \verb|\endlastfoot| definiują
+zakończenie strony pośredniej oraz całej tabeli.
+
+\begin{lstlisting}[style=thesis,caption={Szkielet tabeli wielostronicowej},label={lst:tabela-longtable}]
+\begin{longtable}{@{}clp{0.58\linewidth}@{}}
+  \caption{Rejestr etapów weryfikacji systemu}
+  \label{tab:rejestr-weryfikacji}\\
+  \toprule Lp. & Etap & Zakres kontroli \\
+  \midrule
+  \endfirsthead
+  \caption[]{Rejestr etapów weryfikacji --- ciąg dalszy}\\
+  \toprule Lp. & Etap & Zakres kontroli \\
+  \midrule
+  \endhead
+  \midrule
+  \multicolumn{3}{r}{Ciąg dalszy na następnej stronie}\\
+  \endfoot
+  \bottomrule
+  \endlastfoot
+  1 & Zasilanie & Opis zakresu kontroli. \\
+  % kolejne wiersze
+\end{longtable}
+\end{lstlisting}
+
+\section{\ploren{Szeroka tabela i układ poziomy}{Wide table and landscape layout}}
+\label{sec:szeroka-tabela}
+
+Najpierw należy skrócić nagłówki, usunąć zbędne kolumny albo podzielić dane na kilka
+tabel. Jeżeli szeroki układ jest merytorycznie uzasadniony, można zastosować stronę
+poziomą. Tabela~\ref{tab:szeroka} pozostaje tabelą, a nie pomniejszonym obrazem, dlatego
+tekst i liczby zachowują czytelność.
+
+\begin{thesislandscape}
+\begin{table}[p]
+  \centering
+  \caption{Zestawienie konfiguracji stanowisk badawczych}
+  \label{tab:szeroka}
+  \begin{tabular}{@{}lllllll@{}}
+    \toprule
+    Stanowisko & Sterownik & Czujnik & Interfejs & Próbowanie & Format & Synchronizacja \\
+    \midrule
+    A & STM32G4 & prądowy & USB CDC & \SI{20}{\kilo\hertz} & CSV & programowa \\
+    B & S7-1500 & ciśnienia & PROFINET & \SI{1}{\kilo\hertz} & HDF5 & PTP \\
+    C & Raspberry Pi & wizyjny & Ethernet & \SI{60}{\hertz} & MP4/JSON & NTP \\
+    D & NI cRIO & drganiowy & EtherCAT & \SI{50}{\kilo\hertz} & TDMS & sprzętowa \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+\end{thesislandscape}
+
+Kod z listingu~\ref{lst:tabela-pozioma} wykorzystuje przygotowane w szablonie środowisko
+\texttt{thesislandscape}. Rozpoczyna ono oddzielną stronę poziomą i po zakończeniu
+przywraca układ pionowy. Środowisko \texttt{thesiswidetable}, które skaluje zawartość
+do szerokości tekstu, należy stosować tylko do niewielkiego przekroczenia szerokości;
+nadmierne zmniejszenie tabeli pogarsza czytelność.
+
+\begin{lstlisting}[style=thesis,caption={Kod tabeli na stronie poziomej},label={lst:tabela-pozioma}]
+\begin{thesislandscape}
+\begin{table}[p]
+  \centering
+  \caption{Zestawienie konfiguracji stanowisk badawczych}
+  \label{tab:szeroka}
+  \begin{tabular}{@{}lllllll@{}}
+    \toprule
+    Stanowisko & Sterownik & Czujnik & Interfejs
+      & Próbowanie & Format & Synchronizacja \\
+    \midrule
+    A & STM32G4 & prądowy & USB CDC
+      & \SI{20}{\kilo\hertz} & CSV & programowa \\
+    % kolejne wiersze
+    \bottomrule
+  \end{tabular}
+\end{table}
+\end{thesislandscape}
+\end{lstlisting}
+
+\section{\ploren{Najczęstsze błędy}{Common mistakes}}
+
+Do częstych problemów należą: podpis umieszczony pod tabelą, brak przywołania w tekście,
+jednostki powtarzane w każdej komórce, niewyrównane liczby, nadmiar linii pionowych,
+zbyt wiele miejsc dziesiętnych, nieobjaśnione skróty, dzielenie pojedynczego wiersza
+między strony oraz skalowanie tabeli do nieczytelnego rozmiaru. Tabela nie powinna
+również powtarzać danych przedstawionych już na wykresie, jeżeli nie jest to potrzebne
+do dokładnego odczytu wartości.
