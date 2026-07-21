@@ -6,6 +6,11 @@ Rozbudowana dokumentacja dla studenta znajduje się w katalogu `docs/`:
 [poradnik](docs/poradnik-studenta.md), [przykłady LaTeX-a](docs/latex-przyklady.md)
 i [lista kontrolna](docs/lista-kontrolna.md).
 
+## Powiązany szablon prezentacji
+
+Do przygotowania prezentacji na obronę pracy można wykorzystać powiązany
+szablon LaTeX Beamer: [EduKowol/SZABLON-Prezentacji](https://github.com/EduKowol/SZABLON-Prezentacji.git).
+
 ## Szybki start
 
 1. Uzupełnij `config/metadata.tex`.
@@ -116,6 +121,12 @@ python tools/create_release.py --target online
 
 Generator kopiuje wspólną konfigurację bez tworzenia odrębnej wersji stylu,
 dlatego po zmianach szablonu wystarczy ponownie go uruchomić.
+
+Katalog `dist/` nie jest wykluczony przez `.gitignore`. Obie gotowe paczki ZIP
+mogą dzięki temu być przechowywane w repozytorium i udostępniane użytkownikom
+bez konieczności lokalnego uruchamiania generatora. Po każdej zmianie plików
+wchodzących w skład wydania należy ponownie wygenerować oba warianty i zapisać
+zaktualizowane archiwa w repozytorium.
 
 ### TeXstudio
 
