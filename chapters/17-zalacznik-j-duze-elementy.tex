@@ -60,31 +60,47 @@ Najpierw otwiera się stronę poziomą, a dopiero wewnątrz umieszcza element p�
   \centering
   \begin{adjustbox}{max width=\linewidth}
   \begin{tikzpicture}[
-    node distance=1.15cm and 1.0cm,
-    block/.style={draw,rounded corners,minimum height=1.4cm,text width=3.0cm,align=center,fill=thesiscodebackground},
+    node distance=1.55cm and 3.3cm,
+    block/.style={draw,rounded corners,minimum height=1.45cm,
+      text width=3.6cm,align=center,fill=thesiscodebackground,
+      font=\small},
     flow/.style={-{Latex[length=3mm]},thick},
-    note/.style={font=\scriptsize,align=center,fill=white,inner sep=1pt}
+    setting/.style={flow,dashed},
+    note/.style={font=\small,align=center,fill=white,inner sep=2pt}
   ]
     \node[block] (sensors) {Czujniki\\i przetworniki};
     \node[block,right=of sensors] (daq) {Moduł akwizycji\\danych};
     \node[block,right=of daq] (edge) {Komputer\\brzegowy};
-    \node[block,right=of edge] (network) {Sieć\\przemysłowa};
-    \node[block,right=of network] (server) {Serwer danych\\i modeli};
-    \node[block,right=of server] (hmi) {Wizualizacja\\HMI/SCADA};
-    \node[block,below=1.5cm of edge] (controller) {Sterownik czasu\\rzeczywistego};
-    \node[block,below=1.5cm of network] (drive) {Układ wykonawczy\\i napęd};
+
+    % Drugi rząd jest czytany od prawej do lewej, jak dalszy ciąg pierwszego.
+    \node[block,below=of edge] (network) {Sieć\\przemysłowa};
+    \node[block,left=of network] (server) {Serwer danych\\i modeli};
+    \node[block,left=of server] (hmi) {Wizualizacja\\HMI/SCADA};
+
+    \node[block,below=of server] (controller) {Sterownik czasu\\rzeczywistego};
+    \node[block,left=of controller] (drive) {Układ wykonawczy\\i napęd};
 
     \draw[flow] (sensors) -- node[above,note]{sygnały} (daq);
     \draw[flow] (daq) -- node[above,note]{próbki} (edge);
-    \draw[flow] (edge) -- node[above,note]{dane} (network);
-    \draw[flow] (network) -- (server);
+    \draw[flow] (edge) -- node[right,note]{dane} (network);
+    \draw[flow] (network) -- node[above,note]{pakiety} (server);
     \draw[flow] (server) -- node[above,note]{wyniki} (hmi);
-    \draw[flow] (edge) -- (controller);
-    \draw[flow] (controller) -- (drive);
-    \draw[flow] (drive.south) -- ++(0,-0.75cm)
-      -| node[pos=0.60,below,note]{sprzężenie zwrotne} (sensors.south);
-    \draw[flow,dashed] (hmi.south) -- ++(0,-0.45cm)
-      -| node[pos=0.10,right,note]{nastawy operatora} (controller.east);
+
+    % Każda relacja wykorzystuje osobny korytarz, dzięki czemu linie i opisy
+    % nie przecinają bloków ani siebie nawzajem.
+    \coordinate (tasktop) at ($(edge.east)+(1.0cm,0)$);
+    \coordinate (taskbottom) at (tasktop |- controller.east);
+    \draw[flow] (edge.east) -- (tasktop)
+      -- node[right,note]{zadanie\\sterowania} (taskbottom)
+      -- (controller.east);
+
+    \coordinate (settingslevel) at ($(hmi.south)+(0,-0.75cm)$);
+    \draw[setting] (hmi.south) -- (settingslevel)
+      -- node[above,note]{nastawy operatora} (settingslevel -| controller.north)
+      -- (controller.north);
+    \draw[flow] (controller) -- node[above,note]{sygnał sterujący} (drive);
+    \draw[flow] (drive.west) -- ++(-1.0cm,0)
+      |- node[pos=0.72,left,note]{sprzężenie\\zwrotne} (sensors.west);
   \end{tikzpicture}
   \end{adjustbox}
   \caption{Przykład szerokiego schematu umieszczonego na stronie poziomej}

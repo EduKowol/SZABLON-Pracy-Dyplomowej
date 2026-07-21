@@ -88,6 +88,26 @@ def read_text(path: Path) -> str:
     return path.read_text(encoding="utf-8")
 
 
+def strip_latex_comments(text: str) -> str:
+    """Usuwa komentarze, pozostawiając znaki procentu poprzedzone ukośnikiem."""
+    cleaned: list[str] = []
+    for line in text.splitlines():
+        cut = len(line)
+        for index, character in enumerate(line):
+            if character != "%":
+                continue
+            backslashes = 0
+            position = index - 1
+            while position >= 0 and line[position] == "\\":
+                backslashes += 1
+                position -= 1
+            if backslashes % 2 == 0:
+                cut = index
+                break
+        cleaned.append(line[:cut])
+    return "\n".join(cleaned)
+
+
 def main() -> int:
     args = parse_args()
     root = args.project_root.resolve()
@@ -122,7 +142,8 @@ def main() -> int:
 
     main_path = root / "main.tex"
     if main_path.is_file():
-        for included in INCLUDE_RE.findall(read_text(main_path)):
+        main_source = strip_latex_comments(read_text(main_path))
+        for included in INCLUDE_RE.findall(main_source):
             candidates = (root / f"{included}.tex", root / included)
             if not any(candidate.is_file() for candidate in candidates):
                 problems.append(f"main.tex: nie znaleziono dołączanego pliku {included}")

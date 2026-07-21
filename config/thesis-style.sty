@@ -30,6 +30,7 @@
 \fi
 \RequirePackage{booktabs,array,tabularx,longtable,siunitx}
 \RequirePackage{enumitem,titlesec,tocloft,caption,subcaption,listings,xcolor}
+\RequirePackage{menukeys}
 \RequirePackage{tikz,pgfplots,circuitikz,fancyhdr,etoolbox}
 \usetikzlibrary{arrows.meta,positioning,calc,shapes.geometric,shapes.multipart,fit}
 % Dyskretne, czytelne odnosniki w PDF: spis tresci, rysunki, tabele,
@@ -37,6 +38,10 @@
 \definecolor{thesislinkblue}{RGB}{0,70,125}
 % Jasne tlo wyróżnionego wiersza pozostaje czytelne w druku monochromatycznym.
 \definecolor{thesisrowhighlight}{RGB}{226,236,244}
+% Semantyczne polecenia do zapisu skrótów klawiszowych i ścieżek menu.
+% Ich wygląd można później zmienić centralnie, bez edycji treści rozdziałów.
+\newcommand{\shortcut}[1]{\keys{#1}}
+\newcommand{\menupath}[1]{\menu{#1}}
 \RequirePackage[
   colorlinks=true,
   linkcolor=thesislinkblue,
@@ -118,6 +123,21 @@
 \definecolor{thesiscodekeyword}{RGB}{0,65,120}
 \definecolor{thesiscodecomment}{RGB}{40,105,65}
 \definecolor{thesiscodestring}{RGB}{145,45,45}
+% Pakiet listings nie dodaje automatycznie znakow Unicode o kodach > 255
+% do listy znakow przetwarzanych jak litery. W LuaLaTeX-u i XeLaTeX-u brak
+% tych deklaracji przesuwa m.in. ą, ę, ł, ś, ź i ż na poczatek fragmentu kodu.
+% Bezposrednia rejestracja znakow zachowuje ich kolejnosc oraz kolorowanie.
+\ifPDFTeX\else
+  \begingroup
+    \catcode0=12
+    \makeatletter
+    \g@addto@macro\lst@DefEC{%
+      \lst@CCECUse\lst@ProcessLetter
+      ąćęłńśźżĄĆĘŁŃŚŹŻ%
+      ^^00%
+    }%
+  \endgroup
+\fi
 \lstdefinestyle{thesis}{
   basicstyle=\ttfamily\small,
   backgroundcolor=\color{thesiscodebackground},

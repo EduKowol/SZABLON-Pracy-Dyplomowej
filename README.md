@@ -75,6 +75,48 @@ latexmk -C main.tex    # usunięcie wszystkich artefaktów kompilacji
 
 Gotowy dokument po kompilacji: `build/main.pdf`.
 
+### Ponowna kompilacja po usunięciu błędu
+
+Po nieudanej kompilacji `latexmk` może zachować informację o błędzie w swojej
+bazie zależności. Jeżeli przyczyna została już usunięta — na przykład zamknięto
+przeglądarkę blokującą `build/main.pdf` — ale zwykłe `latexmk main.tex` zgłasza,
+że nie ma nic do wykonania, należy wymusić pełne przeliczenie projektu:
+
+```text
+latexmk -g main.tex
+```
+
+Taka sytuacja nie oznacza, że błąd nadal znajduje się w źródłach. Opcja `-g`
+nakazuje ponownie wykonać reguły kompilacji bez usuwania plików pomocniczych.
+Opcja `-C` ma inne zastosowanie: usuwa artefakty kompilacji i nie jest potrzebna
+do zwykłego ponownego zbudowania dokumentu.
+
+## Czysta paczka startowa
+
+Pełny projekt zawiera rozdziały i załączniki demonstracyjne. Minimalną paczkę
+dla nowej pracy, zawierającą jeden krótki rozdział i bez artefaktów kompilacji,
+tworzy polecenie:
+
+```text
+python tools/create_release.py
+```
+
+Generator zapyta, czy utworzyć wariant `local`, przeznaczony do kompilacji na
+komputerze i zawierający `latexmkrc`, czy wariant `online` dla Prism i Overleaf,
+bez lokalnej konfiguracji LatexMk. Wynik otrzyma odpowiednio nazwę
+`dist/szablon-pracy-dyplomowej-local.zip` albo
+`dist/szablon-pracy-dyplomowej-online.zip`.
+
+W skrypcie lub automatyzacji wybór można podać bez pytania:
+
+```text
+python tools/create_release.py --target local
+python tools/create_release.py --target online
+```
+
+Generator kopiuje wspólną konfigurację bez tworzenia odrębnej wersji stylu,
+dlatego po zmianach szablonu wystarczy ponownie go uruchomić.
+
 ### TeXstudio
 
 W zakładce `Budowanie` można wybrać `Latexmk` jako kompilator. Plik `main.tex` zawiera projektową dyrektywę TeXstudio, która usuwa z wbudowanego polecenia wyłącznie opcję `-pdf`, aby nie wymuszać pdfLaTeX. Dodawane przez TeXstudio `-auxdir=build` jest zgodne z konfiguracją projektu. Silnik LuaLaTeX i katalog wynikowy są konfigurowane centralnie w `latexmkrc`.
@@ -85,6 +127,7 @@ Przy pierwszym otwarciu dokumentu TeXstudio może poprosić o zgodę na zmianę 
 
 - `main.tex` — kolejność elementów;
 - `config/metadata.tex` — dane i ustawienia pracy;
+- `config/document-class.tex` — wewnętrzny wybór klasy dla trybu `digital` lub `print`;
 - `config/thesis-style.sty` — typografia, marginesy i lokalizacja;
 - `frontmatter/` — oświadczenie i streszczenia PL/EN;
 - `chapters/` — treść rozdziałów;

@@ -1,0 +1,222 @@
+\chapter{\ploren{Formatowanie tekstu i elementy redakcyjne}{Text formatting and editorial elements}}
+\label{app:formatowanie}
+
+\begin{quote}\itshape
+  \ploren
+  {Formatowanie powinno przekazywać znaczenie i zachowywać spójność całej pracy. Zamiast ręcznie dobierać krój, rozmiar i kolor w wielu miejscach, należy korzystać z poleceń LaTeX-a opisujących funkcję danego elementu.}
+  {Formatting should communicate meaning and remain consistent throughout the thesis. Instead of manually selecting font, size and colour in many places, use LaTeX commands that describe the role of an element.}
+\end{quote}
+
+\section{\ploren{Podstawowe wyróżnienia tekstu}{Basic text emphasis}}
+
+Polecenie \verb|\emph| służy do znaczeniowego wyróżnienia terminu i jest zwykle lepszym wyborem niż ręczne zastosowanie kursywy. Pogrubienie należy pozostawić dla elementów wymagających silnego wyróżnienia, a krój maszynowy dla nazw plików, poleceń i krótkich fragmentów kodu. Podkreślenie pogarsza czytelność liter z wydłużeniami dolnymi i w pracy technicznej zwykle nie jest potrzebne. Podstawowe konstrukcje zestawiono w listingu~\ref{lst:formatowanie-wyroznienia}.
+
+\begin{lstlisting}[style=thesis,caption={Podstawowe sposoby wyróżniania tekstu},label={lst:formatowanie-wyroznienia}]
+To jest \emph{ważny termin}.
+To jest \textbf{silne wyróżnienie}.
+To jest \textit{kursywa zastosowana świadomie}.
+Plik konfiguracyjny ma nazwę \texttt{metadata.tex}.
+Polecenie \verb|\includegraphics| wstawia grafikę.
+\end{lstlisting}
+
+Wynik może wyglądać następująco: to jest \emph{ważny termin}, to jest \textbf{silne wyróżnienie}, a \texttt{metadata.tex} jest nazwą pliku. W jednym fragmencie nie należy łączyć kilku wyróżnień bez wyraźnej potrzeby.
+
+\section{\ploren{Akapity, spacje i łamanie wierszy}{Paragraphs, spaces and line breaking}}
+
+Nowy akapit rozpoczyna pusty wiersz w pliku źródłowym. Zwykłe pojedyncze, wielokrotne i kończące wiersz spacje są w tekście traktowane podobnie. LaTeX sam dobiera odstępy między wyrazami i może złamać wiersz w miejscu zwykłej spacji. W tym potocznym znaczeniu jest ona \emph{spacją miękką}, chociaż LaTeX nie używa osobnego polecenia o takiej nazwie.
+
+Znak tyldy \verb|~| tworzy spację nierozdzielającą, nazywaną twardą. Należy jej używać wtedy, gdy dwa elementy nie powinny znaleźć się w różnych wierszach, na przykład w zapisach \verb|rysunek~\ref{fig:...}|, \verb|rozdział~2|, \verb|prof.~Jan Nowak| albo \verb|wartość~5|. Liczby z jednostkami najlepiej zapisywać za pomocą pakietu \texttt{siunitx}, na przykład \verb|\qty{230}{\volt}|, zamiast ręcznie dobierać rodzaj spacji. Różnice między rodzajami spacji pokazano w listingu~\ref{lst:formatowanie-spacje}.
+
+\begin{lstlisting}[style=thesis,caption={Spacja zwykła, nierozdzielająca i jawna},label={lst:formatowanie-spacje}]
+To zdanie zawiera zwykłe spacje, w których można złamać wiersz.
+
+Wynik przedstawiono na rysunku~\ref{fig:przyklad}.
+Autorem opracowania jest prof.~Jan Nowak.
+System pracuje przy napięciu \qty{230}{\volt}.
+
+% Ukośnik ze spacją wymusza odstęp po poleceniu złożonym z liter:
+Program \LaTeX\ składa dokument automatycznie.
+\end{lstlisting}
+
+Polecenie \verb|\ | tworzy jawną zwykłą spację, potrzebną między innymi po niektórych poleceniach zakończonych nazwą złożoną z liter. Polecenie \verb|\-| wskazuje dopuszczalne miejsce dzielenia wyrazu, a \verb|\allowbreak| opcjonalne miejsce złamania długiego zapisu. Nie są to jednak rodzaje spacji. Poleceń \verb|\hspace|, \verb|\quad| i wielokrotnych spacji nie należy używać do ręcznego wyrównywania zwykłego tekstu.
+
+Znaki \verb|\\| kończą wiersz, ale nie rozpoczynają nowego akapitu. Nie należy używać ich do tworzenia pionowych odstępów. Polecenie \verb|\noindent| usuwa wcięcie tylko w szczególnym przypadku; wygląd wszystkich akapitów jest sterowany centralnie przez szablon.
+
+\section{\ploren{Znaki specjalne i poprawna typografia}{Special characters and typography}}
+
+Znaki mające znaczenie składniowe trzeba poprzedzić ukośnikiem. Nawiasy klamrowe i ukośnik odwrotny mają osobne polecenia, zestawione w listingu~\ref{lst:formatowanie-znaki}.
+
+\begin{lstlisting}[style=thesis,caption={Znaki specjalne w zwykłym tekście},label={lst:formatowanie-znaki}]
+\%  \&  \_  \#  \$  \{  \}
+\textbackslash
+\end{lstlisting}
+
+Krótkie cytaty i nazwy warto obejmować poleceniem \verb|\enquote|, które dobiera cudzysłowy do języka dokumentu: \enquote{przykładowy cytat}. Pojedynczy łącznik \verb|-| służy do tworzenia wyrazów złożonych, dwa łączniki \verb|--| tworzą półpauzę używaną między innymi w zakresach \mbox{10--15}, a trzy \verb|---| tworzą pauzę. Nie należy zastępować każdego z tych znaków tym samym dywizem.
+
+\section{\ploren{Listy nienumerowane, numerowane i opisowe}{Bulleted, numbered and description lists}}
+
+Lista \texttt{itemize} przedstawia elementy równorzędne, \texttt{enumerate} --- kolejność działań albo hierarchię, a \texttt{description} --- zestaw pojęć z objaśnieniami. Kod wszystkich trzech odmian zawiera listing~\ref{lst:formatowanie-listy}.
+
+\begin{lstlisting}[style=thesis,caption={Trzy podstawowe rodzaje list},label={lst:formatowanie-listy}]
+\begin{itemize}
+  \item model obiektu;
+  \item algorytm sterowania;
+  \item stanowisko badawcze.
+\end{itemize}
+
+\begin{enumerate}
+  \item przygotować dane;
+  \item uruchomić obliczenia;
+  \item ocenić wyniki.
+\end{enumerate}
+
+\begin{description}
+  \item[PLC] programowalny sterownik logiczny;
+  \item[HMI] interfejs operatora.
+\end{description}
+\end{lstlisting}
+
+Elementy jednej listy powinny mieć równoległą budowę gramatyczną. Jeżeli są równoważnikami jednego zdania, można kończyć je średnikami, a ostatni kropką. Pełne zdania rozpoczyna się wielką literą i kończy kropką. List nie należy nadmiernie zagnieżdżać; przy więcej niż dwóch poziomach zwykle lepiej podzielić materiał na podsekcje.
+
+\section{\ploren{Kolor tekstu}{Text colour}}
+
+Kolor można zmienić poleceniem \verb|\textcolor|, na przykład \textcolor{thesislinkblue}{ten fragment wykorzystuje kolor zdefiniowany przez szablon}. W zasadniczej treści pracy kolor powinien mieć znaczenie pomocnicze, a nie dekoracyjne. Minimalny przykład przedstawiono w listingu~\ref{lst:formatowanie-kolor}.
+
+\begin{lstlisting}[style=thesis,caption={Zmiana koloru krótkiego fragmentu},label={lst:formatowanie-kolor}]
+Wartość \textcolor{thesislinkblue}{referencyjna}
+została zaznaczona kolorem.
+\end{lstlisting}
+
+Informacji nie wolno kodować wyłącznie kolorem. Wykres, tabela lub ostrzeżenie powinny pozostać zrozumiałe po wydruku monochromatycznym oraz dla osób z zaburzeniami rozpoznawania barw. Do zwykłego wyróżniania terminów należy używać \verb|\emph|, a nie dowolnie dobranych kolorów.
+
+\section{\ploren{Odsyłacze internetowe i adresy e-mail}{Web links and email addresses}}
+
+Polecenie \verb|\url| wyświetla adres i pozwala go poprawnie łamać. Polecenie \verb|\href| ukrywa adres pod czytelnym opisem. W zdaniu zwykle lepiej wygląda opis znaczenia odsyłacza niż długi adres. Oba warianty zestawiono w listingu~\ref{lst:formatowanie-linki}.
+
+\begin{lstlisting}[style=thesis,caption={Adres internetowy i opisany odsyłacz},label={lst:formatowanie-linki}]
+Dokumentacja jest dostępna pod adresem
+\url{https://www.latex-project.org/help/documentation/}.
+
+Zobacz \href{https://www.latex-project.org/}
+{stronę projektu LaTeX}.
+
+Kontakt: \href{mailto:autor@example.edu}{autor@example.edu}.
+\end{lstlisting}
+
+Adres prowadzący do źródła wykorzystanego merytorycznie nie zastępuje opisu bibliograficznego. Taki dokument należy dodać do pliku \texttt{bibliografia.bib} i zacytować zgodnie z zasadami przedstawionymi w załączniku~\ref{app:cytowania}.
+
+\section{\ploren{Skróty klawiszowe i ścieżki menu}{Keyboard shortcuts and menu paths}}
+
+Szablon udostępnia polecenia \verb|\shortcut| i \verb|\menupath|, oparte na pakiecie \texttt{menukeys}. Pozwalają one odróżnić elementy interfejsu od zwykłego tekstu. Przykładowo dokument zapisuje się skrótem \shortcut{Ctrl + S}, a konfigurację kompilatora można otworzyć przez \menupath{Opcje > Konfiguruj TeXstudio > Budowanie}. Sposób zapisu tych elementów przedstawia listing~\ref{lst:formatowanie-klawisze}.
+
+\begin{lstlisting}[style=thesis,caption={Skróty klawiszowe i ścieżki menu},label={lst:formatowanie-klawisze}]
+Zapisz dokument skrótem \shortcut{Ctrl + S}.
+Uruchom wyszukiwanie przez \shortcut{Ctrl + F}.
+Otwórz \menupath{Opcje > Konfiguruj TeXstudio > Budowanie}.
+\end{lstlisting}
+
+Nazwy klawiszy i pozycji menu powinny odpowiadać interfejsowi programu. Nie należy ręcznie rysować ramek za pomocą tabel ani wpisywać każdego skrótu innym stylem.
+
+\section{\ploren{Nazwy plików, kod w zdaniu i przypisy}{File names, inline code and footnotes}}
+
+Nazwy plików i krótkie identyfikatory zapisuje się krojem maszynowym, na przykład \texttt{main.tex}, \texttt{bibliografia.bib} i \texttt{sampleRate}. Polecenie \verb|\verb| jest wygodne dla krótkiego kodu zawierającego znaki specjalne. Dłuższy kod powinien być umieszczony w listingu zgodnie z załącznikiem~\ref{app:kod}.
+
+Przypis dolny dodaje polecenie \verb|\footnote|. Przypis może zawierać krótkie objaśnienie poboczne\footnote{Przypis nie powinien zastępować źródła bibliograficznego ani zawierać zasadniczej części argumentacji.}, ale nie należy przenosić do niego informacji niezbędnej do zrozumienia wywodu.
+
+\section{\ploren{Podział strony i wyrównanie}{Page breaks and alignment}}
+
+LaTeX sam dzieli strony i rozmieszcza elementy pływające. Ręczne sterowanie podziałem powinno rozwiązywać problem znaczeniowy, na przykład oddzielać większą część dokumentu, a nie korygować pojedynczy wiersz po każdej zmianie tekstu. Rozdziały i załączniki automatycznie rozpoczynają się zgodnie z wybranym trybem dokumentu.
+
+\subsection{\ploren{Podział strony i wiersza}{Page and line breaks}}
+
+Polecenie \verb|\newpage| kończy bieżącą stronę, lecz nie wymusza wcześniejszego umieszczenia wszystkich oczekujących rysunków i tabel. Polecenie \verb|\clearpage| najpierw opróżnia kolejkę elementów pływających, a następnie rozpoczyna nową stronę. Polecenie \verb|\cleardoublepage| dodatkowo przechodzi do następnej strony nieparzystej w składzie dwustronnym; w tym szablonie jest ono już wykorzystywane przez strukturę dokumentu i zwykle nie należy dodawać go wewnątrz rozdziału.
+
+Polecenie \verb|\pagebreak| sugeruje albo wymusza podział w konkretnym miejscu. Opcjonalna wartość od 0 do 4 określa siłę żądania, na przykład \verb|\pagebreak[2]| jest sugestią, a \verb|\pagebreak[4]| wymusza podział. Polecenie \verb|\nopagebreak[4]| zdecydowanie zabrania podziału w danym miejscu. Należy ich używać oszczędnie, ponieważ zmiana wcześniejszej treści może sprawić, że ręczna decyzja przestanie być potrzebna. Zestaw dostępnych poleceń zawiera listing~\ref{lst:formatowanie-podzial-strony}.
+
+\begin{lstlisting}[style=thesis,caption={Polecenia sterujące podziałem strony},label={lst:formatowanie-podzial-strony}]
+\newpage              % nowa strona
+\clearpage            % najpierw wszystkie oczekujące rysunki i tabele
+\pagebreak[2]         % sugestia podziału; zakres siły: 0--4
+\nopagebreak[4]       % zakaz podziału w tym miejscu
+
+% Zachowaj co najmniej cztery wiersze miejsca na kolejny fragment:
+\Needspace{4\baselineskip}
+\subsection{Krótki nagłówek}
+\end{lstlisting}
+
+Polecenie \verb|\Needspace|, udostępniane przez pakiet \texttt{needspace}, przenosi następujący element na kolejną stronę tylko wtedy, gdy brakuje dla niego wskazanej ilości miejsca. Jest bezpieczniejsze od bezwarunkowego \verb|\newpage| przy blokach, które powinny pozostać razem. Nagłówki szablonu mają już własne mechanizmy ochronne, dlatego student potrzebuje tego polecenia głównie przy niestandardowych elementach.
+
+Polecenie \verb|\linebreak[n]| sugeruje albo wymusza podział wiersza. Parametr $n$ przyjmuje wartość od 0 do 4.
+
+Polecenie \verb|\nolinebreak[n]| przeciwdziała podziałowi wiersza. Polecenie \verb|\\| tworzy jawny koniec wiersza, lecz nie jest zamiennikiem akapitu. Ręczne łamanie zwykłych akapitów powinno być wyjątkiem.
+
+\subsection{\ploren{Odstępy poziome i pionowe}{Horizontal and vertical spacing}}
+
+Do niewielkich odstępów pionowych służą \verb|\smallskip|, \verb|\medskip| i \verb|\bigskip|. Ich wielkość zależy od klasy dokumentu, dzięki czemu lepiej dostosowują się do stylu niż przypadkowe wartości w milimetrach. Polecenie \verb|\vspace{długość}| dodaje dokładny odstęp pionowy, natomiast wariant \verb|\vspace*| zachowuje go również na początku lub końcu strony. Polecenie \verb|\addvspace| nie kumuluje kilku sąsiadujących odstępów w taki sam sposób jak wielokrotne \verb|\vspace|.
+
+Odstęp poziomy tworzy \verb|\hspace{długość}|, a wariant \verb|\hspace*| zachowuje odstęp także na początku i końcu wiersza. Polecenia \verb|\hfill| i \verb|\vfill| wstawiają odstęp elastyczny, który zajmuje całe dostępne miejsce. Są przydatne między innymi na stronach tytułowych, ale nie powinny służyć do ręcznego ustawiania zwykłych akapitów. Przykłady odstępów stałych i elastycznych pokazano w listingu~\ref{lst:formatowanie-odstepy}.
+
+\begin{lstlisting}[style=thesis,caption={Odstępy stałe, względne i elastyczne},label={lst:formatowanie-odstepy}]
+Tekst przed odstępem.\hspace{1em}Tekst po odstępie.
+
+\smallskip
+\medskip
+\bigskip
+\vspace{0.5\baselineskip}
+
+Lewa strona\hfill prawa strona
+\vfill
+\end{lstlisting}
+
+Wymiary warto wyrażać względnie, na przykład przez \verb|em|, \verb|ex|, \verb|\baselineskip|, \verb|\linewidth| lub \verb|\textwidth|. Ujemne odstępy oraz wielokrotne polecenia \verb|\vspace| są kruche i zwykle świadczą o tym, że należy poprawić styl, środowisko albo konstrukcję elementu.
+
+\subsection{\ploren{Pudełka i elementy nierozdzielane}{Boxes and unbreakable elements}}
+
+Polecenie \verb|\mbox{...}| umieszcza krótką zawartość w poziomym pudełku, w którym nie wolno złamać wiersza ani podzielić wyrazu. Może zabezpieczyć krótki symbol lub zakres, na przykład \mbox{10--15}, ale długi tekst w \verb|\mbox| może wyjść poza margines. Do zwykłego łączenia wyrazów częściej wystarcza spacja nierozdzielająca \verb|~|.
+
+Polecenie \verb|\makebox| pozwala dodatkowo ustalić szerokość i wyrównanie pudełka. \verb|\parbox| tworzy pudełko zawierające kilka wierszy, a środowisko \texttt{minipage} może zawierać bardziej złożoną treść. Nie należy jednak budować nimi ręcznie układów, dla których istnieją odpowiednie środowiska tabel, podrysunków albo list. Podstawową składnię tych konstrukcji przedstawia listing~\ref{lst:formatowanie-pudelka}.
+
+\Needspace{13\baselineskip}
+\begin{lstlisting}[style=thesis,caption={Podstawowe pudełka tekstowe},label={lst:formatowanie-pudelka}]
+Zakres \mbox{10--15} pozostanie w jednym wierszu.
+
+\makebox[4cm][l]{Tekst wyrównany do lewej}
+
+\parbox{0.45\textwidth}{
+  Krótki blok tekstu o ustalonej szerokości,
+  który może zajmować kilka wierszy.
+}
+\end{lstlisting}
+
+Polecenia \verb|\phantom|, \verb|\hphantom| i \verb|\vphantom| tworzą niewidoczną zawartość o zachowanych wymiarach. Mogą pomagać w zaawansowanym wyrównywaniu równań i diagramów, ale w zwykłym tekście ich użycie powinno być rzadkie. Podobnie \verb|\strut| stabilizuje wysokość wiersza lub pudełka bez dodawania widocznego znaku.
+
+\subsection{\ploren{Wyrównanie treści}{Content alignment}}
+
+Środowiska \texttt{center}, \texttt{flushleft} i \texttt{flushright} służą do jawnego wyrównania krótkich elementów. Zwykłego tekstu nie należy pozycjonować spacjami, tabulatorami ani pustymi wierszami. W przypadku złożonego układu należy wybrać tabelę, listę, środowisko matematyczne albo odpowiednie polecenie szablonu.
+
+\section{\ploren{Dobór polecenia i najczęstsze błędy}{Command selection and common mistakes}}
+
+Dobór poleceń do najczęściej spotykanych elementów podsumowano w tabeli~\ref{tab:formatowanie-dobor-polecenia}.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Zalecany zapis typowych elementów tekstu}
+  \label{tab:formatowanie-dobor-polecenia}
+  \begin{tabularx}{\textwidth}{@{}p{0.29\textwidth}X@{}}
+    \toprule
+    Element & Zalecany zapis \\
+    \midrule
+    termin wyróżniony & \texttt{\textbackslash emph\{...\}} \\
+    nazwa pliku lub identyfikator & \texttt{\textbackslash texttt\{main.tex\}} \\
+    krótkie polecenie LaTeX-a & \texttt{\textbackslash verb|\textbackslash cite|} \\
+    spacja nierozdzielająca & \texttt{rysunek\textasciitilde\textbackslash ref\{...\}} \\
+    adres internetowy & \texttt{\textbackslash url\{...\}} lub \texttt{\textbackslash href\{...\}\{...\}} \\
+    skrót klawiszowy & \texttt{\textbackslash shortcut\{Ctrl + S\}} \\
+    ścieżka menu & \texttt{\textbackslash menupath\{Plik > Otwórz\}} \\
+    cytat krótki & \texttt{\textbackslash enquote\{...\}} \\
+    przypis dolny & \texttt{\textbackslash footnote\{...\}} \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+Najczęstsze błędy to: wielokrotne spacje, używanie \verb|\\| do tworzenia odstępów, ręczne wyrównywanie tekstu, nadmiar pogrubień i kolorów, mieszanie sposobów zapisu nazw plików, wpisywanie cudzysłowów z klawiatury, pozostawianie jednoliterowych przyimków na końcu wiersza oraz umieszczanie bardzo długich adresów bez czytelnego opisu. Dobra korekta powinna oceniać nie tylko pojedyncze polecenia, lecz przede wszystkim spójność ich użycia w całej pracy.

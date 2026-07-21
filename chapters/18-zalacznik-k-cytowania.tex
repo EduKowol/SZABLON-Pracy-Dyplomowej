@@ -17,7 +17,7 @@ Pierwszeństwo powinny mieć źródła pierwotne: artykuł opisujący metodę, n
 
 \section{\ploren{Podstawowe polecenia cytowania}{Basic citation commands}}
 
-Standardowe odwołanie numeryczne tworzy polecenie \verb|\cite|. Przykładowo opis metody elementów skończonych można poprzeć publikacją przeglądową~\cite{jagota2013finite}. Polecenie \verb|\textcite| włącza nazwisko autora do zdania; przykładowo \textcite{zielinski2007cyfrowe} omawia podstawy cyfrowego przetwarzania sygnałów.
+Standardowe odwołanie numeryczne tworzy polecenie \verb|\cite|. Przykładowo opis metody elementów skończonych można poprzeć publikacją przeglądową~\cite{jagota2013finite}. Polecenie \verb|\textcite| włącza nazwisko autora do zdania; przykładowo \textcite{zielinski2007cyfrowe} omawia podstawy cyfrowego przetwarzania sygnałów. Kod obu wariantów przedstawia listing~\ref{lst:cytowanie-podstawowe}.
 
 \begin{lstlisting}[style=thesis,caption={Pojedyncze cytowanie i cytowanie włączone do zdania},label={lst:cytowanie-podstawowe}]
 Opis metody przedstawiono w literaturze \cite{jagota2013finite}.
@@ -26,7 +26,7 @@ Opis metody przedstawiono w literaturze \cite{jagota2013finite}.
 przetwarzania sygnalow.
 \end{lstlisting}
 
-Przy wskazywaniu konkretnego fragmentu książki albo obszernego raportu warto podać numer strony, rozdziału lub sekcji. Opcjonalny argument polecenia jest automatycznie umieszczany przed numerem źródła.
+Przy wskazywaniu konkretnego fragmentu książki albo obszernego raportu warto podać numer strony, rozdziału lub sekcji. Opcjonalny argument polecenia jest automatycznie umieszczany przed numerem źródła, jak pokazano w listingu~\ref{lst:cytowanie-strona}.
 
 \begin{lstlisting}[style=thesis,caption={Cytowanie ze wskazaniem strony lub rozdziału},label={lst:cytowanie-strona}]
 Opis algorytmu przedstawiono w monografii
@@ -59,7 +59,7 @@ Bibliografia zawiera domyślnie tylko pozycje cytowane. Polecenie \verb|\nocite{
 
 \section{\ploren{Budowa pliku bibliograficznego}{Structure of the bibliography file}}
 
-Każdy rekord w pliku \texttt{bibliografia.bib} składa się z typu, unikatowego klucza i pól opisujących dokument. Klucz powinien być krótki, stabilny i czytelny, na przykład \texttt{nazwisko2024metoda}. Zmiana klucza wymaga poprawienia wszystkich odwołań w plikach \texttt{.tex}.
+Każdy rekord w pliku \texttt{bibliografia.bib} składa się z typu, unikatowego klucza i pól opisujących dokument. Klucz powinien być krótki, stabilny i czytelny, na przykład \texttt{nazwisko2024metoda}. Zmiana klucza wymaga poprawienia wszystkich odwołań w plikach \texttt{.tex}. Kompletny przykładowy rekord artykułu zawiera listing~\ref{lst:bib-artykul}.
 
 \begin{lstlisting}[style=thesis,caption={Przykładowy rekord artykułu naukowego z numerem DOI},label={lst:bib-artykul}]
 @article{kowalski2024diagnostics,
@@ -86,7 +86,7 @@ Artykuł konferencyjny zapisuje się zwykle jako \texttt{@inproceedings}, a prac
 
 \subsection{\ploren{Źródła internetowe}{Online sources}}
 
-Oficjalną dokumentację dostępną wyłącznie w sieci najlepiej zapisać jako \texttt{@online}. Pole \texttt{urldate} określa dzień dostępu w formacie ISO. Jeżeli dokument ma autora instytucjonalnego, nazwę organizacji obejmuje się dodatkową parą nawiasów klamrowych, aby BibLaTeX nie potraktował jej jak imienia i nazwiska.
+Oficjalną dokumentację dostępną wyłącznie w sieci najlepiej zapisać jako \texttt{@online}. Pole \texttt{urldate} określa dzień dostępu w formacie ISO. Jeżeli dokument ma autora instytucjonalnego, nazwę organizacji obejmuje się dodatkową parą nawiasów klamrowych, aby BibLaTeX nie potraktował jej jak imienia i nazwiska. Przykład takiego rekordu przedstawiono w listingu~\ref{lst:bib-online}.
 
 \begin{lstlisting}[style=thesis,caption={Przykładowy opis oficjalnej dokumentacji internetowej},label={lst:bib-online}]
 @online{stmicroelectronics2026stm32,
@@ -119,9 +119,69 @@ Kod zaczerpnięty z dokumentacji, biblioteki lub repozytorium wymaga podania źr
 
 \section{\ploren{Narzędzia do zarządzania literaturą}{Reference management tools}}
 
-Przy większej liczbie źródeł warto korzystać z menedżera bibliografii, na przykład Zotero, JabRef lub innego narzędzia eksportującego BibLaTeX. Jeden współdzielony plik \texttt{bibliografia.bib} ogranicza ręczne przepisywanie danych. Rekordy można grupować słowami kluczowymi w menedżerze, ale w samym szablonie nie ma potrzeby dzielenia bibliografii na osobne pliki dla każdego rozdziału.
+Menedżer bibliografii porządkuje opisy publikacji, pliki PDF, notatki i słowa kluczowe, a następnie eksportuje dane do formatu obsługiwanego przez LaTeX. Nie zastępuje jednak wyszukiwania literatury ani oceny jakości źródeł. Zalecany proces obejmuje zatem osobno: odnalezienie publikacji, sprawdzenie jej wiarygodności, zapisanie rekordu, kontrolę metadanych i wykorzystanie go w pliku \texttt{bibliografia.bib}.
 
-Klucze cytowań powinny być generowane według jednej reguły i nie powinny zmieniać się po każdej synchronizacji. Przed oddaniem pracy należy wyszukać brakujące pola, zduplikowane rekordy oraz pozycje, które różnią się tylko sposobem zapisu DOI lub nazwiska autora.
+\subsection{\ploren{Gdzie wyszukiwać literaturę}{Where to search for literature}}
+
+Dla elektrotechniki, elektroniki, automatyki i informatyki podstawowym źródłem publikacji jest \href{https://ieeexplore.ieee.org/}{IEEE Xplore}. W informatyce istotna jest również \href{https://dl.acm.org/}{ACM Digital Library}. Zależnie od tematu przydatne są serwisy wydawców, między innymi \href{https://www.sciencedirect.com/}{ScienceDirect}, \href{https://link.springer.com/}{SpringerLink}, \href{https://onlinelibrary.wiley.com/}{Wiley Online Library} i \href{https://www.mdpi.com/}{MDPI}. MDPI jest wydawcą czasopism, a nie ogólną bazą indeksującą całą literaturę naukową.
+
+Bazy \href{https://www.scopus.com/}{Scopus} i \href{https://www.webofscience.com/}{Web of Science} umożliwiają wyszukiwanie przekrojowe oraz śledzenie cytowań. \href{https://scholar.google.com/}{Google Scholar} jest wygodnym narzędziem do rozpoczęcia poszukiwań, odnajdywania podobnych prac i sprawdzania, kto cytował daną publikację. Wynik wyszukiwarki nie jest jednak źródłem bibliograficznym: cytować należy odnaleziony artykuł, książkę, normę albo dokumentację.
+
+Repozytoria preprintów, na przykład \href{https://arxiv.org/}{arXiv}, pozwalają poznać najnowsze wyniki, ale zamieszczona tam wersja może nie być recenzowana. Jeżeli istnieje późniejsza wersja opublikowana w czasopiśmie lub materiałach konferencyjnych, zwykle należy odwołać się właśnie do niej. Dostęp do części baz i pełnych tekstów może wymagać zalogowania przez bibliotekę uczelni albo wykorzystania uczelnianego serwera pośredniczącego.
+
+Wyszukiwanie warto rozpocząć od kilku zestawów słów kluczowych, przede wszystkim w języku angielskim. Po znalezieniu dobrej publikacji należy sprawdzić zarówno jej bibliografię, jak i prace, które ją cytują. Takie wyszukiwanie wsteczne i do przodu jest zwykle skuteczniejsze niż ograniczenie się do pierwszej strony wyników.
+
+Większość baz naukowych i serwisów wydawców umożliwia pobranie opisu znalezionej publikacji. Polecenie może być oznaczone jako \emph{Cite}, \emph{Export citation}, \emph{Download citation} albo podobnie. Dla tego szablonu należy wybrać format BibTeX lub BibLaTeX, jeżeli jest dostępny, a pobrany rekord wkleić do pliku \texttt{bibliografia.bib}. Format RIS można zaimportować do Zotero lub Mendeley, a następnie wyeksportować rekord do formatu bibliograficznego używanego przez LaTeX.
+
+Rekord najlepiej pobierać ze strony konkretnego artykułu w bazie lub serwisie wydawcy. Google Scholar również udostępnia eksport między innymi do BibTeX-u, jednak uzyskane dane mogą być skrócone albo niekompletne. Niezależnie od miejsca pobrania trzeba sprawdzić autora, tytuł, rok, nazwę czasopisma lub konferencji, tom, numer, strony i DOI. Eksport rekordu nie oznacza automatycznie, że użytkownik uzyskał dostęp do pełnego tekstu publikacji.
+
+\subsection{\ploren{Ocena i wybór źródeł}{Evaluation and selection of sources}}
+
+Przed wykorzystaniem publikacji należy ustalić, czy jest ona recenzowana, odpowiada tematowi i rzeczywiście potwierdza formułowane stwierdzenie. Znaczenie mają także aktualność, reputacja czasopisma lub konferencji, kompetencje autorów, kompletność metody i możliwość zweryfikowania wyników. Liczba cytowań może być pomocniczą wskazówką, lecz sama nie przesądza o jakości pracy, zwłaszcza w przypadku nowych publikacji.
+
+Należy preferować źródła pierwotne i pełne wersje dokumentów. Warto sprawdzić DOI, autorów, afiliacje, rok, numer tomu, strony oraz informację o ewentualnym wycofaniu publikacji. Materiały promocyjne, przypadkowe strony internetowe i odpowiedzi z forów mogą pomóc w rozpoznaniu problemu, ale zazwyczaj nie powinny zastępować recenzowanych artykułów, norm, monografii ani oficjalnej dokumentacji.
+
+\subsection{\ploren{Zotero --- rozwiązanie zalecane}{Zotero --- recommended solution}}
+
+Zotero jest zalecanym w tym szablonie menedżerem literatury. Program pozwala tworzyć kolekcje, dołączać pliki PDF, oznaczać rekordy słowami kluczowymi, przechowywać notatki oraz wykrywać duplikaty. Rozszerzenie \emph{Zotero Connector} zapisuje publikacje i ich metadane bezpośrednio z przeglądarki. Aktualna instrukcja instalacji i obsługi znajduje się w \href{https://www.zotero.org/support/connector}{dokumentacji Zotero Connector}.
+
+Zalecany sposób pracy z Zotero jest następujący:
+\begin{enumerate}
+  \item utworzyć osobną kolekcję dla przygotowywanej pracy;
+  \item zapisywać publikacje z ich stron w bazach naukowych, a nie wyłącznie z widoku pliku PDF;
+  \item sprawdzić autorów, tytuł, typ dokumentu, rok, nazwę czasopisma lub konferencji, strony i DOI;
+  \item połączyć duplikaty i uzupełnić brakujące dane;
+  \item wyeksportować wybrane rekordy do formatu BibLaTeX lub BibTeX;
+  \item umieścić rekordy w pliku \texttt{bibliografia.bib} i cytować je za pomocą stabilnych kluczy.
+\end{enumerate}
+
+Automatycznie pobrane metadane zawsze wymagają kontroli. Szczególnie często trzeba poprawić wielkość liter w skrótach technicznych, kolejność imienia i nazwiska, typ publikacji, zakres stron, DOI oraz nazwę materiałów konferencyjnych. Klucze cytowań powinny być generowane według jednej reguły i nie powinny zmieniać się przy każdym eksporcie.
+
+Przy pracy nad jednym dokumentem najlepiej utrzymywać jeden plik \texttt{bibliografia.bib}. Nie ma potrzeby tworzenia osobnej bibliografii dla każdego rozdziału. Jeżeli eksport z Zotero jest wykonywany wielokrotnie, należy uważać, aby nie nadpisać ręcznych poprawek w pliku \texttt{.bib}; bezpieczniej poprawić dane źródłowe w Zotero i ponowić eksport.
+
+\subsection{\ploren{Zotero i Prism}{Zotero and Prism}}
+
+Prism umożliwia połączenie projektu z indywidualną biblioteką Zotero, co ułatwia wyszukiwanie zapisanych publikacji i wstawianie cytowań podczas pracy nad dokumentem. Zakres integracji, sposób uwierzytelnienia i obsługa bibliotek grupowych mogą zmieniać się wraz z rozwojem usługi, dlatego należy korzystać z \href{https://help.openai.com/en/articles/20001050-troubleshooting-and-getting-help-in-prism}{aktualnej dokumentacji Prism}.
+
+Integracja z edytorem nie zwalnia z kontroli pliku \texttt{bibliografia.bib}. Po przeniesieniu projektu między Prism, Overleafem i komputerem lokalnym trzeba sprawdzić, czy plik bibliograficzny został dołączony, klucze cytowań nie uległy zmianie, a wszystkie rekordy wykorzystane w pracy są dostępne również poza usługą, w której je dodano.
+
+\subsection{\ploren{Mendeley, JabRef i inne rozwiązania}{Mendeley, JabRef and other solutions}}
+
+Mendeley Reference Manager jest alternatywnym menedżerem literatury, a rozszerzenie \emph{Mendeley Web Importer} pozwala zapisywać rekordy z przeglądarki. Aktualne instrukcje są dostępne w \href{https://www.mendeley.com/guides}{przewodnikach Mendeley}. JabRef jest natomiast narzędziem skoncentrowanym bezpośrednio na plikach BibTeX i BibLaTeX, dlatego dobrze pasuje do lokalnego sposobu pracy z LaTeX-em.
+
+Nie należy równolegle utrzymywać kilku niezależnych bibliotek tej samej pracy bez ustalenia, która z nich jest źródłem nadrzędnym. Niezależnie od wybranego programu końcowym interfejsem szablonu pozostaje poprawny i przenośny plik \texttt{bibliografia.bib}.
+
+\subsection{\ploren{Zalecany przepływ pracy}{Recommended workflow}}
+
+Cały proces można podsumować następująco:
+\begin{center}
+  \small
+  wyszukiwanie $\rightarrow$ ocena źródła $\rightarrow$ zapis w menedżerze
+  $\rightarrow$ kontrola metadanych $\rightarrow$ eksport pliku \texttt{.bib}
+  $\rightarrow$ cytowanie w LaTeX-u.
+\end{center}
+
+Przed oddaniem pracy należy ponownie wyszukać brakujące pola, zduplikowane rekordy oraz pozycje różniące się tylko sposobem zapisu DOI lub nazwiska autora. Warto również zachować kopię biblioteki menedżera i pliku \texttt{bibliografia.bib} razem z pozostałymi materiałami źródłowymi pracy.
 
 \section{\ploren{Najczęstsze błędy}{Common mistakes}}
 

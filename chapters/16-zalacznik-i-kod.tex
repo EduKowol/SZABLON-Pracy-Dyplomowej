@@ -58,7 +58,7 @@ listing~\ref{lst:python-plik}.
   style=thesis-python,
   caption={Implementacja filtru średniej ruchomej w języku Python},
   label={lst:python-plik}
-]{chapters/14-zalacznik-g-kod/code/moving_average.py}
+]{chapters/16-zalacznik-i-kod/code/moving_average.py}
 
 Kod definiuje filtr przyczynowy. Zmienna \lstinline[language=Python]|running_sum|
 pozwala uniknąć ponownego sumowania całego okna w każdej iteracji, dlatego złożoność
@@ -73,7 +73,7 @@ listingu~\ref{lst:inputlisting-python}.
   style=thesis-python,
   caption={Implementacja filtru średniej ruchomej w języku Python},
   label={lst:python-plik}
-]{chapters/14-zalacznik-g-kod/code/moving_average.py}
+]{chapters/16-zalacznik-i-kod/code/moving_average.py}
 \end{lstlisting}
 
 \section{\ploren{Wybór fragmentu pliku}{Selecting a portion of a file}}
@@ -91,7 +91,10 @@ numery po lewej odpowiadają numerom w pliku źródłowym dzięki ustawieniu
   firstnumber=13,
   caption={Główna pętla filtru średniej ruchomej},
   label={lst:python-fragment}
-]{chapters/14-zalacznik-g-kod/code/moving_average.py}
+]{chapters/16-zalacznik-i-kod/code/moving_average.py}
+
+Konfigurację polecenia wczytującego wybrany zakres wierszy przedstawia
+listing~\ref{lst:inputlisting-zakres}.
 
 \begin{lstlisting}[style=thesis,caption={Wybór zakresu wierszy z pliku źródłowego},label={lst:inputlisting-zakres}]
 \lstinputlisting[
@@ -101,7 +104,7 @@ numery po lewej odpowiadają numerom w pliku źródłowym dzięki ustawieniu
   firstnumber=13,
   caption={Główna pętla filtru średniej ruchomej},
   label={lst:python-fragment}
-]{chapters/14-zalacznik-g-kod/code/moving_average.py}
+]{chapters/16-zalacznik-i-kod/code/moving_average.py}
 \end{lstlisting}
 
 Numery wierszy zmieniają się po edycji pliku, dlatego w opisie merytorycznym lepiej
@@ -117,7 +120,7 @@ tablicy \texttt{filtered} ogranicza koszt wielokrotnego powiększania wyniku.
   style=thesis-matlab,
   caption={Implementacja filtru średniej ruchomej w języku MATLAB},
   label={lst:matlab-plik}
-]{chapters/14-zalacznik-g-kod/code/moving_average.m}
+]{chapters/16-zalacznik-i-kod/code/moving_average.m}
 
 \section{\ploren{Przykład w języku C++}{C++ example}}
 
@@ -129,7 +132,7 @@ a pamięć wyniku jest rezerwowana przed rozpoczęciem pętli.
   style=thesis-cpp,
   caption={Implementacja filtru średniej ruchomej w języku C++},
   label={lst:cpp-fragment}
-]{chapters/14-zalacznik-g-kod/code/moving_average.cpp}
+]{chapters/16-zalacznik-i-kod/code/moving_average.cpp}
 
 \section{\ploren{Długi kod, wyniki działania i repozytorium}{Long code, program output and repository}}
 
@@ -145,7 +148,8 @@ innych technologii właściwy im plik konfiguracji środowiska budowania.
 
 Wynik działania programu, log lub komunikat terminala nie jest kodem źródłowym. Można
 go przedstawić osobnym listingiem bez kolorowania słów kluczowych, wyraźnie opisując,
-czy jest to wynik rzeczywistego uruchomienia, czy skrócony przykład.
+czy jest to wynik rzeczywistego uruchomienia, czy skrócony przykład. Tak sformatowany
+wynik pokazano w listingu~\ref{lst:wynik-programu}.
 
 \begin{lstlisting}[style=thesis,caption={Przykładowy wynik uruchomienia programu},label={lst:wynik-programu},numbers=none,xleftmargin=0.25cm,framexleftmargin=0cm]
 $ python moving_average.py

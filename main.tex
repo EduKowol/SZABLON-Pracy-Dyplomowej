@@ -2,17 +2,18 @@
 % !TeX TXS-program:compile = txs:///latexmk/{-pdf}
 % !TeX root = main.tex
 % Kompilacja: latexmk main.tex (silnik LuaLaTeX wybiera latexmkrc)
+
+% === KONFIGURACJA SZABLONU — NIE ZMIENIAJ W TYM PLIKU ===
+% Dane pracy, język, tryb digital/print i elementy opcjonalne ustawia się
+% wyłącznie w config/metadata.tex.
 \input{config/metadata}
-% Tryb digital sklada dokument jednostronnie; print przygotowuje sklad dwustronny.
-\def\thesisprintmodeprint{print}
-\ifx\thesisprintmode\thesisprintmodeprint
-  \documentclass[12pt,a4paper,twoside,openright]{report}
-\else
-  \documentclass[12pt,a4paper,oneside,openany]{report}
-\fi
+\input{config/document-class}
 \usepackage{config/thesis-style}
 
 \begin{document}
+
+% === STRONY POCZĄTKOWE — NIE ZMIENIAJ KOLEJNOŚCI POLECEŃ ===
+% Widoczność elementów opcjonalnych kontroluje config/metadata.tex.
 \hypersetup{pageanchor=false}
 \pagenumbering{gobble}
 \makethesistitle
@@ -38,6 +39,13 @@
 \ifdefstring{\showsymbollist}{true}{\input{frontmatter/symbols}}{}
 \clearpage
 \pagenumbering{arabic}
+
+% === ROZDZIAŁY PRACY — TUTAJ USTALASZ ICH KOLEJNOŚĆ ===
+% Każdy rozdział umieść w osobnym pliku w katalogu chapters/ i dołącz przez
+% \include{chapters/nazwa-pliku}, bez rozszerzenia .tex.
+% Nową strukturę można utworzyć poleceniem:
+% python tools/create_chapter.py nazwa-rozdzialu --title-pl "Tytuł rozdziału"
+% Nie wpisuj tutaj polecenia \chapter — powinno znajdować się w pliku rozdziału.
 \include{chapters/01-wprowadzenie}
 \include{chapters/02-cel-zakres}
 \include{chapters/03-przeglad-literatury}
@@ -45,16 +53,25 @@
 \include{chapters/05-implementacja-badania}
 \include{chapters/06-wyniki-dyskusja}
 \include{chapters/07-podsumowanie}
+
+% === ELEMENTY KOŃCOWE — NIE ZMIENIAJ KOLEJNOŚCI POLECEŃ ===
 \ifdefstring{\showavailabilitystatement}{true}{\input{backmatter/availability}}{}
 \printthesisbibliography
+
+% === ZAŁĄCZNIKI — DODAWAJ JE PONIŻEJ ===
+% \startthesisappendices włącza automatyczną numerację literową. Każdy załącznik
+% dołącz przez \include{chapters/nazwa-pliku}; nie wpisuj ręcznie \appendix ani
+% litery załącznika. Niepotrzebne przykładowe załączniki można usunąć z tej listy.
 \startthesisappendices
-\include{chapters/08-zalacznik-a-rysunki}
-\include{chapters/09-zalacznik-b-wykresy}
-\include{chapters/10-zalacznik-c-schematy}
-\include{chapters/11-zalacznik-d-diagramy}
-\include{chapters/12-zalacznik-e-tabele}
-\include{chapters/13-zalacznik-f-rownania}
-\include{chapters/14-zalacznik-g-kod}
-\include{chapters/15-zalacznik-h-duze-elementy}
-\include{chapters/16-zalacznik-i-cytowania}
+\include{chapters/08-zalacznik-a-kompilacja}
+\include{chapters/09-zalacznik-b-formatowanie}
+\include{chapters/10-zalacznik-c-rysunki}
+\include{chapters/11-zalacznik-d-wykresy}
+\include{chapters/12-zalacznik-e-schematy}
+\include{chapters/13-zalacznik-f-diagramy}
+\include{chapters/14-zalacznik-g-tabele}
+\include{chapters/15-zalacznik-h-rownania}
+\include{chapters/16-zalacznik-i-kod}
+\include{chapters/17-zalacznik-j-duze-elementy}
+\include{chapters/18-zalacznik-k-cytowania}
 \end{document}

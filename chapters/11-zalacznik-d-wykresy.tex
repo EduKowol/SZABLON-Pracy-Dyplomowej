@@ -100,11 +100,11 @@ Dane pomiarowe lub wyniki obliczeń najlepiej przechowywać poza plikiem \texttt
     ]
       \addplot[thesislinkblue,very thick,mark=*]
         table[x=time,y=reference,col sep=comma]
-        {chapters/09-zalacznik-b-wykresy/data/odpowiedz.csv};
+        {chapters/11-zalacznik-d-wykresy/data/odpowiedz.csv};
       \addlegendentry{Wartość zadana}
       \addplot[thesiscodestring,very thick,dashed,mark=square*]
         table[x=time,y=measured,col sep=comma]
-        {chapters/09-zalacznik-b-wykresy/data/odpowiedz.csv};
+        {chapters/11-zalacznik-d-wykresy/data/odpowiedz.csv};
       \addlegendentry{Wartość zmierzona}
     \end{axis}
   \end{tikzpicture}
@@ -152,11 +152,11 @@ Na rysunku~\ref{fig:aproksymacja-interpolacja} przedstawiono oba przypadki obok 
       ]
         \addplot[only marks,mark=*,black,mark size=2.2pt]
           table[x=x,y=measurement,col sep=comma]
-          {chapters/09-zalacznik-b-wykresy/data/aproksymacja.csv};
+          {chapters/11-zalacznik-d-wykresy/data/aproksymacja.csv};
         \addlegendentry{Pomiary}
         \addplot[thesislinkblue,line width=1.2pt]
           table[x=x,y=fit,col sep=comma]
-          {chapters/09-zalacznik-b-wykresy/data/aproksymacja.csv};
+          {chapters/11-zalacznik-d-wykresy/data/aproksymacja.csv};
         \addlegendentry{Aproksymacja}
       \end{axis}
     \end{tikzpicture}
@@ -180,11 +180,11 @@ Na rysunku~\ref{fig:aproksymacja-interpolacja} przedstawiono oba przypadki obok 
       ]
         \addplot[thesiscodestring,dashed,line width=1.2pt]
           table[x=x,y=interpolated,col sep=comma]
-          {chapters/09-zalacznik-b-wykresy/data/interpolacja.csv};
+          {chapters/11-zalacznik-d-wykresy/data/interpolacja.csv};
         \addlegendentry{Interpolacja}
         \addplot[only marks,mark=square*,black,mark size=2.2pt]
           table[x=x,y=measurement,col sep=comma]
-          {chapters/09-zalacznik-b-wykresy/data/aproksymacja.csv};
+          {chapters/11-zalacznik-d-wykresy/data/aproksymacja.csv};
         \addlegendentry{Pomiary}
       \end{axis}
     \end{tikzpicture}
@@ -235,7 +235,7 @@ Na rysunku~\ref{fig:reszty-aproksymacji} pokazano reszty, czyli różnice pomię
       \addplot[black,thin] coordinates {(0,0) (5,0)};
       \addplot[only marks,mark=*,thesislinkblue,mark size=2.5pt]
         table[x=x,y=residual,col sep=comma]
-        {chapters/09-zalacznik-b-wykresy/data/aproksymacja.csv};
+        {chapters/11-zalacznik-d-wykresy/data/aproksymacja.csv};
     \end{axis}
   \end{tikzpicture}
   \caption{Reszty liniowego modelu aproksymacyjnego}
@@ -372,7 +372,7 @@ Pojedyncza linia nie informuje o niepewności ani zmienności wyniku. Jeżeli s�
       \addplot[only marks,mark=*,thesislinkblue,
         error bars/.cd,y dir=both,y explicit]
         table[x=time,y=measured,y error=uncertainty,col sep=comma]
-        {chapters/09-zalacznik-b-wykresy/data/odpowiedz.csv};
+        {chapters/11-zalacznik-d-wykresy/data/odpowiedz.csv};
     \end{axis}
   \end{tikzpicture}
   \caption{\ploren{Przykład przedstawienia wartości wraz z niepewnością}{Example presentation of values with uncertainty}}
@@ -484,12 +484,12 @@ Skrypt Pythona wymaga bibliotek \texttt{numpy} i \texttt{matplotlib}, wymieniony
 \lstinputlisting[
   style=thesis-python,
   caption={\ploren{Aproksymacja i eksport wykresu w Pythonie}{Approximation and plot export in Python}}
-]{chapters/09-zalacznik-b-wykresy/scripts/wykres.py}
+]{chapters/11-zalacznik-d-wykresy/scripts/wykres.py}
 
 \lstinputlisting[
   style=thesis-matlab,
   caption={\ploren{Aproksymacja i eksport wykresu w MATLAB-ie}{Approximation and plot export in MATLAB}}
-]{chapters/09-zalacznik-b-wykresy/scripts/wykres.m}
+]{chapters/11-zalacznik-d-wykresy/scripts/wykres.m}
 
 Wersje języka i bibliotek należy zapisać w dokumentacji projektu albo pliku środowiska. Sam plik PDF nie wystarcza do odtworzenia wyniku, jeżeli nie zachowano danych, kodu i konfiguracji.
 
@@ -512,7 +512,7 @@ Histogram przedstawia przybliżony rozkład obserwacji przez zliczenie wartości
     ]
       \addplot[hist={bins=8},fill=thesislinkblue!55,draw=black]
         table[y=value,col sep=comma]
-        {chapters/09-zalacznik-b-wykresy/data/proby.csv};
+        {chapters/11-zalacznik-d-wykresy/data/proby.csv};
     \end{axis}
   \end{tikzpicture}
   \caption{Histogram demonstracyjnych wyników pomiarów}
@@ -548,7 +548,7 @@ Mapa cieplna przedstawia wartość za pomocą koloru w dwóch wymiarach przestrz
     ]
       \addplot[matrix plot*,point meta=explicit]
         table[x=x,y=y,meta=value,col sep=comma]
-        {chapters/09-zalacznik-b-wykresy/data/mapa-cieplna.csv};
+        {chapters/11-zalacznik-d-wykresy/data/mapa-cieplna.csv};
     \end{axis}
   \end{tikzpicture}
   \caption{Przykładowa mapa cieplna rozkładu temperatury}
@@ -588,7 +588,7 @@ Spektrogram jest mapą wartości w dziedzinie czasu i częstotliwości. Oprócz 
     ]
       \addplot[matrix plot*,point meta=explicit]
         table[x=time,y=frequency,meta=power,col sep=comma]
-        {chapters/09-zalacznik-b-wykresy/data/spektrogram.csv};
+        {chapters/11-zalacznik-d-wykresy/data/spektrogram.csv};
     \end{axis}
   \end{tikzpicture}
   \caption{Demonstracyjny spektrogram sygnału}

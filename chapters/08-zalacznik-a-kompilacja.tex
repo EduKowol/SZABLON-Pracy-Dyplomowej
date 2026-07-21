@@ -1,0 +1,117 @@
+% Zbiorczy nagłówek musi zostać zapisany w tym samym pliku pomocniczym co
+% pierwszy załącznik, aby w spisie treści zawsze pojawiał się przed nim.
+\phantomsection
+\addcontentsline{toc}{part}{\thesisappendicesname}
+\addtocontents{toc}{\protect\renewcommand{\protect\cftchappresnum}{\protect\appendixname\protect\enspace}}
+\addtocontents{toc}{\protect\renewcommand{\protect\cftchapaftersnum}{:\protect\enspace}}
+\addtocontents{toc}{\protect\setlength{\protect\cftchapnumwidth}{7em}}
+
+\chapter{\ploren{Instalacja i kompilacja szablonu}{Installing and compiling the template}}
+\label{app:kompilacja}
+
+\begin{quote}\itshape
+  Niniejszy załącznik dotyczy pracy z szablonem na komputerze z systemem Windows oraz przenoszenia projektu do edytora internetowego. Opisuje zalecany, powtarzalny sposób uruchomienia projektu; nie jest częścią merytorycznej treści pracy i przed jej oddaniem może zostać usunięty z listy załączników w pliku \texttt{main.tex}.
+\end{quote}
+
+\section{Wymagane i opcjonalne narzędzia}
+
+Do lokalnej kompilacji potrzebna jest dystrybucja systemu TeX. Zalecany zestaw dla systemu Windows przedstawiono w \cref{tab:narzedzia-kompilacja}.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Narzędzia używane do pracy z szablonem}
+  \label{tab:narzedzia-kompilacja}
+  \begin{tabularx}{\textwidth}{@{}p{0.22\textwidth}X p{0.19\textwidth}@{}}
+    \toprule
+    Narzędzie & Zastosowanie & Status \\
+    \midrule
+    MiKTeX & Dystrybucja zawierająca LuaLaTeX, \texttt{latexmk}, Biber oraz pakiety LaTeX-a & wymagane lokalnie \\
+    TeXstudio & Edytor kodu źródłowego, uruchamianie kompilacji i podgląd PDF & zalecane \\
+    Python 3 & Skrypty pomocnicze, walidacja projektu i tworzenie paczki startowej & opcjonalne \\
+    Ghostscript & Obsługa niektórych starszych przepływów PS/EPS i dodatkowa obróbka PDF & opcjonalne \\
+    Git & Historia zmian, kopia projektu i współpraca & opcjonalne \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+Ghostscript nie jest wymagany w standardowym przebiegu tego szablonu. LuaLaTeX bezpośrednio tworzy PDF, a zalecane formaty grafiki to PDF dla grafiki wektorowej oraz PNG lub JPEG dla rastrowej. Instalację Ghostscriptu warto rozważyć dopiero wtedy, gdy używane narzędzie wymaga plików PS/EPS albo zgłasza jego brak.
+
+\section{Instalacja środowiska w systemie Windows}
+
+\subsection{MiKTeX}
+
+Instalator należy pobrać z oficjalnej strony projektu MiKTeX: \url{https://miktex.org/download}. Po instalacji należy uruchomić \emph{MiKTeX Console}, sprawdzić dostępność aktualizacji, a następnie zainstalować je przed pierwszą kompilacją. W ustawieniach instalowania brakujących pakietów można wybrać pytanie użytkownika albo automatyczną instalację. Pierwsza kompilacja może dlatego potrwać dłużej i wyświetlić pytania o doinstalowanie pakietów.
+
+Po zakończeniu instalacji warto zamknąć i ponownie otworzyć terminal. Listing~\ref{lst:sprawdzenie-tex} pokazuje polecenia sprawdzające dostępność podstawowych programów w PowerShellu.
+
+\begin{lstlisting}[style=thesis-shell,caption={Sprawdzenie lokalnego środowiska TeX},label={lst:sprawdzenie-tex}]
+lualatex --version
+latexmk -v
+biber --version
+\end{lstlisting}
+
+Każde polecenie powinno wyświetlić informację o wersji programu. Komunikat o nierozpoznanym poleceniu zwykle oznacza, że instalacja nie została zakończona albo nowy wpis w zmiennej \texttt{PATH} nie jest jeszcze widoczny w otwartym terminalu.
+
+\subsection{TeXstudio}
+
+TeXstudio jest edytorem, a nie dystrybucją TeX, dlatego samo jego zainstalowanie nie wystarcza do kompilacji. Aktualny instalator znajduje się na stronie \url{https://www.texstudio.org/}. Najpierw należy zainstalować MiKTeX, a następnie TeXstudio; ułatwia to automatyczne wykrycie programów kompilujących.
+
+W konfiguracji budowania jako domyślny kompilator należy wybrać \emph{Latexmk}. Projektowy plik \texttt{latexmkrc} wybiera LuaLaTeX i kieruje wynik wraz z plikami pomocniczymi do katalogu \texttt{build}. Wbudowana przeglądarka PDF jest wygodna, ponieważ obsługuje synchronizację między kodem a wynikiem. Niektóre zewnętrzne przeglądarki blokują otwarty plik; komunikat \texttt{I can't write on file `main.pdf'} oznacza wtedy, że przed ponowną kompilacją trzeba zamknąć PDF w tej aplikacji.
+
+\section{Pierwsza kompilacja projektu}
+
+Po rozpakowaniu projektu należy otworzyć terminal w katalogu zawierającym \texttt{main.tex}. W PowerShellu nie stosuje się znaku \texttt{\textbackslash} jako kontynuacji polecenia znanej z niektórych powłok systemów Unix. Polecenia kompilacji i czyszczenia zestawiono w listingu~\ref{lst:kompilacja-projektu}; każde z nich należy wpisać w jednym wierszu.
+
+\begin{lstlisting}[style=thesis-shell,caption={Kompilacja i czyszczenie projektu},label={lst:kompilacja-projektu}]
+latexmk main.tex
+latexmk -C main.tex
+\end{lstlisting}
+
+Pierwsze polecenie wykonuje tyle przebiegów LuaLaTeX i Bibera, ile potrzeba do ustalenia numeracji, odwołań, spisu treści i bibliografii. Nie trzeba ręcznie wywoływać kompilatora kilka razy. Drugie polecenie służy wyłącznie do usunięcia odtwarzalnych artefaktów; nie należy uruchamiać go po każdej kompilacji. Gotowy dokument znajduje się w pliku \texttt{build/main.pdf}.
+
+Przed rozpoczęciem pisania należy:
+
+\begin{enumerate}
+  \item uzupełnić dane i ustawienia w \texttt{config/metadata.tex};
+  \item pozostawić status \texttt{draft} na czas pracy;
+  \item zastąpić przykładową zawartość rozdziałów własnym tekstem;
+  \item dodawać rozdziały w oznaczonym miejscu pliku \texttt{main.tex};
+  \item przeprowadzić kompilację i przeczytać ostrzeżenia w pliku \texttt{build/main.log}.
+\end{enumerate}
+
+\section{Overleaf i inne edytory internetowe}
+
+Projekt można przenieść bez wygenerowanych plików pomocniczych. W Overleaf należy utworzyć projekt przez przesłanie archiwum ZIP, wskazać \texttt{main.tex} jako dokument główny i wybrać LuaLaTeX jako kompilator. Szczegóły opisano w oficjalnej dokumentacji dotyczącej \href{https://docs.overleaf.com/getting-started/creating-a-new-project/uploading-a-project}{przesyłania projektu} oraz \href{https://docs.overleaf.com/getting-started/recompiling-your-project/choosing-a-latex-compiler}{wyboru kompilatora}.
+
+W Prism lub innym środowisku obsługującym projekty LaTeX należy zachować strukturę katalogów, wybrać \texttt{main.tex} jako plik główny i użyć LuaLaTeX. Platforma internetowa może przechowywać własne pliki pomocnicze poza katalogiem projektu i nie musi odwzorowywać lokalnego katalogu \texttt{build}; nie wpływa to na treść dokumentu. Po imporcie trzeba zawsze sprawdzić stronę tytułową, bibliografię, odwołania i polskie znaki.
+
+Do przenoszenia nie należy dołączać katalogów \texttt{build}, \texttt{tmp}, \texttt{legacy} ani plików takich jak \texttt{*.aux}, \texttt{*.log} i \texttt{*.synctex.gz}. Archiwum utworzone skryptem opisanym w następnym punkcie spełnia te wymagania.
+
+\section{Minimalna paczka startowa}
+
+Pełna wersja projektu zawiera przykłady przeznaczone do nauki. Polecenie generujące czystą paczkę dla nowej pracy przedstawiono w listingu~\ref{lst:paczka-startowa}.
+
+\begin{lstlisting}[style=thesis-shell,caption={Utworzenie czystej paczki startowej},label={lst:paczka-startowa}]
+python tools/create_release.py
+\end{lstlisting}
+
+Po uruchomieniu skrypt pyta o wariant paczki. Wariant \texttt{local} zawiera \texttt{latexmkrc} i tworzy archiwum \texttt{dist/szablon-pracy-dyplomowej-local.zip}. Wariant \texttt{online}, przeznaczony do Prism i Overleaf, pomija lokalną konfigurację LatexMk i tworzy \texttt{dist/szablon-pracy-dyplomowej-online.zip}. W automatyzacji wybór można przekazać przez \texttt{--target local} albo \texttt{--target online}.
+
+Obie paczki zachowują wspólny styl, konfigurację dokumentu, strony początkowe, bibliografię, dokumentację i narzędzia, ale zawierają tylko jeden krótki rozdział. Nie są do nich kopiowane przykładowe załączniki, materiały demonstracyjne ani wynik kompilacji. Plik \texttt{WARIANT.md} przypomina ustawienia właściwe dla wybranego środowiska.
+
+\section{Najczęstsze problemy}
+
+\begin{description}
+  \item[Brak polecenia \texttt{latexmk}.] Uruchom ponownie terminal, sprawdź instalację MiKTeX i jej obecność w zmiennej \texttt{PATH}.
+  \item[Brak pakietu LaTeX.] Zezwól MiKTeX na jego instalację, a następnie ponów kompilację. W razie potrzeby zainstaluj pakiet przez MiKTeX Console.
+  \item[Nie można zapisać \texttt{main.pdf}.] Zamknij dokument w zewnętrznej przeglądarce PDF i ponownie uruchom \texttt{latexmk main.tex}.
+  \item[\texttt{latexmk} pamięta poprzedni błąd.] Po usunięciu przyczyny uruchom \texttt{latexmk} z opcją \texttt{-g}, aby wymusić pełną kompilację: \texttt{latexmk} \texttt{-g} \texttt{main.tex}.
+  \item[Brak bibliografii lub nieaktualne odwołania.] Kompiluj przez \texttt{latexmk}, a nie przez pojedyncze wywołanie LuaLaTeX. Sprawdź również poprawność kluczy w \texttt{bibliografia.bib}.
+  \item[Numer odwołania jest zastąpiony znakami zapytania.] Sprawdź zgodność argumentów \verb|\label| i \verb|\ref| albo \verb|\cref|. Po poprawieniu etykiety pozwól \texttt{latexmk} wykonać wszystkie wymagane przebiegi.
+  \item[Konflikt polecenia \texttt{\textbackslash eth}.] Upewnij się, że projekt jest kompilowany przez LuaLaTeX i nie dodano ponownie pakietu \texttt{amssymb}. Szablon wybiera potrzebne pakiety matematyczne zależnie od silnika.
+  \item[Nie znaleziono pliku.] Sprawdź ścieżkę względem katalogu zawierającego \texttt{main.tex}, rozszerzenie oraz wielkość liter. Windows zwykle jej nie rozróżnia, natomiast serwer edytora internetowego może traktować \texttt{Rysunek.png} i \texttt{rysunek.png} jako różne nazwy.
+  \item[Polskie znaki są uszkodzone.] Zapisuj pliki źródłowe w kodowaniu UTF-8. Kodowanie wybrane w edytorze musi odpowiadać rzeczywistemu kodowaniu pliku.
+  \item[Inny wynik lokalnie i online.] Sprawdź wybrany silnik, dokument główny oraz log kompilacji. Różne wersje pakietów mogą powodować niewielkie różnice składu.
+\end{description}
+
+Po aktualizacji MiKTeX lub istotnej zmianie konfiguracji warto ponownie skompilować cały dokument i przejrzeć log. Aktualizacja narzędzi bezpośrednio przed terminem oddania pracy powinna pozostawiać czas na kontrolę wyniku.

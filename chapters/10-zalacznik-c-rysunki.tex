@@ -1,12 +1,3 @@
-% Zbiorczy nagłówek musi zostać zapisany w tym samym pliku pomocniczym co
-% pierwszy załącznik, aby w spisie treści zawsze pojawiał się przed nim.
-\phantomsection
-\addcontentsline{toc}{part}{\thesisappendicesname}
-% Wpisy w spisie treści mają pełne oznaczenia „Załącznik A” / „Appendix A”.
-\addtocontents{toc}{\protect\renewcommand{\protect\cftchappresnum}{\protect\appendixname\protect\enspace}}
-\addtocontents{toc}{\protect\renewcommand{\protect\cftchapaftersnum}{:\protect\enspace}}
-\addtocontents{toc}{\protect\setlength{\protect\cftchapnumwidth}{7em}}
-
 \chapter{\ploren{Rysunki, fotografie i podrysunki}{Figures, photographs and subfigures}}
 \label{app:rysunki}
 
@@ -56,7 +47,7 @@ Każdy rysunek powinien zostać zapowiedziany i omówiony w tekście. Na rysunku
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.88\textwidth]{chapters/08-zalacznik-a-rysunki/figures/stanowisko-elektroniczne.jpg}
+  \includegraphics[width=0.88\textwidth]{chapters/10-zalacznik-c-rysunki/figures/stanowisko-elektroniczne.jpg}
   \caption{\ploren
     {Przykładowa wizualizacja stanowiska do badań układu elektronicznego (materiał wygenerowany na potrzeby szablonu)}
     {Example visualisation of an electronic circuit test bench (material generated for this template)}}
@@ -122,14 +113,14 @@ Podrysunki stosuje się, gdy kilka obrazów tworzy jedno logiczne porównanie i 
   \centering
   \begin{subfigure}[t]{0.48\textwidth}
     \centering
-    \includegraphics[width=\linewidth]{chapters/08-zalacznik-a-rysunki/figures/stanowisko-automatyki.png}
+    \includegraphics[width=\linewidth]{chapters/10-zalacznik-c-rysunki/figures/stanowisko-automatyki.png}
     \caption{\ploren{Stanowisko automatyki}{Automation training station}}
     \label{fig:stanowisko-automatyki}
   \end{subfigure}
   \hfill
   \begin{subfigure}[t]{0.48\textwidth}
     \centering
-    \includegraphics[width=\linewidth]{chapters/08-zalacznik-a-rysunki/figures/stanowisko-systemow-wbudowanych.png}
+    \includegraphics[width=\linewidth]{chapters/10-zalacznik-c-rysunki/figures/stanowisko-systemow-wbudowanych.png}
     \caption{\ploren{Stanowisko systemów wbudowanych}{Embedded systems workstation}}
     \label{fig:stanowisko-wbudowane}
   \end{subfigure}

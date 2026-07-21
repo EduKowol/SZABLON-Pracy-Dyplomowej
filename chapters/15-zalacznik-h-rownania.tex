@@ -102,8 +102,9 @@ numer. Przykładowo wskaźnik jakości można zdefiniować jako
   \end{split}
   \label{eq:wskaznik-jakosci}
 \end{equation}
-gdzie pierwszy składnik opisuje błąd dopasowania, a drugi jest składnikiem
-regularyzacyjnym.
+gdzie w równaniu~\ref{eq:wskaznik-jakosci} pierwszy składnik opisuje błąd dopasowania, a drugi jest składnikiem
+regularyzacyjnym. Kod obu sposobów składania równań wielowierszowych zestawiono
+w listingu~\ref{lst:rownania-wielowierszowe}.
 
 \begin{lstlisting}[style=thesis,caption={Kod równań wielowierszowych},label={lst:rownania-wielowierszowe}]
 \begin{align}
@@ -136,7 +137,7 @@ Charakterystykę ogranicznika można przedstawić następująco:
   \end{cases}
   \label{eq:ogranicznik}
 \end{equation}
-Warunek umieszcza się po znaku \verb|&|, aby wszystkie opisy były wyrównane.
+W równaniu~\ref{eq:ogranicznik} warunek umieszcza się po znaku \verb|&|, aby wszystkie opisy były wyrównane.
 
 Model w przestrzeni stanu zapisuje się zwarto za pomocą wektorów i macierzy:
 \begin{equation}
@@ -147,7 +148,7 @@ Model w przestrzeni stanu zapisuje się zwarto za pomocą wektorów i macierzy:
     = \boldsymbol{C}\boldsymbol{x}(t)+\boldsymbol{D}\boldsymbol{u}(t),
   \label{eq:model-stanu}
 \end{equation}
-gdzie przykładowa macierz stanu ma postać
+Równanie~\ref{eq:model-stanu} wykorzystuje przykładową macierz stanu o postaci
 \begin{equation}
   \boldsymbol{A}=
   \begin{bmatrix}
@@ -156,6 +157,9 @@ gdzie przykładowa macierz stanu ma postać
   \end{bmatrix}.
   \label{eq:macierz-stanu}
 \end{equation}
+
+Macierz z równania~\ref{eq:macierz-stanu} ma wymiar $2\times2$. Składnię środowiska \texttt{cases} oraz macierzy przedstawiono razem
+w listingu~\ref{lst:rownania-cases-matrix}.
 
 \begin{lstlisting}[style=thesis,caption={Kod definicji przedziałowej i macierzy},label={lst:rownania-cases-matrix}]
 \begin{equation}
@@ -181,7 +185,7 @@ Nazwy standardowych funkcji należy zapisywać poleceniami takimi jak \verb|\sin
   x(t)=A\exp(-\alpha t)\sin(2\pi f t+\varphi).
   \label{eq:sygnal-tlumiony}
 \end{equation}
-Indeks będący zmienną zapisuje się kursywą, jak w $x_i$, natomiast indeks opisowy
+W równaniu~\ref{eq:sygnal-tlumiony} funkcje wykładnicza i sinusoidalna są zapisane pismem prostym. Indeks będący zmienną zapisuje się kursywą, jak w $x_i$, natomiast indeks opisowy
 pismem prostym, na przykład $U_{\mathrm{we}}$, $I_{\mathrm{rms}}$ i $T_{\max}$.
 Symbol różniczki można zapisać jako prostą literę: $\mathrm{d}t$. Iloczyn skalarny
 warto oznaczać jednoznacznie, np. $\boldsymbol{a}\cdot\boldsymbol{b}$, zamiast
@@ -194,7 +198,7 @@ Wieloliterowe nazwy własnych operatorów można tworzyć poleceniem
     = \sqrt{\frac{1}{N}\sum_{k=1}^{N}(y_k-\hat{y}_k)^2}.
   \label{eq:rmse}
 \end{equation}
-Jeżeli operator występuje wielokrotnie, warto zdefiniować go w pliku stylu poleceniem
+Operator w równaniu~\ref{eq:rmse} został zapisany pismem prostym. Jeżeli występuje wielokrotnie, warto zdefiniować go w pliku stylu poleceniem
 \verb|\DeclareMathOperator|.
 
 \section{\ploren{Liczby i zapis naukowy}{Numbers and scientific notation}}
@@ -211,7 +215,8 @@ polskiej i kropkę w angielskiej:
 
 Nie należy wpisywać ręcznie spacji rozdzielających grupy cyfr ani zamieniać separatora
 dziesiętnego w przecinek w danych źródłowych. Liczba miejsc znaczących powinna wynikać
-z dokładności metody, a nie z domyślnych ustawień programu obliczeniowego.
+z dokładności metody, a nie z domyślnych ustawień programu obliczeniowego. Przykłady
+zapisu danych wejściowych zawiera listing~\ref{lst:liczby-siunitx}.
 
 \begin{lstlisting}[style=thesis,caption={Formatowanie liczb za pomocą siunitx},label={lst:liczby-siunitx}]
 \num{12345.6789}
@@ -239,7 +244,8 @@ niełamliwy odstęp, zapisuje symbol jednostki pismem prostym i poprawnie skład
 Między symbolami jednostek występuje mnożenie, natomiast \verb|\per| tworzy jednostkę
 w mianowniku. Nie należy dodawać kropki po symbolu jednostki, chyba że kończy ona zdanie.
 Symbole jednostek nie otrzymują liczby mnogiej. Wartości bezwymiarowe również można
-formatować poleceniem \verb|\num|.
+formatować poleceniem \verb|\num|. Najczęściej używane konstrukcje dotyczące jednostek
+zestawiono w listingu~\ref{lst:jednostki-si}.
 
 \begin{lstlisting}[style=thesis,caption={Przykłady zapisu jednostek SI},label={lst:jednostki-si}]
 \SI{24}{\volt}
