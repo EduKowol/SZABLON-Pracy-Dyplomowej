@@ -5,8 +5,13 @@
 
 ## 1. Pierwsze uruchomienie szablonu
 
-Zakres rozdziału: wymagane narzędzia, otwarcie projektu, pierwsza kompilacja,
-lokalizacja pliku PDF oraz katalogu `build/`.
+Do zalecanej kompilacji lokalnej na Windows wymagane są MiKTeX i interpreter
+Perl, ponieważ `latexmk` jest skryptem napisanym w Perlu. Można użyć np.
+Strawberry Perl. Po instalacji należy ponownie otworzyć terminal i sprawdzić
+polecenia `perl --version`, `latexmk -v`, `lualatex --version` oraz
+`biber --version`. Następnie projekt kompiluje się poleceniem
+`latexmk main.tex`, a wynik znajduje się w `build/main.pdf`. Przy pracy w Prism
+lub Overleaf lokalna instalacja Perla nie jest potrzebna.
 
 ## 2. Konfiguracja pracy i wybór języka
 

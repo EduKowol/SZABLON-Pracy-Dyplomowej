@@ -120,7 +120,11 @@ def main() -> int:
 
     metadata = dict(COMMAND_RE.findall(read_text(metadata_path)))
 
+    thesis_type = metadata.get("thesistype")
+    doctoral_optional_fields = {"albumid", "programmepl", "programmeen"}
     for field, default in DEFAULTS.items():
+        if thesis_type == "doctoral" and field in doctoral_optional_fields:
+            continue
         if metadata.get(field) == default:
             problems.append(f"config/metadata.tex: pole {field} ma wartość przykładową")
 

@@ -51,6 +51,7 @@
 
 ## Walidacja końcowa
 
+- [ ] Przy kompilacji lokalnej przez `latexmk` polecenie `perl --version` działa poprawnie.
 - [ ] Ustawiono `\thesisstatus` na `final`.
 - [ ] Polecenie `python tools/validate_project.py --strict` kończy się powodzeniem.
 - [ ] `latexmk main.tex` kończy się bez błędów.

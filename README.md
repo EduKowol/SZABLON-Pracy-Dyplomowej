@@ -13,6 +13,12 @@ szablon LaTeX Beamer: [EduKowol/SZABLON-Prezentacji](https://github.com/EduKowol
 
 ## Szybki start
 
+Do zalecanej kompilacji lokalnej na Windows potrzebne są **MiKTeX oraz Perl**,
+ponieważ używany przez szablon program `latexmk` jest skryptem napisanym w
+Perlu. Można zainstalować np. [Strawberry Perl](https://strawberryperl.com/),
+a następnie ponownie uruchomić terminal. Edytory internetowe, takie jak Overleaf
+lub Prism, nie wymagają instalowania Perla na komputerze użytkownika.
+
 1. Uzupełnij `config/metadata.tex`.
 2. Ustaw `\thesislanguage` na `polish` albo `english`.
 3. Ustaw `\thesistype` na `engineering`, `master` albo `doctoral`.
@@ -72,6 +78,21 @@ uczelni, zasad finansującego oraz warunków repozytorium danych lub kodu.
 ## Kompilacja i porządek w katalogu
 
 Konfiguracja `latexmkrc` kieruje PDF, logi, bibliografię i wszystkie pliki pomocnicze do katalogu `build/`. Katalog główny pozostaje dzięki temu czysty.
+
+Przed pierwszą kompilacją lokalną w Windows sprawdź wymagane programy:
+
+```text
+perl --version
+latexmk -v
+lualatex --version
+biber --version
+```
+
+Jeżeli `latexmk` zgłasza brak interpretera Perl albo polecenie `perl` nie jest
+rozpoznawane, zainstaluj Perl (np. Strawberry Perl), zamknij i ponownie otwórz
+terminal oraz TeXstudio, a potem powtórz sprawdzenie. Sam LuaLaTeX nie wymaga
+Perla, ale zalecany w tym projekcie `latexmk` wymaga go do automatycznego
+wykonywania wszystkich przebiegów LuaLaTeX i Bibera.
 
 ```text
 latexmk main.tex       # kompilacja

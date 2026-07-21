@@ -26,6 +26,7 @@ Do lokalnej kompilacji potrzebna jest dystrybucja systemu TeX. Zalecany zestaw d
     Narzędzie & Zastosowanie & Status \\
     \midrule
     MiKTeX & Dystrybucja zawierająca LuaLaTeX, \texttt{latexmk}, Biber oraz pakiety LaTeX-a & wymagane lokalnie \\
+    Perl (np. Strawberry Perl) & Interpreter wymagany do uruchomienia programu \texttt{latexmk} & wymagany z \texttt{latexmk} w Windows \\
     TeXstudio & Edytor kodu źródłowego, uruchamianie kompilacji i podgląd PDF & zalecane \\
     Python 3 & Skrypty pomocnicze, walidacja projektu i tworzenie paczki startowej & opcjonalne \\
     Ghostscript & Obsługa niektórych starszych przepływów PS/EPS i dodatkowa obróbka PDF & opcjonalne \\
@@ -42,9 +43,14 @@ Ghostscript nie jest wymagany w standardowym przebiegu tego szablonu. LuaLaTeX b
 
 Instalator należy pobrać z oficjalnej strony projektu MiKTeX: \url{https://miktex.org/download}. Po instalacji należy uruchomić \emph{MiKTeX Console}, sprawdzić dostępność aktualizacji, a następnie zainstalować je przed pierwszą kompilacją. W ustawieniach instalowania brakujących pakietów można wybrać pytanie użytkownika albo automatyczną instalację. Pierwsza kompilacja może dlatego potrwać dłużej i wyświetlić pytania o doinstalowanie pakietów.
 
+\subsection{Perl}
+
+Program \texttt{latexmk}, używany w zalecanym przebiegu kompilacji szablonu, jest skryptem napisanym w języku Perl. W systemie Windows instalacja MiKTeX może zatem nie wystarczyć: potrzebny jest również działający interpreter Perl. Można zainstalować na przykład Strawberry Perl ze strony \url{https://strawberryperl.com/}. Po instalacji należy zamknąć i ponownie otworzyć terminal oraz TeXstudio, aby programy zobaczyły zaktualizowaną zmienną \texttt{PATH}. Sam LuaLaTeX nie wymaga Perla, lecz bez niego nie zadziała opisane w tym szablonie automatyczne budowanie przez \texttt{latexmk}. W Prism, Overleaf i podobnych edytorach internetowych nie instaluje się Perla lokalnie, ponieważ środowiskiem kompilacji zarządza platforma.
+
 Po zakończeniu instalacji warto zamknąć i ponownie otworzyć terminal. Listing~\ref{lst:sprawdzenie-tex} pokazuje polecenia sprawdzające dostępność podstawowych programów w PowerShellu.
 
 \begin{lstlisting}[style=thesis-shell,caption={Sprawdzenie lokalnego środowiska TeX},label={lst:sprawdzenie-tex}]
+perl --version
 lualatex --version
 latexmk -v
 biber --version
@@ -102,6 +108,7 @@ Obie paczki zachowują wspólny styl, konfigurację dokumentu, strony początkow
 \section{Najczęstsze problemy}
 
 \begin{description}
+  \item[Brak interpretera Perl.] Jeżeli \texttt{latexmk} informuje o braku Perla albo polecenie \texttt{perl -{}-version} nie działa, zainstaluj interpreter (np. Strawberry Perl), a następnie ponownie uruchom terminal i TeXstudio. MiKTeX dostarcza \texttt{latexmk}, ale na Windows interpreter Perla może wymagać osobnej instalacji.
   \item[Brak polecenia \texttt{latexmk}.] Uruchom ponownie terminal, sprawdź instalację MiKTeX i jej obecność w zmiennej \texttt{PATH}.
   \item[Brak pakietu LaTeX.] Zezwól MiKTeX na jego instalację, a następnie ponów kompilację. W razie potrzeby zainstaluj pakiet przez MiKTeX Console.
   \item[Nie można zapisać \texttt{main.pdf}.] Zamknij dokument w zewnętrznej przeglądarce PDF i ponownie uruchom \texttt{latexmk main.tex}.

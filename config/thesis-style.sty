@@ -228,6 +228,7 @@
 \newcommand{\maintitle}{\ifx\thesislanguage\thesis@lang@english\titleen\else\titlepl\fi}
 \newcommand{\mainuniversity}{\ifx\thesislanguage\thesis@lang@english\universityen\else\universitypl\fi}
 \newcommand{\mainfaculty}{\ifx\thesislanguage\thesis@lang@english\facultyen\else\facultypl\fi}
+\newcommand{\maindepartment}{\ifx\thesislanguage\thesis@lang@english\departmenten\else\departmentpl\fi}
 \newcommand{\mainprogramme}{\ifx\thesislanguage\thesis@lang@english\programmeen\else\programmepl\fi}
 
 % Walidacja podstawowych metadanych. W trybie draft generuje ostrzezenia,
@@ -254,11 +255,15 @@
     \fi
   \fi
   \thesis@warnifdefault{\authorname}{Imię i nazwisko}{Author name is still a placeholder}%
-  \thesis@warnifdefault{\albumid}{000000}{Student ID is still a placeholder}%
+  \ifx\thesistype\thesis@type@doctoral\else
+    \thesis@warnifdefault{\albumid}{000000}{Student ID is still a placeholder}%
+  \fi
   \thesis@warnifdefault{\titlepl}{Tytuł pracy w języku polskim}{Polish title is still a placeholder}%
   \thesis@warnifdefault{\titleen}{Thesis title in English}{English title is still a placeholder}%
-  \thesis@warnifdefault{\programmepl}{Nazwa kierunku}{Polish programme name is still a placeholder}%
-  \thesis@warnifdefault{\programmeen}{Study programme}{English programme name is still a placeholder}%
+  \ifx\thesistype\thesis@type@doctoral\else
+    \thesis@warnifdefault{\programmepl}{Nazwa kierunku}{Polish programme name is still a placeholder}%
+    \thesis@warnifdefault{\programmeen}{Study programme}{English programme name is still a placeholder}%
+  \fi
   \thesis@warnifdefault{\supervisorname}{dr hab. inż. Imię Nazwisko, prof. uczelni}{Supervisor name is still a placeholder}%
   \thesis@warnifdefault{\keywordspl}{słowo kluczowe 1, słowo kluczowe 2, słowo kluczowe 3}{Polish keywords are still placeholders}%
   \thesis@warnifdefault{\keywordsen}{keyword 1, keyword 2, keyword 3}{English keywords are still placeholders}%
@@ -348,15 +353,22 @@
 
 \newcommand{\makethesistitle}{\begin{titlepage}\thispagestyle{empty}\begin{center}
 \IfFileExists{\universitylogo}{\includegraphics[width=\universitylogowidth]{\universitylogo}\par\vspace{0.7cm}}{}
-{\bfseries\large\mainuniversity\par}\vspace{0.25cm}{\large\mainfaculty\par}\vspace{1.35cm}
+{\bfseries\large\mainuniversity\par}\vspace{0.25cm}
+{\large\mainfaculty\par}\vspace{0.15cm}
+{\large\maindepartment\par}\vspace{1.20cm}
 {\bfseries\fontsize{15}{18}\selectfont\MakeUppercase{\thesistypename}\par}\vspace{1.25cm}
 {\bfseries\fontsize{18}{22}\selectfont\maintitle\par}
 \ifx\thesislanguage\thesis@lang@polish
   \vspace{0.55cm}{\itshape\fontsize{14}{17}\selectfont\titleen\par}%
 \fi
 \end{center}\vfill\begin{flushright}\begin{minipage}{0.52\textwidth}
-\textbf{\authorname}\\\ploren{Numer albumu}{Student ID}: \albumid\\
-\ploren{Kierunek}{Programme}: \mainprogramme\\[0.7cm]
+\textbf{\ploren{Autor}{Author}:}\\\authorname%
+\ifx\thesistype\thesis@type@doctoral
+  \\[0.7cm]
+\else
+  \\\ploren{Numer albumu}{Student ID}: \albumid\\
+  \ploren{Kierunek}{Programme}: \mainprogramme\\[0.7cm]
+\fi
 \textbf{\ploren{Promotor}{Supervisor}:}\\\supervisorname
 \ifdefempty{\auxsupervisorname}{}{\\[0.4cm]\textbf{\ploren{Promotor pomocniczy}{Auxiliary supervisor}:}\\\auxsupervisorname}
 \end{minipage}\end{flushright}\vfill\begin{center}\city, \submissionyear\end{center}\end{titlepage}}

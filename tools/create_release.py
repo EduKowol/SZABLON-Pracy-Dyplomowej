@@ -182,7 +182,17 @@ def variant_readme(target: str) -> str:
     if target == "local":
         return """# Wariant lokalny
 
-Ta paczka zawiera `latexmkrc`. Kompiluj ją poleceniem:
+Ta paczka zawiera `latexmkrc` i jest przeznaczona do kompilacji na komputerze.
+
+Na Windows zainstaluj MiKTeX oraz interpreter Perl (np. Strawberry Perl),
+ponieważ `latexmk` jest skryptem napisanym w Perlu. Sprawdź środowisko:
+
+```text
+perl --version
+latexmk -v
+```
+
+Kompiluj ją poleceniem:
 
 ```text
 latexmk main.tex
@@ -198,7 +208,8 @@ lokalnego pliku `latexmkrc`. Po imporcie ustaw:
 - dokument główny: `main.tex`;
 - kompilator: LuaLaTeX.
 
-Katalogiem plików pomocniczych zarządza platforma internetowa.
+Katalogiem plików pomocniczych zarządza platforma internetowa. Lokalna
+instalacja Perla nie jest potrzebna.
 """
 
 
