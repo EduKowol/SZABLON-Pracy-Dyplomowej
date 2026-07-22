@@ -6,6 +6,22 @@ Rozbudowana dokumentacja dla studenta znajduje się w katalogu `docs/`:
 [poradnik](docs/poradnik-studenta.md), [przykłady LaTeX-a](docs/latex-przyklady.md)
 i [lista kontrolna](docs/lista-kontrolna.md).
 
+## Spis treści
+
+- [Powiązany szablon prezentacji](#powiązany-szablon-prezentacji)
+- [Szybki start](#szybki-start)
+- [Tryb elektroniczny i druk dwustronny](#tryb-elektroniczny-i-druk-dwustronny)
+- [Opcjonalne wykazy](#opcjonalne-wykazy)
+- [Opcjonalne strony i oświadczenia](#opcjonalne-strony-i-oświadczenia)
+- [Kompilacja i porządek w katalogu](#kompilacja-i-porządek-w-katalogu)
+  - [Ponowna kompilacja po usunięciu błędu](#ponowna-kompilacja-po-usunięciu-błędu)
+- [Czysta paczka startowa](#czysta-paczka-startowa)
+  - [TeXstudio](#texstudio)
+- [Struktura i utrzymanie](#struktura-i-utrzymanie)
+- [Duże elementy i strony poziome](#duże-elementy-i-strony-poziome)
+- [Kod i listingi](#kod-i-listingi)
+- [Walidacja przed oddaniem pracy](#walidacja-przed-oddaniem-pracy)
+
 ## Powiązany szablon prezentacji
 
 Do przygotowania prezentacji na obronę pracy można wykorzystać powiązany
