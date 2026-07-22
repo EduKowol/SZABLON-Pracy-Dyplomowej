@@ -2,12 +2,18 @@
 % !TeX TXS-program:compile = txs:///latexmk/{-pdf}
 % !TeX root = main.tex
 % Kompilacja: latexmk main.tex (silnik LuaLaTeX wybiera latexmkrc)
+% Pełna instrukcja konfiguracji TeXstudio znajduje się w pliku README.md.
 
 % === KONFIGURACJA SZABLONU — NIE ZMIENIAJ W TYM PLIKU ===
 % Dane pracy, język, tryb digital/print i elementy opcjonalne ustawia się
 % wyłącznie w config/metadata.tex.
 \input{config/metadata}
-\input{config/document-class}
+\def\thesisclassmodeprint{print}
+\ifx\thesisprintmode\thesisclassmodeprint
+  \documentclass[12pt,a4paper,twoside,openright]{report}
+\else
+  \documentclass[12pt,a4paper,oneside,openany]{report}
+\fi
 \usepackage{config/thesis-style}
 
 \begin{document}

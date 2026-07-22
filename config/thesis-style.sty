@@ -21,13 +21,10 @@
 \RequirePackage{csquotes,microtype,geometry,setspace,needspace,graphicx}
 \RequirePackage[export]{adjustbox}
 \RequirePackage{pdflscape,placeins}
-% unicode-math dostarcza symbole AMS dla LuaLaTeX/XeLaTeX. Ponowne
-% załadowanie amssymb powoduje m.in. konflikt definicji polecenia \eth.
-\ifPDFTeX
-  \RequirePackage{amsmath,amssymb}
-\else
-  \RequirePackage{amsmath}
-\fi
+% unicode-math (LuaLaTeX/XeLaTeX) i newtxmath (pdfLaTeX) dostarczaja
+% potrzebne symbole matematyczne. Osobne ladowanie amssymb jest zbedne i w
+% nowszych dystrybucjach TeX powoduje konflikt definicji m.in. \Bbbk.
+\RequirePackage{amsmath}
 \RequirePackage{booktabs,array,tabularx,longtable,siunitx}
 \RequirePackage{enumitem,titlesec,tocloft,caption,subcaption,listings,xcolor}
 \RequirePackage{menukeys}
@@ -123,20 +120,21 @@
 \definecolor{thesiscodekeyword}{RGB}{0,65,120}
 \definecolor{thesiscodecomment}{RGB}{40,105,65}
 \definecolor{thesiscodestring}{RGB}{145,45,45}
-% Pakiet listings nie dodaje automatycznie znakow Unicode o kodach > 255
-% do listy znakow przetwarzanych jak litery. W LuaLaTeX-u i XeLaTeX-u brak
-% tych deklaracji przesuwa m.in. ą, ę, ł, ś, ź i ż na poczatek fragmentu kodu.
-% Bezposrednia rejestracja znakow zachowuje ich kolejnosc oraz kolorowanie.
+% W LuaLaTeX-u i XeLaTeX-u polskie znaki sa rejestrowane jako litery. Znacznik
+% konczacy liste jest tworzony programowo, aby w zrodle nie umieszczac znaku
+% sterujacego odrzucanego przez nowszy TeX Live.
 \ifPDFTeX\else
-  \begingroup
-    \catcode0=12
-    \makeatletter
-    \g@addto@macro\lst@DefEC{%
-      \lst@CCECUse\lst@ProcessLetter
-      ąćęłńśźżĄĆĘŁŃŚŹŻ%
-      ^^00%
-    }%
-  \endgroup
+  \ExplSyntaxOn
+  \edef\thesislistingssentinel{\char_generate:nn {0}{12}}
+  \ExplSyntaxOff
+  \edef\thesislistingextension{%
+    \noexpand\lst@CCECUse\noexpand\lst@ProcessLetter
+    ąćęłńśźżĄĆĘŁŃŚŹŻ%
+    \thesislistingssentinel}
+  \let\thesisoriginallstDefEC\lst@DefEC
+  \def\lst@DefEC{%
+    \thesislistingextension
+    \thesisoriginallstDefEC}
 \fi
 \lstdefinestyle{thesis}{
   basicstyle=\ttfamily\small,
@@ -174,9 +172,7 @@
     WPRZECIWNYMRAZIE,KONIECJEZELI,KONIECDLA,ZWROC}
 }
 \lstset{style=thesis}
-% Klasyczny pakiet listings przetwarza znaki UTF-8 bajtowo. Poniższe mapowanie
-% jest bezpieczne dla pdfLaTeX-a; w LuaLaTeX-u kod źródłowy w listingach powinien
-% pozostać ASCII albo zostać wczytany narzędziem obsługującym natywnie Unicode.
+% pdfLaTeX wymaga odpowiednikow opartych na akcentach zamiast kodow Unicode.
 \ifPDFTeX
   \lstset{literate=
     {ą}{{\k{a}}}1 {ć}{{\'c}}1 {ę}{{\k{e}}}1 {ł}{{\l{}}}1

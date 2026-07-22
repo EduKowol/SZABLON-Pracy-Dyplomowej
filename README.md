@@ -141,7 +141,10 @@ python tools/create_release.py --target online
 ```
 
 Generator kopiuje wspólną konfigurację bez tworzenia odrębnej wersji stylu,
-dlatego po zmianach szablonu wystarczy ponownie go uruchomić.
+dlatego oba warianty zawierają ten sam plik `main.tex` i te same źródła.
+Różnią się wyłącznie obecnością lokalnego pliku `latexmkrc`. Deklaracja
+`\documentclass` znajduje się bezpośrednio w `main.tex`, dzięki czemu edytory
+internetowe, w tym Prism, mogą poprawnie wykryć dokument główny.
 
 Katalog `dist/` nie jest wykluczony przez `.gitignore`. Obie gotowe paczki ZIP
 mogą dzięki temu być przechowywane w repozytorium i udostępniane użytkownikom
@@ -151,15 +154,55 @@ zaktualizowane archiwa w repozytorium.
 
 ### TeXstudio
 
-W zakładce `Budowanie` można wybrać `Latexmk` jako kompilator. Plik `main.tex` zawiera projektową dyrektywę TeXstudio, która usuwa z wbudowanego polecenia wyłącznie opcję `-pdf`, aby nie wymuszać pdfLaTeX. Dodawane przez TeXstudio `-auxdir=build` jest zgodne z konfiguracją projektu. Silnik LuaLaTeX i katalog wynikowy są konfigurowane centralnie w `latexmkrc`.
+Poniższa konfiguracja powoduje, że TeXstudio uruchamia program `latexmk` w
+katalogu projektu. Program automatycznie odczytuje znajdujący się tam plik
+`latexmkrc`, który wybiera LuaLaTeX, uruchamia Biber w razie potrzeby i zapisuje
+PDF oraz pliki pomocnicze w katalogu `build/`.
 
-Przy pierwszym otwarciu dokumentu TeXstudio może poprosić o zgodę na zmianę polecenia kompilacji. Należy wybrać zgodę tylko dla tego dokumentu.
+Przed konfiguracją należy zainstalować MiKTeX i Perl, ponownie uruchomić
+TeXstudio, a następnie otworzyć w nim plik `main.tex`. Aby skonfigurować
+budowanie projektu:
+
+1. Otwórz **Opcje → Konfiguruj TeXstudio** i po lewej stronie wybierz
+   **Zbuduj**.
+2. Zaznacz znajdującą się na dole okna opcję **Pokaż opcje zaawansowane**.
+3. W polu **Kompilator domyślny** wybierz `txs:///latexmk`.
+4. W sekcji **Polecenia użytkownika** kliknij **+ Dodaj**.
+5. W polu nazwy polecenia wpisz `user0:Latexmk LuaLaTeX`.
+6. W polu polecenia wpisz dokładnie:
+
+   ```text
+   latexmk.exe -synctex=1 -interaction=nonstopmode -file-line-error %.tex
+   ```
+
+7. W sekcji **Opcje budowania → Dodatkowe ścieżki wyszukiwania**, w polu
+   **Plik PDF**, wpisz:
+
+   ```text
+   build;
+   ```
+
+8. Zatwierdź konfigurację przyciskiem **OK**.
+
+![Konfiguracja TeXstudio do kompilacji projektu przez LatexMk](docs/images/Ustawienia_TeXstudio.png)
+
+Wartość `%.tex` oznacza aktualnie kompilowany dokument. Nie należy dopisywać do
+polecenia opcji `-pdf` ani `-lualatex`: właściwy silnik i katalog wyjściowy są
+ustawione centralnie w projektowym pliku `latexmkrc`. Wpis `build;` wskazuje
+TeXstudio dodatkowe miejsce, w którym ma szukać utworzonego PDF-u. Średnik jest
+separatorem ścieżek używanym w tym polu w systemie Windows.
+
+Po zapisaniu ustawień otwórz `main.tex` i uruchom kompilację. Gotowy dokument
+powinien pojawić się jako `build/main.pdf`. Jeśli TeXstudio przy pierwszym
+otwarciu dokumentu poprosi o zgodę na zastosowanie projektowej dyrektywy
+kompilacji, wybierz zgodę tylko dla tego dokumentu. Dyrektywa usuwa z
+wbudowanego polecenia wyłącznie opcję `-pdf`, aby nie wymuszać pdfLaTeX;
+pozostałe ustawienia przejmuje `latexmkrc`.
 
 ## Struktura i utrzymanie
 
 - `main.tex` — kolejność elementów;
 - `config/metadata.tex` — dane i ustawienia pracy;
-- `config/document-class.tex` — wewnętrzny wybór klasy dla trybu `digital` lub `print`;
 - `config/thesis-style.sty` — typografia, marginesy i lokalizacja;
 - `frontmatter/` — oświadczenie i streszczenia PL/EN;
 - `chapters/` — treść rozdziałów;
